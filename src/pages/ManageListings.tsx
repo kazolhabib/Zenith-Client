@@ -5,27 +5,32 @@ import { Eye, Trash2, MapPin, Star, Plus, AlertTriangle } from 'lucide-react';
 import { LISTINGS_DATA } from '@/data/listings';
 import { Button } from '@/components/ui/button';
 import api from '@/config/api';
+import { useAuth } from '@/context/AuthContext';
 
 export const ManageListings = ({ isEmbedded = false }: { isEmbedded?: boolean }) => {
+  const { user } = useAuth();
   const [listings, setListings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [listingToDelete, setListingToDelete] = useState<string | number | null>(null);
 
   useEffect(() => {
-    const fetchMyListings = async () => {
+    const fetchListings = async () => {
       try {
-        const { data } = await api.get('/listings/my');
+        const endpoint = user?.role === 'admin' ? '/listings' : '/listings/my';
+        const { data } = await api.get(endpoint);
         setListings(data);
       } catch (error) {
         console.warn('API not reachable, falling back to mock data');
-        setListings(LISTINGS_DATA.slice(0, 3)); // Mock a subset for "my listings"
+        setListings(user?.role === 'admin' ? LISTINGS_DATA : LISTINGS_DATA.slice(0, 3));
       } finally {
         setLoading(false);
       }
     };
-    fetchMyListings();
-  }, []);
+    if (user) {
+      fetchListings();
+    }
+  }, [user]);
 
   const confirmDelete = async () => {
     if (!listingToDelete) return;
