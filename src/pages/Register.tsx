@@ -79,7 +79,8 @@ export const Register = () => {
         id: response.data.id,
         name: response.data.name,
         email: response.data.email,
-        image: response.data.image
+        image: response.data.image,
+        role: response.data.role || 'user'
       });
       
       navigate('/explore');
