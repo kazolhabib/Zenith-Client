@@ -106,8 +106,9 @@ export const ListingCard: React.FC<ListingCardProps> = ({ item, index }) => {
           </div>
           
           <Link to={`/listings/${item.id}`} className="relative z-30">
-            <Button className="bg-brand hover:bg-orange-500 text-white border-0 shadow-[0_5px_20px_rgba(246,86,0,0.3)] hover:shadow-[0_8px_25px_rgba(246,86,0,0.5)] rounded-xl h-12 w-12 p-0 flex items-center justify-center group/btn transition-all duration-300">
-              <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+            <Button className="bg-brand hover:bg-orange-500 text-white border-0 shadow-[0_5px_20px_rgba(246,86,0,0.25)] hover:shadow-[0_8px_25px_rgba(246,86,0,0.45)] rounded-xl h-11 px-4 flex items-center gap-2 group/btn transition-all duration-300 font-bold text-xs uppercase tracking-wider">
+              <span>View Details</span>
+              <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
             </Button>
           </Link>
         </div>

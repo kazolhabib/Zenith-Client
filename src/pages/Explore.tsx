@@ -5,6 +5,25 @@ import { ListingCard } from '@/components/listings/ListingCard';
 import api from '@/config/api';
 import CallToAction from '@/components/home/CallToAction';
 
+const SkeletonCard = () => (
+  <div className="flex flex-col h-full bg-[#121217]/50 backdrop-blur-xl border border-white/5 rounded-[2rem] overflow-hidden shadow-lg animate-pulse min-h-[420px]">
+    <div className="w-full h-64 bg-white/5" />
+    <div className="p-6 flex flex-col flex-grow">
+      <div className="w-3/4 h-6 bg-white/10 rounded-md mb-3" />
+      <div className="w-full h-4 bg-white/5 rounded-md mb-2" />
+      <div className="w-5/6 h-4 bg-white/5 rounded-md mb-6" />
+      
+      <div className="grid grid-cols-2 gap-3 mb-6 mt-auto">
+        <div className="h-4 w-20 bg-white/5 rounded-md" />
+        <div className="h-4 w-24 bg-white/5 rounded-md justify-self-end" />
+        <div className="h-4 w-32 bg-white/5 rounded-md col-span-2" />
+      </div>
+      
+      <div className="w-full h-12 bg-white/10 rounded-xl mt-auto" />
+    </div>
+  </div>
+);
+
 const ITEMS_PER_PAGE = 12;
 
 export const Explore = () => {
@@ -172,8 +191,10 @@ export const Explore = () => {
 
         {/* Listings Grid */}
         {loading ? (
-          <div className="flex justify-center items-center h-64">
-             <div className="w-10 h-10 border-4 border-brand border-t-transparent rounded-full animate-spin"></div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 gap-y-12">
+            {Array.from({ length: 8 }).map((_, index) => (
+              <SkeletonCard key={index} />
+            ))}
           </div>
         ) : currentData.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 gap-y-12">

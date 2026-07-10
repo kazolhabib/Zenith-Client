@@ -8,7 +8,7 @@ const Hero = () => {
   const [activeMockTab, setActiveMockTab] = useState<'overview' | 'bookings' | 'settings'>('overview');
 
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-[#09090b] pt-[8rem] pb-[8rem]">
+    <section className="relative w-full min-h-[70vh] flex items-center justify-center overflow-hidden bg-[#09090b] pt-[8rem] pb-[6rem]">
       
       {/* Animated Background Gradients */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
