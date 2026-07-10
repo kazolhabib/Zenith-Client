@@ -291,12 +291,10 @@ export const Explore = () => {
             </div>
 
           </div>
-        </div>
-
-        {/* Call to Action */}
-        <CallToAction />
-
       </div>
+
+      {/* Call to Action */}
+      <CallToAction />
     </div>
   );
 };
