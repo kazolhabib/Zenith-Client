@@ -37,36 +37,6 @@ export const Login = () => {
       return;
     }
 
-    if (email === 'admin@example.com' && password === 'admin123') {
-      setTimeout(() => {
-        login('demo-admin-token', {
-          id: 'admin-1',
-          name: 'System Admin',
-          email: 'admin@example.com',
-          image: '',
-          role: 'admin'
-        });
-        setLoading(false);
-        navigate('/dashboard');
-      }, 1000);
-      return;
-    }
-
-    if (email === 'user@example.com' && password === 'user123') {
-      setTimeout(() => {
-        login('demo-user-token', {
-          id: 'user-1',
-          name: 'Demo User',
-          email: 'user@example.com',
-          image: '',
-          role: 'user'
-        });
-        setLoading(false);
-        navigate('/dashboard');
-      }, 1000);
-      return;
-    }
-
     try {
       const response = await api.post('/auth/login', { email, password });
       
@@ -81,6 +51,32 @@ export const Login = () => {
       
       navigate('/dashboard');
     } catch (err: any) {
+      // Fallback for Demo accounts if backend is offline/unreachable
+      if (email === 'admin@example.com' && password === 'admin123') {
+        login('demo-admin-token', {
+          id: 'admin-1',
+          name: 'System Admin',
+          email: 'admin@example.com',
+          image: '',
+          role: 'admin'
+        });
+        setLoading(false);
+        navigate('/dashboard');
+        return;
+      }
+      if (email === 'user@example.com' && password === 'user123') {
+        login('demo-user-token', {
+          id: 'user-1',
+          name: 'Demo User',
+          email: 'user@example.com',
+          image: '',
+          role: 'user'
+        });
+        setLoading(false);
+        navigate('/dashboard');
+        return;
+      }
+
       setLoading(false);
       setError(err.response?.data?.message || 'Login failed. Please try again.');
     }
