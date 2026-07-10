@@ -103,13 +103,13 @@ const Statistics = () => {
                 >
                   <div className="absolute inset-0 bg-brand/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   
-                  <div className="flex justify-between items-center relative z-10">
+                  <div className="flex justify-center sm:justify-between items-center relative z-10">
                     <div className={`w-10 h-10 rounded-xl border flex items-center justify-center ${stat.color}`}>
                       <Icon className="w-5 h-5" />
                     </div>
                   </div>
                   
-                  <div className="mt-6 relative z-10">
+                  <div className="mt-6 relative z-10 text-center sm:text-left">
                     <div className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-2">
                       <Counter to={stat.to} suffix={stat.suffix} decimals={stat.decimals} />
                     </div>
