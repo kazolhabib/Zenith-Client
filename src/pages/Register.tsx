@@ -45,10 +45,18 @@ export const Register = () => {
     }
 
     try {
-      await api.post('/auth/register', { name, email, password });
+      const response = await api.post('/auth/register', { name, email, password });
+      
+      login(response.data.token, {
+        id: response.data.id,
+        name: response.data.name,
+        email: response.data.email,
+        image: response.data.image,
+        role: 'user'
+      });
       
       setLoading(false);
-      navigate('/login');
+      navigate('/dashboard');
     } catch (err: any) {
       setLoading(false);
       setError(err.response?.data?.message || 'Registration failed. Please try again.');
