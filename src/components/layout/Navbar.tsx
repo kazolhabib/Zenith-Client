@@ -40,7 +40,7 @@ const Navbar = () => {
         transition={{ duration: 0.5, type: 'spring', stiffness: 100, damping: 20 }}
         className={`w-full max-w-[101.25rem] transition-all duration-500 ease-out ${
           scrolled
-            ? 'bg-white/80 backdrop-blur-2xl shadow-[0_20px_40px_rgba(0,0,0,0.1)] border border-white/60 py-[0.5rem]'
+            ? 'bg-gradient-to-r from-[#121217]/85 via-[#1a1a24]/90 to-[#121217]/85 backdrop-blur-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 py-[0.5rem]'
             : 'bg-transparent border border-transparent py-[1rem]'
         } rounded-[2rem] px-[1.5rem]`}
       >
@@ -50,58 +50,60 @@ const Navbar = () => {
           <div className="flex items-center gap-[1.5rem] lg:gap-[2.5rem] shrink-0">
             {/* Brand Logo */}
             <Link to="/" className="flex items-center gap-[0.75rem] group cursor-pointer shrink-0">
-              <div className="w-[2.5rem] h-[2.5rem] rounded-[0.75rem] bg-gradient-to-br from-brand to-orange-400 flex items-center justify-center shadow-[0_4px_15px_rgba(246,86,0,0.3)] group-hover:shadow-[0_8px_25px_rgba(246,86,0,0.5)] transition-all duration-300 group-hover:-translate-y-[2px]">
-                <Mountain className="w-[1.25rem] h-[1.25rem] text-white transition-transform duration-300 group-hover:scale-110" />
+              <div className="w-[2.5rem] h-[2.5rem] rounded-[0.75rem] bg-gradient-to-br from-brand to-orange-400 p-[2px] shadow-[0_4px_15px_rgba(246,86,0,0.3)] group-hover:shadow-[0_8px_25px_rgba(246,86,0,0.5)] transition-all duration-300 group-hover:-translate-y-[2px]">
+                <div className="w-full h-full rounded-[10px] bg-[#121217] flex items-center justify-center">
+                  <Mountain className="w-[1.15rem] h-[1.15rem] text-white transition-transform duration-300 group-hover:scale-110" />
+                </div>
               </div>
-              <span className={`text-[1.25rem] font-bold tracking-tight transition-colors ${scrolled ? 'text-gray-900' : 'text-white'}`}>
+              <span className="text-[1.25rem] font-black tracking-tight text-white">
                 Zenith
               </span>
             </Link>
 
-          {/* Desktop Navigation */}
-          <div className={`hidden md:flex items-center gap-[0.25rem] p-[0.25rem] rounded-[1.5rem] transition-colors duration-500 ${scrolled ? 'bg-gray-500/5' : 'bg-transparent'}`}>
-            {routes.map((route) => (
-              <Link
-                key={route.path}
-                to={route.path}
-                className={`group relative overflow-hidden px-[1.25rem] py-[0.5rem] rounded-[1.25rem] text-[0.875rem] font-medium transition-all duration-300 border ${
-                  isActive(route.path)
-                    ? 'bg-white text-brand border-brand/20 shadow-[0_0.25rem_0.75rem_rgba(246,86,0,0.15)]'
-                    : `bg-transparent border-transparent hover:bg-white hover:border-gray-200/60 hover:text-gray-900 hover:shadow-sm hover:-translate-y-[1px] ${scrolled ? 'text-gray-600' : 'text-slate-200'}`
-                }`}
-              >
-                <span className="relative z-10">{route.name}</span>
-                {!isActive(route.path) && (
-                  <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-150%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(150%)]">
-                    <div className="relative h-full w-[1.25rem] bg-brand/30 blur-[2px]" />
-                  </div>
-                )}
-              </Link>
-            ))}
-          </div>
+            {/* Desktop Navigation */}
+            <div className={`hidden md:flex items-center gap-[0.25rem] p-[0.25rem] rounded-[1.5rem] transition-colors duration-500 ${scrolled ? 'bg-black/20' : 'bg-transparent'}`}>
+              {routes.map((route) => (
+                <Link
+                  key={route.path}
+                  to={route.path}
+                  className={`group relative overflow-hidden px-[1.25rem] py-[0.5rem] rounded-[1.25rem] text-[0.875rem] font-bold transition-all duration-300 border ${
+                    isActive(route.path)
+                      ? 'bg-gradient-to-r from-brand to-orange-500 text-white border-none shadow-[0_4px_15px_rgba(246,86,0,0.2)]'
+                      : 'bg-transparent border-transparent hover:bg-white/5 hover:text-white hover:-translate-y-[1px] text-slate-300'
+                  }`}
+                >
+                  <span className="relative z-10">{route.name}</span>
+                  {!isActive(route.path) && (
+                    <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-150%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(150%)]">
+                      <div className="relative h-full w-[1.25rem] bg-brand/30 blur-[2px]" />
+                    </div>
+                  )}
+                </Link>
+              ))}
+            </div>
           </div>
 
           {/* Horizontal Connecting Line */}
-          <div className={`hidden md:block flex-1 h-px transition-all duration-500 ${scrolled ? 'bg-gray-200' : 'bg-transparent'}`} />
+          <div className={`hidden md:block flex-1 h-px transition-all duration-500 ${scrolled ? 'bg-white/5' : 'bg-transparent'}`} />
 
           {/* Actions */}
           <div className="hidden md:flex items-center shrink-0">
             {isAuthenticated ? (
               <div className="flex items-center gap-[1rem]">
-                <Link to="/dashboard" className={`text-[0.875rem] font-medium hover:text-brand transition-colors mr-2 ${scrolled ? 'text-gray-500' : 'text-slate-300'}`}>
+                <Link to="/dashboard" className="text-[0.875rem] font-bold hover:text-brand transition-colors mr-2 text-slate-300">
                   Dashboard
                 </Link>
                 <Link to="/items/add">
-                  <Button className="bg-white/5 hover:bg-brand text-white border border-white/10 hover:border-brand rounded-xl h-[2.75rem] px-[1.25rem] shadow-lg flex items-center gap-2 transition-all group">
+                  <Button className="bg-brand hover:bg-orange-500 text-white border-none rounded-xl h-[2.75rem] px-[1.25rem] shadow-[0_4px_15px_rgba(246,86,0,0.25)] flex items-center gap-2 transition-all font-bold">
                     <Plus className="w-4 h-4" />
-                    <span className="font-semibold">Add Listing</span>
+                    <span>Add Listing</span>
                   </Button>
                 </Link>
                 <Link to="/dashboard">
                   {user?.image ? (
-                    <img src={user.image} alt="User" className="w-[2.75rem] h-[2.75rem] rounded-[1.25rem] border border-white/10 object-cover hover:border-brand transition-all cursor-pointer" />
+                    <img src={user.image} alt="User" className="w-[2.75rem] h-[2.75rem] rounded-[1.25rem] border border-white/10 object-cover hover:border-brand transition-all cursor-pointer shadow-lg" />
                   ) : (
-                    <div className="w-[2.75rem] h-[2.75rem] rounded-[1.25rem] bg-slate-800 border border-white/10 flex items-center justify-center hover:border-brand transition-all cursor-pointer">
+                    <div className="w-[2.75rem] h-[2.75rem] rounded-[1.25rem] bg-slate-800 border border-white/10 flex items-center justify-center hover:border-brand transition-all cursor-pointer shadow-lg">
                       <User className="w-5 h-5 text-slate-400" />
                     </div>
                   )}
@@ -109,18 +111,18 @@ const Navbar = () => {
                 <Button 
                   variant="ghost" 
                   onClick={logout}
-                  className="rounded-[1.25rem] h-[2.75rem] px-[1.25rem] text-gray-600 hover:text-red-600 hover:bg-red-50 transition-colors"
+                  className="rounded-[1.25rem] h-[2.75rem] px-[1.25rem] text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors font-bold"
                 >
                   Sign Out
                 </Button>
               </div>
             ) : (
               <div className="flex items-center gap-[1rem]">
-                <Link to="/login" className={`text-[0.875rem] font-medium hover:text-brand transition-colors ${scrolled ? 'text-gray-500' : 'text-slate-300'}`}>
+                <Link to="/login" className="text-[0.875rem] font-bold hover:text-brand transition-colors text-slate-300">
                   Sign In
                 </Link>
                 <Link to="/register">
-                  <Button className="group relative overflow-hidden rounded-[1.25rem] bg-gray-900 hover:bg-gray-800 px-[1.75rem] h-[2.75rem] text-white shadow-[0_4px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(246,86,0,0.25)] hover:border-brand/30 hover:-translate-y-[2px] transition-all duration-300 border border-transparent">
+                  <Button className="group relative overflow-hidden rounded-[1.25rem] bg-white hover:bg-gray-100 px-[1.75rem] h-[2.75rem] text-black shadow-[0_4px_15px_rgba(255,255,255,0.15)] hover:scale-105 transition-all duration-300 border border-transparent">
                     <span className="relative z-10 font-bold tracking-wide">Get Started</span>
                     <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-150%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(150%)]">
                       <div className="relative h-full w-[1.5rem] bg-white/20 blur-[2px]" />
@@ -134,7 +136,7 @@ const Navbar = () => {
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className={`md:hidden p-[0.5rem] rounded-[1rem] transition-colors ${scrolled ? 'hover:bg-gray-100 text-gray-900' : 'hover:bg-white/10 text-white'}`}
+            className="md:hidden p-[0.5rem] rounded-[1rem] transition-colors hover:bg-white/10 text-white"
           >
             {isOpen ? <X className="w-[1.5rem] h-[1.5rem]" /> : <Menu className="w-[1.5rem] h-[1.5rem]" />}
           </button>
@@ -146,7 +148,7 @@ const Navbar = () => {
             isOpen ? 'max-h-[25rem] opacity-100 mt-[1rem]' : 'max-h-0 opacity-0'
           }`}
         >
-          <div className="absolute top-[4.5rem] left-0 w-full bg-white/95 backdrop-blur-2xl border border-gray-200/50 rounded-[1.5rem] mt-[0.5rem] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.08)]">
+          <div className="absolute top-[4.5rem] left-0 w-full bg-[#121217]/95 backdrop-blur-2xl border border-white/10 rounded-[1.5rem] mt-[0.5rem] overflow-hidden shadow-2xl">
             {routes.map((route) => (
                <Link
                key={route.path}
@@ -154,15 +156,15 @@ const Navbar = () => {
                onClick={() => setIsOpen(false)}
                className={`block px-[1.25rem] py-[0.75rem] text-[0.875rem] font-medium transition-all ${
                  isActive(route.path)
-                   ? 'bg-brand/5 text-brand border-l-2 border-brand'
-                   : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                   ? 'bg-brand/10 text-brand border-l-2 border-brand font-bold'
+                   : 'text-slate-300 hover:bg-white/5 hover:text-white'
                }`}
              >
                {route.name}
              </Link>
             ))}
             
-            <div className="p-[1rem] border-t border-gray-100">
+            <div className="p-[1rem] border-t border-white/5">
               {isAuthenticated ? (
                 <div className="flex flex-col gap-[0.75rem]">
                   <Link to="/dashboard" className="w-full">
@@ -180,7 +182,7 @@ const Navbar = () => {
                   <Button 
                     variant="ghost" 
                     onClick={logout}
-                    className="w-full justify-center rounded-[1rem] text-red-600 hover:bg-red-50 h-[3rem]"
+                    className="w-full justify-center rounded-[1rem] text-red-400 hover:bg-red-500/10 h-[3rem]"
                   >
                     Sign Out
                   </Button>
@@ -188,12 +190,12 @@ const Navbar = () => {
               ) : (
                 <div className="flex flex-col gap-[0.75rem]">
                   <Link to="/login" className="w-full">
-                    <Button variant="outline" className="w-full rounded-[1rem] h-[3rem] border-gray-200 hover:bg-gray-50">
+                    <Button variant="outline" className="w-full rounded-[1rem] h-[3rem] border-white/10 text-white hover:bg-white/5">
                       Sign In
                     </Button>
                   </Link>
                   <Link to="/register" className="w-full">
-                    <Button className="w-full rounded-[1rem] bg-gray-900 hover:bg-gray-800 h-[3rem]">
+                    <Button className="w-full rounded-[1rem] bg-brand hover:bg-brand/90 text-white h-[3rem]">
                       Get Started
                     </Button>
                   </Link>
