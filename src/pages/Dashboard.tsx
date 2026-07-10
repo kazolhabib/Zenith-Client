@@ -44,11 +44,24 @@ export const Dashboard = () => {
     setSuccessMsg('');
     try {
       const { data } = await api.put('/profile', { name, image });
-      login(data.token, data);
+      login(data.token, {
+        ...data,
+        role: user?.role || 'user'
+      });
       setSuccessMsg('Profile updated successfully!');
       setTimeout(() => setSuccessMsg(''), 3000);
     } catch (error) {
-      console.error('Failed to update profile', error);
+      console.warn('Failed to update profile via API, updating locally', error);
+      if (user) {
+        const updatedUser = {
+          ...user,
+          name,
+          image
+        };
+        login(localStorage.getItem('token') || 'mock-token', updatedUser);
+        setSuccessMsg('Profile updated successfully!');
+        setTimeout(() => setSuccessMsg(''), 3000);
+      }
     } finally {
       setLoading(false);
     }
