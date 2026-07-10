@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, Trash2, MapPin, Users, CheckCircle, XCircle, AlertTriangle, FileText } from 'lucide-react';
+import { Calendar, MapPin, Users, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export const AllReservations = ({ isEmbedded = false }: { isEmbedded?: boolean }) => {
