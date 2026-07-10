@@ -94,13 +94,13 @@ const Navbar = () => {
                   Dashboard
                 </Link>
                 <Link to="/items/add">
-                  <Button className={`rounded-xl h-[2.75rem] px-[1.25rem] flex items-center gap-2 transition-all font-bold ${
+                  <Button className={`rounded-xl h-[2.75rem] px-[1rem] lg:px-[1.25rem] flex items-center gap-2 transition-all font-bold ${
                     scrolled 
                       ? 'bg-brand/20 hover:bg-brand/30 text-brand border border-brand/30 shadow-[0_4px_15px_rgba(246,86,0,0.15)]'
                       : 'bg-brand/5 hover:bg-brand/15 text-brand/75 hover:text-brand border border-brand/20'
                   }`}>
                     <Plus className="w-4 h-4" />
-                    <span>Add Listing</span>
+                    <span className="hidden lg:inline">Add Listing</span>
                   </Button>
                 </Link>
                 <Link to="/dashboard">
@@ -115,7 +115,7 @@ const Navbar = () => {
                 <Button 
                   variant="ghost" 
                   onClick={logout}
-                  className="rounded-[1.25rem] h-[2.75rem] px-[1.25rem] text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors font-bold"
+                  className="hidden lg:flex rounded-[1.25rem] h-[2.75rem] px-[1.25rem] text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-colors font-bold"
                 >
                   Sign Out
                 </Button>
@@ -171,13 +171,13 @@ const Navbar = () => {
             <div className="p-[1rem] border-t border-white/5">
               {isAuthenticated ? (
                 <div className="flex flex-col gap-[0.75rem]">
-                  <Link to="/dashboard" className="w-full">
-                    <Button variant="outline" className="w-full justify-center rounded-[1rem] h-[3rem] flex items-center gap-2 border-white/10 text-white hover:bg-white/5">
+                  <Link to="/dashboard" className="w-full" onClick={() => setIsOpen(false)}>
+                    <button className="w-full justify-center rounded-[1rem] h-[3rem] flex items-center justify-center gap-2 border border-white/10 bg-transparent text-white hover:bg-white/5 font-bold transition-all">
                       <LayoutDashboard className="w-4 h-4" />
                       Dashboard
-                    </Button>
+                    </button>
                   </Link>
-                  <Link to="/items/add" className="w-full">
+                  <Link to="/items/add" className="w-full" onClick={() => setIsOpen(false)}>
                     <Button className="w-full justify-center rounded-[1rem] bg-brand hover:bg-brand/90 text-white h-[3rem] flex items-center gap-2">
                       <Plus className="w-4 h-4" />
                       Add Listing
@@ -185,20 +185,23 @@ const Navbar = () => {
                   </Link>
                   <Button 
                     variant="ghost" 
-                    onClick={logout}
-                    className="w-full justify-center rounded-[1rem] text-red-400 hover:bg-red-500/10 h-[3rem]"
+                    onClick={() => {
+                      logout();
+                      setIsOpen(false);
+                    }}
+                    className="w-full justify-center rounded-[1rem] text-red-400 hover:bg-red-500/10 h-[3rem] font-bold"
                   >
                     Sign Out
                   </Button>
                 </div>
               ) : (
                 <div className="flex flex-col gap-[0.75rem]">
-                  <Link to="/login" className="w-full">
-                    <Button variant="outline" className="w-full rounded-[1rem] h-[3rem] border-white/10 text-white hover:bg-white/5">
+                  <Link to="/login" className="w-full" onClick={() => setIsOpen(false)}>
+                    <button className="w-full justify-center rounded-[1rem] h-[3rem] flex items-center justify-center border border-white/10 bg-transparent text-white hover:bg-white/5 font-bold transition-all">
                       Sign In
-                    </Button>
+                    </button>
                   </Link>
-                  <Link to="/register" className="w-full">
+                  <Link to="/register" className="w-full" onClick={() => setIsOpen(false)}>
                     <Button className="w-full rounded-[1rem] bg-brand hover:bg-brand/90 text-white h-[3rem]">
                       Get Started
                     </Button>
