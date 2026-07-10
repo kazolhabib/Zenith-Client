@@ -38,12 +38,6 @@ export const MyReservations = ({ isEmbedded = false }: { isEmbedded?: boolean })
 
   const content = (
     <>
-      {isEmbedded && (
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-white">My Reservations</h2>
-        </div>
-      )}
-
       {/* Table / Grid */}
       <div className="bg-[#121217]/80 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
         <div className="overflow-x-auto">

@@ -404,7 +404,7 @@ const ListingDetails = () => {
               </p>
               <div className="w-full flex flex-col gap-3">
                 <Button 
-                  onClick={() => navigate('/dashboard')}
+                  onClick={() => navigate('/dashboard', { state: { activeTab: 'reservations' } })}
                   className="w-full bg-brand hover:bg-orange-600 text-white h-12 rounded-xl font-bold shadow-[0_0_20px_rgba(246,86,0,0.3)] transition-all"
                 >
                   Go to Dashboard

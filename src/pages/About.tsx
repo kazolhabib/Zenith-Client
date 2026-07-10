@@ -4,7 +4,7 @@ import { Building2, Users, Globe2, ShieldCheck, Star, HeadphonesIcon, Sparkles }
 
 export const About = () => {
   return (
-    <div className="min-h-screen bg-[#09090b] text-slate-200 selection:bg-brand/30 pt-32 md:pt-40 pb-20 overflow-hidden">
+    <div className="min-h-screen bg-[#09090b] text-slate-200 selection:bg-brand/30 pt-40 md:pt-48 pb-20 overflow-hidden">
       {/* Background Decor */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[50%] rounded-full bg-brand/5 blur-[120px]" />

@@ -70,17 +70,16 @@ export const Listings = () => {
           </motion.p>
         </div>
 
-        {/* 4 Cards Per Row Grid */}
-        {/* lg:grid-cols-4 for desktop 4-per-row, auto-rows-fr for same height */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-fr">
+        {/* 3 Cards Per Row Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
           {loading ? (
-            // Show 4 Skeletons
-            Array.from({ length: 4 }).map((_, index) => (
+            // Show 6 Skeletons
+            Array.from({ length: 6 }).map((_, index) => (
               <SkeletonCard key={index} />
             ))
           ) : (
             // Show Actual Data
-            data.slice(0, 4).map((item, index) => (
+            data.slice(0, 6).map((item, index) => (
               <ListingCard key={item.id} item={item} index={index} />
             ))
           )}

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { MapPin, Phone, Mail, Send, MessageSquare } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Send, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 export const Contact = () => {
   const [formData, setFormData] = useState({
@@ -30,172 +29,190 @@ export const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-slate-200 selection:bg-brand/30 pt-32 md:pt-40 pb-20 relative overflow-hidden">
-      {/* Background Decor */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-[20%] left-[-10%] w-[40%] h-[50%] rounded-full bg-brand/5 blur-[120px]" />
-      </div>
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[101.25rem] relative z-10">
+    <div className="min-h-screen bg-[#050505] text-slate-200 selection:bg-brand/30 flex flex-col lg:flex-row pt-20 lg:pt-0">
+      
+      {/* Left Side - Visual / Hero Area */}
+      <div className="lg:w-1/2 relative min-h-[40vh] lg:min-h-screen flex items-center justify-center p-8 lg:p-16 xl:p-24 overflow-hidden border-b lg:border-b-0 lg:border-r border-white/10">
         
-        {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2075&q=80" 
+            alt="Luxury Architecture" 
+            className="w-full h-full object-cover opacity-40 scale-105"
+          />
+          {/* Gradient Overlays for blending */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/80 to-transparent lg:bg-gradient-to-r lg:from-[#050505]/40 lg:to-[#050505] mix-blend-multiply" />
+          <div className="absolute inset-0 bg-brand/10 mix-blend-overlay" />
+        </div>
+
+        <div className="relative z-10 w-full max-w-lg mt-12 lg:mt-0">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6">
-              Get in <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400">Touch</span>
+            <div className="w-16 h-1 bg-brand mb-8 rounded-full" />
+            <h1 className="text-5xl lg:text-7xl font-black text-white mb-6 leading-[1.1] tracking-tight">
+              Start a <br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400">Conversation</span>
             </h1>
-            <p className="text-lg text-slate-400">
-              Have a question about our properties or need help with a booking? 
-              Our support team is here to assist you 24/7.
+            <p className="text-lg lg:text-xl text-slate-300 leading-relaxed max-w-md font-light">
+              Whether you're looking to book a luxury escape or have questions about our exclusive properties, our team is ready to assist you in crafting the perfect experience.
             </p>
           </motion.div>
         </div>
+      </div>
 
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 max-w-6xl mx-auto">
-          
-          {/* Contact Info */}
-          <motion.div 
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="w-full lg:w-1/3 space-y-8"
-          >
-            <div className="bg-[#121217]/80 backdrop-blur-xl border border-white/5 rounded-3xl p-8 hover:border-brand/30 transition-colors group">
-              <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-6 group-hover:bg-brand/20 transition-colors">
-                <MapPin className="w-6 h-6 text-brand" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Our Office</h3>
-              <p className="text-slate-400">123 Zenith Boulevard<br />Tech District, CA 94103<br />United States</p>
-            </div>
+      {/* Right Side - Form Area */}
+      <div className="lg:w-1/2 relative flex items-center justify-center p-8 lg:p-16 xl:p-24 bg-[#050505]">
+        
+        {/* Subtle background glow */}
+        <div className="absolute top-0 right-0 w-full h-full overflow-hidden pointer-events-none z-0">
+          <div className="absolute top-[-20%] right-[-10%] w-[60%] h-[60%] rounded-full bg-brand/5 blur-[150px]" />
+        </div>
 
-            <div className="bg-[#121217]/80 backdrop-blur-xl border border-white/5 rounded-3xl p-8 hover:border-brand/30 transition-colors group">
-              <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-6 group-hover:bg-brand/20 transition-colors">
-                <Phone className="w-6 h-6 text-brand" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Phone</h3>
-              <p className="text-slate-400">+1 (555) 123-4567<br />Mon-Fri, 9am to 6pm EST</p>
-            </div>
-
-            <div className="bg-[#121217]/80 backdrop-blur-xl border border-white/5 rounded-3xl p-8 hover:border-brand/30 transition-colors group">
-              <div className="w-12 h-12 bg-white/5 rounded-full flex items-center justify-center mb-6 group-hover:bg-brand/20 transition-colors">
-                <Mail className="w-6 h-6 text-brand" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Email</h3>
-              <p className="text-slate-400">support@zenith.com<br />press@zenith.com</p>
-            </div>
-          </motion.div>
-
-          {/* Contact Form */}
-          <motion.div 
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="w-full lg:w-2/3"
-          >
-            <div className="bg-[#121217]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-10 shadow-2xl">
-              <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                <MessageSquare className="w-6 h-6 text-brand" />
-                Send us a Message
-              </h2>
-
-              {submitted ? (
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="bg-brand/10 border border-brand/20 text-brand rounded-2xl p-8 text-center"
+        <div className="w-full max-w-lg relative z-10">
+          <AnimatePresence mode="wait">
+            {submitted ? (
+              <motion.div 
+                key="success"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.5 }}
+                className="flex flex-col items-start"
+              >
+                <div className="w-20 h-20 bg-brand/10 border border-brand/20 rounded-full flex items-center justify-center mb-8 relative">
+                  <div className="absolute inset-0 bg-brand/20 rounded-full blur-xl animate-pulse" />
+                  <CheckCircle2 className="w-10 h-10 text-brand relative z-10" />
+                </div>
+                <h3 className="text-4xl font-black text-white mb-4 tracking-tight">We've got it.</h3>
+                <p className="text-slate-400 text-lg mb-10 leading-relaxed font-light">
+                  Thank you for reaching out. One of our dedicated concierge members will review your message and reply to the email provided shortly.
+                </p>
+                <button 
+                  onClick={() => setSubmitted(false)}
+                  className="flex items-center gap-3 text-brand hover:text-orange-400 font-bold group transition-colors"
                 >
-                  <div className="w-16 h-16 bg-brand/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Send className="w-8 h-8 text-brand" />
-                  </div>
-                  <h3 className="text-xl font-bold text-white mb-2">Message Sent Successfully!</h3>
-                  <p className="text-brand/80">Thank you for reaching out. Our team will get back to you within 24 hours.</p>
-                  <Button 
-                    onClick={() => setSubmitted(false)}
-                    variant="outline"
-                    className="mt-6 bg-transparent border-brand/20 hover:bg-brand/10 text-white"
-                  >
-                    Send Another Message
-                  </Button>
-                </motion.div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Your Name</label>
-                      <input 
-                        type="text" 
-                        name="name"
-                        required
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="John Doe"
-                        className="w-full bg-black/40 border border-white/10 rounded-xl py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/50 transition-all"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-300 mb-2">Email Address</label>
-                      <input 
-                        type="email" 
-                        name="email"
-                        required
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="john@example.com"
-                        className="w-full bg-black/40 border border-white/10 rounded-xl py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/50 transition-all"
-                      />
-                    </div>
+                  Send another message
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                </button>
+              </motion.div>
+            ) : (
+              <motion.form 
+                key="form"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.5 }}
+                onSubmit={handleSubmit} 
+                className="space-y-8"
+              >
+                <div>
+                  <h2 className="text-3xl font-bold text-white mb-2">Send an Inquiry</h2>
+                  <p className="text-slate-400 text-sm">Fill out the form below and we'll be in touch.</p>
+                </div>
+
+                <div className="space-y-6">
+                  {/* Floating Label Inputs for a cleaner, more modern look */}
+                  <div className="relative">
+                    <input 
+                      type="text" 
+                      name="name"
+                      id="name"
+                      required
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="block w-full px-0 py-4 text-white bg-transparent border-0 border-b-2 border-white/10 appearance-none focus:outline-none focus:ring-0 focus:border-brand peer text-lg font-medium transition-colors"
+                      placeholder=" "
+                    />
+                    <label 
+                      htmlFor="name" 
+                      className="absolute text-sm text-slate-500 duration-300 transform -translate-y-6 scale-75 top-4 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold uppercase tracking-widest"
+                    >
+                      Your Name
+                    </label>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Subject</label>
+                  <div className="relative">
+                    <input 
+                      type="email" 
+                      name="email"
+                      id="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="block w-full px-0 py-4 text-white bg-transparent border-0 border-b-2 border-white/10 appearance-none focus:outline-none focus:ring-0 focus:border-brand peer text-lg font-medium transition-colors"
+                      placeholder=" "
+                    />
+                    <label 
+                      htmlFor="email" 
+                      className="absolute text-sm text-slate-500 duration-300 transform -translate-y-6 scale-75 top-4 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold uppercase tracking-widest"
+                    >
+                      Email Address
+                    </label>
+                  </div>
+
+                  <div className="relative">
                     <input 
                       type="text" 
                       name="subject"
+                      id="subject"
                       required
                       value={formData.subject}
                       onChange={handleChange}
-                      placeholder="How can we help?"
-                      className="w-full bg-black/40 border border-white/10 rounded-xl py-3 px-4 text-white placeholder-slate-600 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/50 transition-all"
+                      className="block w-full px-0 py-4 text-white bg-transparent border-0 border-b-2 border-white/10 appearance-none focus:outline-none focus:ring-0 focus:border-brand peer text-lg font-medium transition-colors"
+                      placeholder=" "
                     />
+                    <label 
+                      htmlFor="subject" 
+                      className="absolute text-sm text-slate-500 duration-300 transform -translate-y-6 scale-75 top-4 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold uppercase tracking-widest"
+                    >
+                      Subject
+                    </label>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-slate-300 mb-2">Message</label>
+                  <div className="relative pt-2">
                     <textarea 
                       name="message"
+                      id="message"
                       required
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="Tell us more about your inquiry..."
-                      rows={6}
-                      className="w-full bg-black/40 border border-white/10 rounded-xl py-4 px-4 text-white placeholder-slate-600 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/50 transition-all resize-none"
+                      rows={4}
+                      className="block w-full px-0 py-4 text-white bg-transparent border-0 border-b-2 border-white/10 appearance-none focus:outline-none focus:ring-0 focus:border-brand peer text-lg font-medium transition-colors resize-none"
+                      placeholder=" "
                     />
+                    <label 
+                      htmlFor="message" 
+                      className="absolute text-sm text-slate-500 duration-300 transform -translate-y-6 scale-75 top-6 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-brand peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 font-bold uppercase tracking-widest"
+                    >
+                      Your Message
+                    </label>
                   </div>
+                </div>
 
-                  <Button 
+                <div className="pt-6">
+                  <button 
                     type="submit" 
                     disabled={isSubmitting}
-                    className="w-full md:w-auto bg-brand hover:bg-orange-600 text-white border-0 rounded-xl h-12 px-8 flex items-center justify-center gap-2 font-bold shadow-[0_0_20px_rgba(246,86,0,0.3)] hover:shadow-[0_0_30px_rgba(246,86,0,0.5)] transition-all"
+                    className="w-full group relative overflow-hidden bg-white text-black font-bold h-16 rounded-none flex items-center justify-between px-8 transition-all hover:bg-brand hover:text-white"
                   >
+                    <span className="text-lg uppercase tracking-wider relative z-10">
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
+                    </span>
                     {isSubmitting ? (
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <div className="w-5 h-5 border-2 border-black/30 border-t-black group-hover:border-white/30 group-hover:border-t-white rounded-full animate-spin relative z-10" />
                     ) : (
-                      <>
-                        Send Message
-                        <Send className="w-4 h-4" />
-                      </>
+                      <ArrowRight className="w-6 h-6 relative z-10 group-hover:translate-x-2 transition-transform" />
                     )}
-                  </Button>
-                </form>
-              )}
-            </div>
-          </motion.div>
+                  </button>
+                </div>
+              </motion.form>
+            )}
+          </AnimatePresence>
         </div>
-
       </div>
     </div>
   );

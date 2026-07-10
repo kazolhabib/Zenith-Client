@@ -1,10 +1,10 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, Filter, Sliders, ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { Search, Filter, Sliders, ChevronLeft, ChevronRight, Star, Mail, Sparkles } from 'lucide-react';
 import { LISTINGS_DATA } from '@/data/listings';
 import { ListingCard } from '@/components/listings/ListingCard';
 import api from '@/config/api';
 
-const ITEMS_PER_PAGE = 8;
+const ITEMS_PER_PAGE = 12;
 
 export const Explore = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -86,7 +86,7 @@ export const Explore = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-slate-200 selection:bg-brand/30 pt-32 md:pt-40 pb-20">
+    <div className="min-h-screen bg-[#09090b] text-slate-200 selection:bg-brand/30 pt-40 md:pt-48 pb-20">
       {/* Background Decor */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-[10%] right-[-10%] w-[30%] h-[40%] rounded-full bg-brand/5 blur-[120px]" />
@@ -230,6 +230,67 @@ export const Explore = () => {
             </button>
           </div>
         )}
+
+        {/* Newsletter / CTA Section */}
+        <div className="mt-24 md:mt-32 relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-brand/20 to-orange-500/20 rounded-[3rem] blur-2xl opacity-50" />
+          <div className="relative bg-[#121217]/80 backdrop-blur-3xl border border-white/10 rounded-[3rem] p-10 md:p-16 lg:p-20 overflow-hidden flex flex-col md:flex-row items-center justify-between gap-12">
+            
+            <div className="absolute top-0 right-0 w-64 h-64 bg-brand/10 rounded-full blur-[80px]" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-orange-500/10 rounded-full blur-[80px]" />
+            
+            <div className="flex-1 max-w-2xl relative z-10 text-center md:text-left">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-brand text-sm font-bold tracking-wide uppercase mb-6">
+                <Sparkles className="w-4 h-4" />
+                Unlock Secret Deals
+              </div>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-6 leading-tight">
+                Get up to <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400">50% off</span> your next adventure
+              </h2>
+              <p className="text-slate-400 text-lg mb-8 leading-relaxed">
+                Subscribe to our newsletter and be the first to know about exclusive member-only discounts, new luxury properties, and travel inspiration.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto md:mx-0">
+                <div className="relative flex-1">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500">
+                    <Mail className="h-5 w-5" />
+                  </div>
+                  <input 
+                    type="email" 
+                    placeholder="Enter your email address" 
+                    className="w-full bg-black/40 border border-white/10 rounded-2xl pl-12 pr-4 py-4 text-white placeholder-slate-500 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/50 transition-all font-medium"
+                  />
+                </div>
+                <button className="bg-gradient-to-r from-brand to-orange-500 text-white font-bold px-8 py-4 rounded-2xl hover:scale-105 transition-transform shadow-[0_10px_30px_rgba(246,86,0,0.3)] shrink-0">
+                  Subscribe Now
+                </button>
+              </div>
+              <p className="text-xs text-slate-500 mt-4 font-medium">We care about your data. Read our Privacy Policy.</p>
+            </div>
+            
+            <div className="flex-1 hidden lg:flex justify-end relative z-10">
+              <div className="relative w-80 h-80">
+                <div className="absolute inset-0 bg-gradient-to-tr from-brand to-orange-400 rounded-full blur-3xl opacity-20 animate-pulse" />
+                <img 
+                  src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=800&q=80" 
+                  alt="Travel Inspiration" 
+                  className="w-full h-full object-cover rounded-[2.5rem] border-4 border-[#121217] shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500"
+                />
+                <div className="absolute -bottom-6 -left-6 bg-[#121217] border border-white/10 p-4 rounded-2xl shadow-xl flex items-center gap-3 animate-bounce" style={{ animationDuration: '3s' }}>
+                  <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400">
+                    <Star className="w-5 h-5 fill-emerald-400" />
+                  </div>
+                  <div>
+                    <div className="text-white font-bold text-sm">4.9/5 Rating</div>
+                    <div className="text-slate-400 text-xs">Based on 10k+ reviews</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
 
       </div>
     </div>
