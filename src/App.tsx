@@ -14,6 +14,7 @@ import ManageListings from './pages/ManageListings';
 import Dashboard from './pages/Dashboard';
 import About from './pages/About';
 import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
 
 // Placeholder Pages
 const Products = () => <div className="pt-20 p-8 text-white"><h1 className="text-3xl font-bold">Products</h1></div>;
@@ -62,6 +63,7 @@ function App() {
               />
               <Route path="/products" element={<Products />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </main>
           <Footer />
