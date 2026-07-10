@@ -126,6 +126,12 @@ const ListingDetails = () => {
   };
 
   const handleAddReview = () => {
+    const hasConfirmedBooking = userReservations.some(r => r.status === 'Confirmed');
+    if (!hasConfirmedBooking) {
+      setToastMessage("You can only review listings where you have a confirmed booking.");
+      return;
+    }
+
     if (!newReviewText.trim()) {
       setToastMessage("Please enter some feedback text.");
       return;
