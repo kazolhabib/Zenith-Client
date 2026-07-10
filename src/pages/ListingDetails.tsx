@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { LISTINGS_DATA } from '@/data/listings';
 import api from '@/config/api';
 import { useAuth } from '@/context/AuthContext';
+import CallToAction from '@/components/home/CallToAction';
 
 // Helper to get the correct icon component based on string
 const getIcon = (iconName: string) => {
@@ -681,6 +682,8 @@ const ListingDetails = () => {
         </section>
 
       </div>
+
+      <CallToAction />
 
       {/* Booking Confirmation Modal */}
       <AnimatePresence>
