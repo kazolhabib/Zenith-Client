@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Building2, Users, Globe2, ShieldCheck, Star, HeadphonesIcon, Sparkles } from 'lucide-react';
 

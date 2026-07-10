@@ -1,6 +1,5 @@
-import React from 'react';
 import { motion } from 'framer-motion';
-import { Shield, Sparkles, Compass, MapPin, ArrowRight, Star, Heart, Coffee } from 'lucide-react';
+import { Shield, Sparkles, Compass, MapPin, ArrowRight, Star, Coffee } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
