@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Sparkles, Menu, X } from 'lucide-react';
+import { Sparkles, Menu, X, Plus, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/context/AuthContext';
 
 const routes = [
   { name: 'Explore', path: '/explore' },
-  { name: 'Products', path: '/products' },
-  { name: 'Solutions', path: '/solutions' },
-  { name: 'Resources', path: '/resources' },
-  { name: 'Pricing', path: '/pricing' },
+  { name: 'About', path: '/about' },
+  { name: 'Contact', path: '/contact' },
 ];
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const isAuthenticated = false; // Placeholder
+  const { isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,23 +79,37 @@ const Navbar = () => {
           {/* Actions */}
           <div className="hidden md:flex items-center shrink-0">
             {isAuthenticated ? (
-              <Button 
-                variant="ghost" 
-                className="rounded-[1.25rem] h-[2.75rem] px-[1.25rem] text-gray-600 hover:text-red-600 hover:bg-red-50 transition-colors"
-              >
-                Sign Out
-              </Button>
+              <div className="flex items-center gap-[1rem]">
+                <Link to="/items/manage" className="text-[0.875rem] font-medium text-gray-500 hover:text-brand transition-colors mr-2">
+                  Manage Listings
+                </Link>
+                <Link to="/items/add">
+                  <Button className="bg-white/5 hover:bg-brand text-white border border-white/10 hover:border-brand rounded-xl h-[2.75rem] px-[1.25rem] shadow-lg flex items-center gap-2 transition-all group">
+                    <Plus className="w-4 h-4" />
+                    <span className="font-semibold">Add Listing</span>
+                  </Button>
+                </Link>
+                <Button 
+                  variant="ghost" 
+                  onClick={logout}
+                  className="rounded-[1.25rem] h-[2.75rem] px-[1.25rem] text-gray-600 hover:text-red-600 hover:bg-red-50 transition-colors"
+                >
+                  Sign Out
+                </Button>
+              </div>
             ) : (
               <div className="flex items-center gap-[1rem]">
                 <Link to="/login" className="text-[0.875rem] font-medium text-gray-500 hover:text-brand transition-colors">
                   Sign In
                 </Link>
-                <Button className="group relative overflow-hidden rounded-[1.25rem] bg-gray-900 hover:bg-gray-800 px-[1.75rem] h-[2.75rem] text-white shadow-[0_4px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(246,86,0,0.25)] hover:border-brand/30 hover:-translate-y-[2px] transition-all duration-300 border border-transparent">
-                  <span className="relative z-10 font-bold tracking-wide">Get Started</span>
-                  <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-150%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(150%)]">
-                    <div className="relative h-full w-[1.5rem] bg-white/20 blur-[2px]" />
-                  </div>
-                </Button>
+                <Link to="/register">
+                  <Button className="group relative overflow-hidden rounded-[1.25rem] bg-gray-900 hover:bg-gray-800 px-[1.75rem] h-[2.75rem] text-white shadow-[0_4px_15px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_25px_rgba(246,86,0,0.25)] hover:border-brand/30 hover:-translate-y-[2px] transition-all duration-300 border border-transparent">
+                    <span className="relative z-10 font-bold tracking-wide">Get Started</span>
+                    <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-150%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(150%)]">
+                      <div className="relative h-full w-[1.5rem] bg-white/20 blur-[2px]" />
+                    </div>
+                  </Button>
+                </Link>
               </div>
             )}
           </div>
@@ -134,12 +147,27 @@ const Navbar = () => {
             
             <div className="p-[1rem] border-t border-gray-100">
               {isAuthenticated ? (
-                 <Button 
-                   variant="ghost" 
-                   className="w-full justify-center rounded-[1rem] text-red-600 hover:bg-red-50 h-[3rem]"
-                 >
-                   Sign Out
-                 </Button>
+                <div className="flex flex-col gap-[0.75rem]">
+                  <Link to="/items/manage" className="w-full">
+                    <Button variant="outline" className="w-full justify-center rounded-[1rem] h-[3rem] flex items-center gap-2 border-white/10 text-white hover:bg-white/5">
+                      <LayoutDashboard className="w-4 h-4" />
+                      Manage Listings
+                    </Button>
+                  </Link>
+                  <Link to="/items/add" className="w-full">
+                    <Button className="w-full justify-center rounded-[1rem] bg-brand hover:bg-brand/90 text-white h-[3rem] flex items-center gap-2">
+                      <Plus className="w-4 h-4" />
+                      Add Listing
+                    </Button>
+                  </Link>
+                  <Button 
+                    variant="ghost" 
+                    onClick={logout}
+                    className="w-full justify-center rounded-[1rem] text-red-600 hover:bg-red-50 h-[3rem]"
+                  >
+                    Sign Out
+                  </Button>
+                </div>
               ) : (
                 <div className="flex flex-col gap-[0.75rem]">
                   <Link to="/login" className="w-full">
@@ -147,9 +175,11 @@ const Navbar = () => {
                       Sign In
                     </Button>
                   </Link>
-                  <Button className="w-full rounded-[1rem] bg-gray-900 hover:bg-gray-800 h-[3rem]">
-                    Get Started
-                  </Button>
+                  <Link to="/register" className="w-full">
+                    <Button className="w-full rounded-[1rem] bg-gray-900 hover:bg-gray-800 h-[3rem]">
+                      Get Started
+                    </Button>
+                  </Link>
                 </div>
               )}
             </div>
