@@ -285,7 +285,7 @@ export const Dashboard = () => {
                       <Button 
                         type="submit" 
                         disabled={loading}
-                        className="bg-brand/10 hover:bg-brand/20 text-brand border border-brand/20 hover:border-brand/40 rounded-2xl h-14 px-10 flex items-center justify-center gap-2 transition-all duration-300 w-full sm:w-auto font-bold"
+                        className="bg-white hover:bg-slate-100 text-[#09090b] rounded-2xl h-14 px-10 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 w-full sm:w-auto font-bold text-lg"
                       >
                         {loading ? (
                           <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
