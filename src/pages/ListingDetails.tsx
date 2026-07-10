@@ -125,6 +125,8 @@ const ListingDetails = () => {
     ]
   };
 
+  const hasBooked = isRequested || userReservations.length > 0;
+
   const handleAddReview = () => {
     const hasConfirmedBooking = userReservations.some(r => r.status === 'Confirmed');
     if (!hasConfirmedBooking) {
@@ -513,6 +515,19 @@ const ListingDetails = () => {
                 <span className="text-slate-400 mb-1">/ night</span>
               </div>
               
+              {/* Already Booked Banner */}
+              {hasBooked && (
+                <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 p-4 rounded-xl flex items-start gap-3 mb-6">
+                  <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="font-bold text-sm">Already Booked</h4>
+                    <p className="text-xs text-emerald-400/80 mt-0.5">
+                      You have already requested a booking for this property. You can view its status in your dashboard.
+                    </p>
+                  </div>
+                </div>
+              )}
+              
               <div className="border border-white/10 rounded-xl mb-6 overflow-hidden">
                 <div className="flex border-b border-white/10">
                   <div className="flex-1 p-3 border-r border-white/10 hover:bg-white/5 transition-colors relative cursor-pointer">
@@ -521,7 +536,7 @@ const ListingDetails = () => {
                       type="date" 
                       value={checkIn}
                       onChange={(e) => setCheckIn(e.target.value)}
-                      disabled={user?.role === 'admin'}
+                      disabled={user?.role === 'admin' || hasBooked}
                       className="bg-transparent text-sm font-medium outline-none text-white w-full cursor-pointer appearance-none [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
@@ -531,7 +546,7 @@ const ListingDetails = () => {
                       type="date" 
                       value={checkOut}
                       onChange={(e) => setCheckOut(e.target.value)}
-                      disabled={user?.role === 'admin'}
+                      disabled={user?.role === 'admin' || hasBooked}
                       className="bg-transparent text-sm font-medium outline-none text-white w-full cursor-pointer appearance-none [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
@@ -545,7 +560,7 @@ const ListingDetails = () => {
                     <button 
                       onClick={() => setGuests(Math.max(1, guests - 1))}
                       className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors disabled:opacity-50"
-                      disabled={guests <= 1 || user?.role === 'admin'}
+                      disabled={guests <= 1 || user?.role === 'admin' || hasBooked}
                     >
                       <Minus className="w-3 h-3" />
                     </button>
@@ -553,7 +568,7 @@ const ListingDetails = () => {
                     <button 
                       onClick={() => setGuests(guests + 1)}
                       className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors disabled:opacity-50"
-                      disabled={user?.role === 'admin'}
+                      disabled={user?.role === 'admin' || hasBooked}
                     >
                       <Plus className="w-3 h-3" />
                     </button>
@@ -608,16 +623,16 @@ const ListingDetails = () => {
                       setBookingModalOpen(true);
                       setIsRequested(true);
                     }}
-                    disabled={isRequested}
-                    className={`w-full h-14 font-bold text-lg rounded-xl shadow-[0_10px_30px_rgba(246,86,0,0.3)] transition-all ${
-                      isRequested 
-                        ? "bg-green-500/20 text-green-400 border border-green-500/50 shadow-none cursor-not-allowed hover:bg-green-500/20" 
-                        : "bg-gradient-to-r from-brand to-orange-500 hover:from-brand hover:to-orange-400 text-white"
+                    disabled={hasBooked}
+                    className={`w-full h-14 font-bold text-lg rounded-xl transition-all ${
+                      hasBooked 
+                        ? "bg-green-500/10 text-green-400 border border-green-500/20 shadow-none cursor-not-allowed hover:bg-green-500/10" 
+                        : "bg-gradient-to-r from-brand to-orange-500 hover:from-brand hover:to-orange-400 text-white shadow-[0_10px_30px_rgba(246,86,0,0.3)]"
                     }`}
                   >
-                    {isRequested ? (
-                      <span className="flex items-center gap-2">
-                        <CheckCircle2 className="w-5 h-5" /> Requested
+                    {hasBooked ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <CheckCircle2 className="w-5 h-5" /> Already Booked
                       </span>
                     ) : (
                       "Reserve"
