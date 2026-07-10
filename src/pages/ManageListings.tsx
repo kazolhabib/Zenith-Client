@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Eye, Trash2, MapPin, Star, Plus, AlertTriangle } from 'lucide-react';
@@ -10,7 +10,6 @@ import { useAuth } from '@/context/AuthContext';
 export const ManageListings = ({ isEmbedded = false }: { isEmbedded?: boolean }) => {
   const { user } = useAuth();
   const [listings, setListings] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [listingToDelete, setListingToDelete] = useState<string | number | null>(null);
 
@@ -23,8 +22,6 @@ export const ManageListings = ({ isEmbedded = false }: { isEmbedded?: boolean })
       } catch (error) {
         console.warn('API not reachable, falling back to mock data');
         setListings(user?.role === 'admin' ? LISTINGS_DATA : LISTINGS_DATA.slice(0, 3));
-      } finally {
-        setLoading(false);
       }
     };
     if (user) {
