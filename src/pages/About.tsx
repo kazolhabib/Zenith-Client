@@ -239,7 +239,7 @@ export const About = () => {
               Don't just take our word for it. Read the experiences of travelers who have chosen Zenith.
             </p>
           </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
             {[
               { quote: "An absolutely flawless experience from start to finish. The property exceeded all expectations.", author: "Michael T.", location: "Stayed in Paris" },
               { quote: "Zenith has ruined other booking platforms for me. The level of luxury and attention to detail is unmatched.", author: "Jessica W.", location: "Stayed in Tokyo" },
@@ -251,7 +251,9 @@ export const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.2 }}
-                className="bg-[#121217]/80 backdrop-blur-xl border border-white/5 rounded-3xl p-8 relative hover:border-brand/30 transition-colors"
+                className={`bg-[#121217]/80 backdrop-blur-xl border border-white/5 rounded-3xl p-8 relative hover:border-brand/30 transition-colors ${
+                  i === 2 ? 'md:col-span-2 xl:col-span-1' : ''
+                }`}
               >
                 <div className="absolute -top-4 -left-2 text-6xl text-brand/20 font-serif font-bold">"</div>
                 <p className="text-slate-300 text-lg italic mb-6 relative z-10 leading-relaxed">
