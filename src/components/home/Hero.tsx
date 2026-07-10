@@ -66,6 +66,27 @@ const Hero = () => {
           </span>
         </motion.div>
 
+        {/* Badges Row */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.05 }}
+          className="flex flex-wrap items-center justify-center gap-3 md:gap-4 mt-6 mb-2"
+        >
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 shadow-lg text-[10px] md:text-xs uppercase tracking-wider font-semibold text-slate-300">
+            <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_#22c55e]" />
+            Verified Properties
+          </div>
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 shadow-lg text-[10px] md:text-xs uppercase tracking-wider font-semibold text-slate-300">
+            <Shield className="w-3.5 h-3.5 text-brand" />
+            Protected Payments
+          </div>
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 shadow-lg text-[10px] md:text-xs uppercase tracking-wider font-semibold text-slate-300">
+            <Globe className="w-3.5 h-3.5 text-blue-400" />
+            24/7 Support
+          </div>
+        </motion.div>
+
         {/* Headline */}
         <motion.h1 
           initial={{ opacity: 0, y: 20 }}
@@ -123,34 +144,7 @@ const Hero = () => {
           </Link>
         </motion.div>
         
-        {/* Floating Feature Pills */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.8 }}
-          className="hidden md:flex absolute top-1/4 left-10 flex-col gap-4 pointer-events-none"
-        >
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#121217]/80 backdrop-blur-md border border-white/10 shadow-xl">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-sm font-medium text-slate-300">Verified Properties Only</span>
-          </div>
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#121217]/80 backdrop-blur-md border border-white/10 shadow-xl ml-8">
-            <Shield className="w-4 h-4 text-brand" />
-            <span className="text-sm font-medium text-slate-300">Protected Payments</span>
-          </div>
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.9 }}
-          className="hidden md:flex absolute top-1/3 right-10 flex-col gap-4 pointer-events-none"
-        >
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#121217]/80 backdrop-blur-md border border-white/10 shadow-xl">
-            <Globe className="w-4 h-4 text-blue-400" />
-            <span className="text-sm font-medium text-slate-300">24/7 Premium Guest Support</span>
-          </div>
-        </motion.div>
+        {/* Floating Feature Pills Removed */}
 
         {/* 3D Dashboard Mockup */}
         <motion.div 
