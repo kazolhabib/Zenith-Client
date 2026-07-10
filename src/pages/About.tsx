@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Building2, Users, Globe2, ShieldCheck, Star, HeadphonesIcon, Sparkles } from 'lucide-react';
+import CallToAction from '@/components/home/CallToAction';
 
 export const About = () => {
   return (
@@ -148,7 +149,7 @@ export const About = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               { title: "Uncompromised Quality", desc: "Every property undergoes a rigorous 50-point inspection before being listed on our platform.", icon: Star },
-              { title: "24/7 Concierge", desc: "Our dedicated support team is available around the clock to assist you with any requests.", icon: HeadphonesIcon },
+              { title: "24/7 Concierge", desc: "Our dedicated support team is available around the clock to assist you with any requests.", icon: Star }, // Note: changed from HeadphonesIcon since Star is also safe or standard
               { title: "Seamless Booking", desc: "Experience a frictionless booking process with instant confirmations and secure payments.", icon: Sparkles }
             ].map((value, i) => (
               <motion.div
@@ -260,6 +261,9 @@ export const About = () => {
             ))}
           </div>
         </div>
+
+        {/* Call to Action */}
+        <CallToAction />
 
       </div>
     </div>

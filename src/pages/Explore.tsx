@@ -3,6 +3,7 @@ import { Search, Filter, Sliders, ChevronLeft, ChevronRight, Star, Mail, Sparkle
 import { LISTINGS_DATA } from '@/data/listings';
 import { ListingCard } from '@/components/listings/ListingCard';
 import api from '@/config/api';
+import CallToAction from '@/components/home/CallToAction';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -291,6 +292,9 @@ export const Explore = () => {
 
           </div>
         </div>
+
+        {/* Call to Action */}
+        <CallToAction />
 
       </div>
     </div>
