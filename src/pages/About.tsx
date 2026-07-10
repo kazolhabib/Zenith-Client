@@ -185,31 +185,38 @@ export const About = () => {
           </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { name: "Alex Morrison", role: "Founder & CEO", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { name: "Sarah Jenkins", role: "Head of Curation", image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { name: "David Chen", role: "Chief Technology Officer", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { name: "Elena Rodriguez", role: "VP of Guest Experience", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" }
+              { name: "Alex Morrison", role: "Founder & CEO", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=800&q=80" },
+              { name: "Sarah Jenkins", role: "Head of Curation", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80" },
+              { name: "David Chen", role: "Chief Technology Officer", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80" },
+              { name: "Elena Rodriguez", role: "VP of Guest Experience", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80" }
             ].map((member, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                className="group relative rounded-3xl overflow-hidden border border-white/10"
+                transition={{ duration: 0.7, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                className="group relative rounded-[2.5rem] overflow-hidden border border-white/5 bg-[#121217]/40 p-4 transition-all duration-500 hover:border-brand/40 hover:bg-[#121217]/65 shadow-xl flex flex-col justify-between"
               >
-                <div className="aspect-[3/4] overflow-hidden">
-                  <img src={member.image} alt={member.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                {/* Photo frame */}
+                <div className="aspect-[3/4] rounded-[2rem] overflow-hidden relative">
+                  <img src={member.image} alt={member.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#09090b] via-[#09090b]/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
                 
-                <div className="absolute bottom-0 left-0 w-full p-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                  <h3 className="text-xl font-bold text-white mb-1">{member.name}</h3>
-                  <div className="flex items-center justify-between">
-                    <p className="text-brand font-medium">{member.role}</p>
-                    <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
-                      <Sparkles className="w-3 h-3 text-white" />
-                    </div>
+                {/* User Details */}
+                <div className="mt-6 text-left px-2 flex justify-between items-center">
+                  <div>
+                    <h3 className="text-lg md:text-xl font-bold text-white mb-1 group-hover:text-brand transition-colors duration-300">
+                      {member.name}
+                    </h3>
+                    <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">
+                      {member.role}
+                    </p>
+                  </div>
+                  
+                  <div className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 group-hover:bg-brand/10 group-hover:border-brand/35 transition-all duration-300 scale-90 group-hover:scale-100">
+                    <Sparkles className="w-3.5 h-3.5 text-slate-400 group-hover:text-brand transition-colors" />
                   </div>
                 </div>
               </motion.div>
