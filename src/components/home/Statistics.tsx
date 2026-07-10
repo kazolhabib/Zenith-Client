@@ -44,11 +44,10 @@ const Counter = ({ to, suffix, decimals = 0 }: { to: number, suffix: string, dec
 
 const Statistics = () => {
   return (
-    <section className="py-24 bg-white relative overflow-hidden border-y border-gray-100">
+    <section className="py-24 bg-transparent relative overflow-hidden border-y border-white/5">
       
       {/* Abstract Background Element */}
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-brand/5 to-transparent pointer-events-none" />
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.02] pointer-events-none" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-[101.25rem]">
         <div className="flex flex-col lg:flex-row items-center gap-20">
@@ -58,7 +57,7 @@ const Statistics = () => {
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 mb-6"
+              className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6"
             >
               Trusted by developers <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400">worldwide</span>.
             </motion.h2>
@@ -67,7 +66,7 @@ const Statistics = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-lg text-gray-500 font-medium"
+              className="text-lg text-slate-400 font-medium"
             >
               Our platform operates at a massive scale to ensure your applications stay fast, reliable, and secure.
             </motion.p>
@@ -81,17 +80,17 @@ const Statistics = () => {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 + (index * 0.1), type: "spring", stiffness: 100 }}
-                className="flex flex-col items-center lg:items-start relative"
+                className="flex flex-col items-center lg:items-start relative group"
               >
                 {/* Vertical Divider line except first */}
                 {index !== 0 && index !== 2 && (
-                  <div className="hidden md:block absolute left-[-2rem] top-1/2 -translate-y-1/2 w-px h-16 bg-gray-200" />
+                  <div className="hidden md:block absolute left-[-2rem] top-1/2 -translate-y-1/2 w-px h-16 bg-white/10" />
                 )}
                 
-                <span className="text-5xl md:text-6xl font-light text-transparent bg-clip-text bg-gradient-to-br from-gray-900 to-gray-600 mb-2 tracking-tighter">
+                <span className="text-5xl md:text-6xl font-semibold text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 mb-2 tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.1)] group-hover:from-white group-hover:to-white transition-all duration-300">
                   <Counter to={stat.to} suffix={stat.suffix} decimals={stat.decimals} />
                 </span>
-                <span className="text-sm md:text-base font-bold text-brand uppercase tracking-widest">
+                <span className="text-sm md:text-base font-bold text-brand uppercase tracking-widest drop-shadow-[0_0_10px_rgba(246,86,0,0.3)]">
                   {stat.label}
                 </span>
               </motion.div>

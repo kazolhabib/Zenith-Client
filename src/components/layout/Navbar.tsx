@@ -4,6 +4,7 @@ import { Sparkles, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const routes = [
+  { name: 'Explore', path: '/explore' },
   { name: 'Products', path: '/products' },
   { name: 'Solutions', path: '/solutions' },
   { name: 'Resources', path: '/resources' },
