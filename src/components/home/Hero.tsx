@@ -177,9 +177,9 @@ const Hero = () => {
             {/* Subtle glowing effect behind the dashboard */}
             <div className="absolute -inset-[1px] bg-gradient-to-r from-brand/30 via-purple-500/30 to-brand/30 rounded-2xl blur-sm opacity-50 group-hover:opacity-100 transition duration-500 -z-10" />
             
-            <div className="relative bg-[#0a0a0c]/80 rounded-2xl overflow-hidden flex flex-col md:flex-row h-full md:h-[550px]">
+            <div className="relative bg-[#0a0a0c]/80 rounded-2xl overflow-hidden flex flex-col md:flex-row min-h-[550px] md:h-auto xl:h-[580px]">
               {/* Sidebar */}
-              <div className="w-full md:w-20 bg-[#121217]/90 border-r border-white/5 flex flex-row md:flex-col items-center justify-between py-4 px-4 md:px-0">
+              <div className="w-full md:w-20 bg-[#121217]/90 border-b md:border-b-0 md:border-r border-white/5 flex flex-row md:flex-col items-center justify-between py-4 px-6 md:px-0 shrink-0">
                 <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-brand to-orange-500 flex items-center justify-center shadow-lg shadow-brand/20">
                   <span className="text-white font-bold text-lg leading-none">Z</span>
                 </div>
@@ -212,12 +212,14 @@ const Hero = () => {
                 <div className="w-8 h-8 rounded-full bg-slate-800 border border-white/10 hidden md:block"></div>
               </div>
               
-              {/* Main Content */}
-              <div className="flex-1 p-6 flex flex-col gap-6">
+              {/* Dashboard Content Container */}
+              <div className="flex-1 flex flex-col lg:flex-row min-w-0">
+                {/* Main Content */}
+                <div className="flex-1 p-6 flex flex-col gap-6 min-w-0">
                 {activeMockTab === 'overview' && (
                   <>
                     {/* Top Stats */}
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-3 lg:gap-4">
                       <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
                         <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Active Bookings</span>
                         <div className="flex items-end gap-2">
@@ -430,8 +432,8 @@ const Hero = () => {
                 )}
               </div>
 
-              {/* Right Panel - Active Bookings & Concierge */}
-              <div className="w-full md:w-80 bg-white/[0.02] border-l border-white/5 p-6 flex flex-col gap-6">
+                {/* Right Panel - Active Bookings & Concierge */}
+                <div className="w-full lg:w-80 bg-white/[0.02] border-t lg:border-t-0 lg:border-l border-white/5 p-6 flex flex-col gap-6 shrink-0">
                 
                 <div className="flex flex-col gap-4">
                   <span className="text-white text-sm font-semibold">Upcoming Itineraries</span>
@@ -497,6 +499,7 @@ const Hero = () => {
                 </div>
               </div>
             </div>
+          </div>
           </motion.div>
           
           {/* Reflection */}
