@@ -101,9 +101,16 @@ export const MyReservations = ({ isEmbedded = false }: { isEmbedded?: boolean })
                           </span>
                         )}
                         {item.status === 'Rejected' && (
-                          <span className="px-3 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20">
-                            Rejected
-                          </span>
+                          <div className="flex flex-col gap-1 items-start">
+                            <span className="px-3 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20">
+                              Rejected
+                            </span>
+                            {item.rejectionReason && (
+                              <span className="text-[10px] text-slate-500 max-w-[180px] truncate block italic" title={item.rejectionReason}>
+                                Reason: {item.rejectionReason}
+                              </span>
+                            )}
+                          </div>
                         )}
                       </td>
                       <td className="p-6">
@@ -182,39 +189,47 @@ export const MyReservations = ({ isEmbedded = false }: { isEmbedded?: boolean })
 
                 <div className="h-px bg-white/5 w-full" />
 
-                <div className="flex items-center justify-between mt-1">
-                  <div>
-                    <span className="text-slate-500 text-xs block mb-1.5 font-semibold uppercase tracking-wider">Status</span>
-                    {item.status === 'Pending' && (
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-orange-500/10 text-orange-400 border border-orange-500/20">
-                        Pending
-                      </span>
-                    )}
-                    {item.status === 'Confirmed' && (
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                        Confirmed
-                      </span>
-                    )}
-                    {item.status === 'Rejected' && (
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20">
-                        Rejected
-                      </span>
-                    )}
+                <div className="flex flex-col gap-3 mt-1 w-full">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-slate-500 text-xs block mb-1.5 font-semibold uppercase tracking-wider">Status</span>
+                      {item.status === 'Pending' && (
+                        <span className="px-3 py-1 rounded-full text-xs font-bold bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                          Pending
+                        </span>
+                      )}
+                      {item.status === 'Confirmed' && (
+                        <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                          Confirmed
+                        </span>
+                      )}
+                      {item.status === 'Rejected' && (
+                        <span className="px-3 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20">
+                          Rejected
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-end h-full">
+                      <Button 
+                        variant="outline" 
+                        onClick={() => {
+                          setResToDelete(item.id);
+                          setDeleteModalOpen(true);
+                        }}
+                        className="h-10 px-4 rounded-xl bg-red-500/10 border-red-500/20 hover:bg-red-500 hover:text-white text-red-400 transition-colors flex items-center gap-2 text-xs font-bold"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        Cancel
+                      </Button>
+                    </div>
                   </div>
 
-                  <div className="flex items-end h-full">
-                    <Button 
-                      variant="outline" 
-                      onClick={() => {
-                        setResToDelete(item.id);
-                        setDeleteModalOpen(true);
-                      }}
-                      className="h-10 px-4 rounded-xl bg-red-500/10 border-red-500/20 hover:bg-red-500 hover:text-white text-red-400 transition-colors flex items-center gap-2 text-xs font-bold"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                      Cancel
-                    </Button>
-                  </div>
+                  {item.status === 'Rejected' && item.rejectionReason && (
+                    <div className="text-xs bg-red-500/5 border border-red-500/10 p-2.5 rounded-lg text-slate-400">
+                      <span className="font-bold text-red-400">Rejection Reason:</span> {item.rejectionReason}
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))

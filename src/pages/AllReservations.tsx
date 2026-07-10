@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, Trash2, MapPin, Users, CheckCircle, XCircle } from 'lucide-react';
+import { Calendar, Trash2, MapPin, Users, CheckCircle, XCircle, AlertTriangle, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export const AllReservations = ({ isEmbedded = false }: { isEmbedded?: boolean }) => {
   const [reservations, setReservations] = useState<any[]>([]);
+  const [rejectModalOpen, setRejectModalOpen] = useState(false);
+  const [resToReject, setResToReject] = useState<string | null>(null);
+  const [rejectionReason, setRejectionReason] = useState('');
+
+  const templateReasons = [
+    "Property undergoing maintenance on requested dates.",
+    "The property is fully booked during this period.",
+    "Minimum stay requirement not met for this listing.",
+    "Scheduled property renovation and upgrades."
+  ];
 
   useEffect(() => {
     const fetchReservations = () => {
@@ -20,6 +30,21 @@ export const AllReservations = ({ isEmbedded = false }: { isEmbedded?: boolean }
     const updated = reservations.map(r => r.id === id ? { ...r, status: newStatus } : r);
     setReservations(updated);
     localStorage.setItem('my_reservations', JSON.stringify(updated));
+  };
+
+  const confirmRejection = () => {
+    if (!resToReject) return;
+    const finalReason = rejectionReason.trim() || "No specific reason provided.";
+    const updated = reservations.map(r => 
+      r.id === resToReject 
+        ? { ...r, status: 'Rejected', rejectionReason: finalReason } 
+        : r
+    );
+    setReservations(updated);
+    localStorage.setItem('my_reservations', JSON.stringify(updated));
+    setRejectModalOpen(false);
+    setResToReject(null);
+    setRejectionReason('');
   };
 
   const content = (
@@ -94,9 +119,16 @@ export const AllReservations = ({ isEmbedded = false }: { isEmbedded?: boolean }
                           </span>
                         )}
                         {item.status === 'Rejected' && (
-                          <span className="px-3 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20">
-                            Rejected
-                          </span>
+                          <div className="flex flex-col gap-1 items-start">
+                            <span className="px-3 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20">
+                              Rejected
+                            </span>
+                            {item.rejectionReason && (
+                              <span className="text-[10px] text-slate-500 max-w-[180px] truncate block italic" title={item.rejectionReason}>
+                                Reason: {item.rejectionReason}
+                              </span>
+                            )}
+                          </div>
                         )}
                       </td>
                       <td className="p-4 md:p-6">
@@ -112,9 +144,12 @@ export const AllReservations = ({ isEmbedded = false }: { isEmbedded?: boolean }
                             </Button>
                             <Button 
                               variant="outline" 
-                              onClick={() => handleUpdateStatus(item.id, 'Rejected')}
+                              onClick={() => {
+                                setResToReject(item.id);
+                                setRejectModalOpen(true);
+                              }}
                               className="w-9 h-9 p-0 rounded-lg bg-red-500/10 border-red-500/20 hover:bg-red-500 hover:text-white text-red-400 transition-colors"
-                              title="Reject"
+                              title="Reject with Reason"
                             >
                               <XCircle className="w-4 h-4" />
                             </Button>
@@ -127,9 +162,11 @@ export const AllReservations = ({ isEmbedded = false }: { isEmbedded?: boolean }
                                 <span>Already Confirmed</span>
                               </div>
                             ) : (
-                              <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/20 px-3 py-1.5 rounded-lg text-red-400 text-xs font-semibold shadow-[0_0_10px_rgba(239,68,68,0.1)]">
-                                <XCircle className="w-3.5 h-3.5" />
-                                <span>Rejected</span>
+                              <div className="flex flex-col items-end gap-1">
+                                <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/20 px-3 py-1.5 rounded-lg text-red-400 text-xs font-semibold shadow-[0_0_10px_rgba(239,68,68,0.1)]">
+                                  <XCircle className="w-3.5 h-3.5" />
+                                  <span>Rejected</span>
+                                </div>
                               </div>
                             )}
                           </div>
@@ -197,62 +234,73 @@ export const AllReservations = ({ isEmbedded = false }: { isEmbedded?: boolean }
 
                 <div className="h-px bg-white/5 w-full" />
 
-                <div className="flex items-center justify-between mt-1">
-                  <div>
-                    <span className="text-slate-500 text-xs block mb-1.5 font-semibold uppercase tracking-wider">Status</span>
-                    {item.status === 'Pending' && (
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-orange-500/10 text-orange-400 border border-orange-500/20">
-                        Pending
-                      </span>
-                    )}
-                    {item.status === 'Confirmed' && (
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                        Confirmed
-                      </span>
-                    )}
-                    {item.status === 'Rejected' && (
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20">
-                        Rejected
-                      </span>
-                    )}
+                <div className="flex flex-col gap-3 mt-1">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-slate-500 text-xs block mb-1.5 font-semibold uppercase tracking-wider">Status</span>
+                      {item.status === 'Pending' && (
+                        <span className="px-3 py-1 rounded-full text-xs font-bold bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                          Pending
+                        </span>
+                      )}
+                      {item.status === 'Confirmed' && (
+                        <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                          Confirmed
+                        </span>
+                      )}
+                      {item.status === 'Rejected' && (
+                        <span className="px-3 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20">
+                          Rejected
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-end h-full">
+                      {item.status === 'Pending' ? (
+                        <div className="flex items-center gap-2">
+                          <Button 
+                            variant="outline" 
+                            onClick={() => handleUpdateStatus(item.id, 'Confirmed')}
+                            className="h-10 px-4 rounded-xl bg-emerald-500/10 border-emerald-500/20 hover:bg-emerald-500 hover:text-white text-emerald-400 transition-colors flex items-center gap-1.5 text-xs font-bold"
+                          >
+                            <CheckCircle className="w-3.5 h-3.5" />
+                            Accept
+                          </Button>
+                          <Button 
+                            variant="outline" 
+                            onClick={() => {
+                              setResToReject(item.id);
+                              setRejectModalOpen(true);
+                            }}
+                            className="h-10 px-4 rounded-xl bg-red-500/10 border-red-500/20 hover:bg-red-500 hover:text-white text-red-400 transition-colors flex items-center gap-1.5 text-xs font-bold"
+                          >
+                            <XCircle className="w-3.5 h-3.5" />
+                            Reject
+                          </Button>
+                        </div>
+                      ) : (
+                        <div>
+                          {item.status === 'Confirmed' ? (
+                            <div className="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg text-emerald-400 text-xs font-semibold">
+                              <CheckCircle className="w-3.5 h-3.5" />
+                              <span>Confirmed</span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/20 px-3 py-1.5 rounded-lg text-red-400 text-xs font-semibold">
+                              <XCircle className="w-3.5 h-3.5" />
+                              <span>Rejected</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
                   </div>
 
-                  <div className="flex items-end h-full">
-                    {item.status === 'Pending' ? (
-                      <div className="flex items-center gap-2">
-                        <Button 
-                          variant="outline" 
-                          onClick={() => handleUpdateStatus(item.id, 'Confirmed')}
-                          className="h-10 px-4 rounded-xl bg-emerald-500/10 border-emerald-500/20 hover:bg-emerald-500 hover:text-white text-emerald-400 transition-colors flex items-center gap-1.5 text-xs font-bold"
-                        >
-                          <CheckCircle className="w-3.5 h-3.5" />
-                          Accept
-                        </Button>
-                        <Button 
-                          variant="outline" 
-                          onClick={() => handleUpdateStatus(item.id, 'Rejected')}
-                          className="h-10 px-4 rounded-xl bg-red-500/10 border-red-500/20 hover:bg-red-500 hover:text-white text-red-400 transition-colors flex items-center gap-1.5 text-xs font-bold"
-                        >
-                          <XCircle className="w-3.5 h-3.5" />
-                          Reject
-                        </Button>
-                      </div>
-                    ) : (
-                      <div>
-                        {item.status === 'Confirmed' ? (
-                          <div className="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-lg text-emerald-400 text-xs font-semibold">
-                            <CheckCircle className="w-3.5 h-3.5" />
-                            <span>Confirmed</span>
-                          </div>
-                        ) : (
-                          <div className="flex items-center gap-1.5 bg-red-500/10 border border-red-500/20 px-3 py-1.5 rounded-lg text-red-400 text-xs font-semibold">
-                            <XCircle className="w-3.5 h-3.5" />
-                            <span>Rejected</span>
-                          </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                  {item.status === 'Rejected' && item.rejectionReason && (
+                    <div className="text-xs bg-red-500/5 border border-red-500/10 p-2.5 rounded-lg text-slate-400">
+                      <span className="font-bold text-red-400">Rejection Reason:</span> {item.rejectionReason}
+                    </div>
+                  )}
                 </div>
               </motion.div>
             ))
@@ -269,6 +317,89 @@ export const AllReservations = ({ isEmbedded = false }: { isEmbedded?: boolean }
           )}
         </div>
       </div>
+
+      {/* Reject Reservation Reason Modal */}
+      <AnimatePresence>
+        {rejectModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              onClick={() => setRejectModalOpen(false)}
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative bg-[#121217] border border-white/10 rounded-2xl p-6 w-full max-w-lg shadow-2xl overflow-hidden"
+            >
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-orange-500" />
+              <div className="flex items-start gap-4 mb-4">
+                <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center shrink-0 border border-red-500/20">
+                  <AlertTriangle className="w-6 h-6 text-red-500" />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <h3 className="text-xl font-bold text-white">Provide Rejection Reason</h3>
+                  <p className="text-sm text-slate-400">
+                    Explain to the user why their reservation cannot be accepted.
+                  </p>
+                </div>
+              </div>
+
+              {/* Quick Template Reasons */}
+              <div className="mb-6">
+                <span className="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-2.5">Quick Templates:</span>
+                <div className="flex flex-wrap gap-2">
+                  {templateReasons.map((t, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setRejectionReason(t)}
+                      className="text-xs bg-white/5 border border-white/10 hover:border-brand/40 hover:bg-brand/5 text-slate-300 rounded-lg px-3 py-2 transition-all text-left"
+                    >
+                      {t}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Reason Input */}
+              <div className="space-y-2 mb-6">
+                <label className="block text-xs font-bold uppercase tracking-wider text-slate-400">Custom Reason:</label>
+                <textarea
+                  value={rejectionReason}
+                  onChange={(e) => setRejectionReason(e.target.value)}
+                  placeholder="Enter rejection details..."
+                  rows={3}
+                  className="w-full bg-black/40 border border-white/10 rounded-xl p-4 text-white placeholder-slate-600 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/50 transition-all resize-none text-sm"
+                />
+              </div>
+
+              <div className="flex justify-end gap-3">
+                <Button 
+                  variant="outline" 
+                  className="bg-transparent border-white/10 text-white hover:bg-white/5 h-10 px-6 rounded-xl"
+                  onClick={() => {
+                    setRejectModalOpen(false);
+                    setResToReject(null);
+                    setRejectionReason('');
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  className="bg-red-500 hover:bg-red-600 text-white h-10 px-6 rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all font-bold"
+                  onClick={confirmRejection}
+                >
+                  Confirm Rejection
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </>
   );
 
