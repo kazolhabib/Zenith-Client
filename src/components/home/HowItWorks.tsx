@@ -57,7 +57,7 @@ const HowItWorks = () => {
         </div>
 
         {/* Floating Steps Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative">
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
@@ -67,7 +67,9 @@ const HowItWorks = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: index * 0.2, ease: [0.16, 1, 0.3, 1] }}
-                className="bg-[#121217]/20 border border-white/5 hover:border-brand/40 hover:bg-[#121217]/40 backdrop-blur-xl rounded-[2.5rem] p-10 h-[380px] flex flex-col justify-between transition-all duration-500 relative overflow-hidden group"
+                className={`bg-[#121217]/20 border border-white/5 hover:border-brand/40 hover:bg-[#121217]/40 backdrop-blur-xl rounded-[2.5rem] p-10 h-[380px] flex flex-col justify-between transition-all duration-500 relative overflow-hidden group ${
+                  index === 2 ? 'md:col-span-2 lg:col-span-1' : ''
+                }`}
               >
                 {/* Huge Background Number */}
                 <div className="absolute right-8 top-4 text-[10rem] font-black text-white/[0.02] group-hover:text-white/[0.04] group-hover:scale-105 select-none pointer-events-none transition-all duration-500 leading-none">
