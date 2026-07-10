@@ -106,7 +106,7 @@ export const MyReservations = ({ isEmbedded = false }: { isEmbedded?: boolean })
                               Rejected
                             </span>
                             {item.rejectionReason && (
-                              <span className="text-[10px] text-slate-500 max-w-[180px] truncate block italic" title={item.rejectionReason}>
+                              <span className="text-xs text-slate-400 mt-1 block italic max-w-[220px] whitespace-normal leading-relaxed" title={item.rejectionReason}>
                                 Reason: {item.rejectionReason}
                               </span>
                             )}
