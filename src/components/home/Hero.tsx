@@ -71,7 +71,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.05 }}
-          className="flex flex-wrap items-center justify-center gap-3 md:gap-4 mt-6 mb-2"
+          className="flex flex-wrap items-center justify-center gap-3 md:gap-4 mt-6 mb-2 xl:hidden"
         >
           <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 shadow-lg text-[10px] md:text-xs uppercase tracking-wider font-semibold text-slate-300">
             <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_#22c55e]" />
@@ -144,7 +144,56 @@ const Hero = () => {
           </Link>
         </motion.div>
         
-        {/* Floating Feature Pills Removed */}
+        {/* Floating Feature Pills (Desktop Only with Float Animations) */}
+        <motion.div 
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ 
+            opacity: 1, 
+            x: 0,
+            y: [0, -12, 0] 
+          }}
+          transition={{ 
+            y: {
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut"
+            },
+            default: { duration: 1, delay: 0.8 }
+          }}
+          className="hidden xl:flex absolute top-[28%] left-10 lg:left-20 flex-col gap-6 pointer-events-none z-10"
+        >
+          <div className="flex items-center gap-2 px-5 py-3 rounded-full bg-[#121217]/80 backdrop-blur-md border border-white/10 shadow-2xl">
+            <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_#22c55e]" />
+            <span className="text-sm font-bold text-slate-200">Verified Properties Only</span>
+          </div>
+          <div className="flex items-center gap-2 px-5 py-3 rounded-full bg-[#121217]/80 backdrop-blur-md border border-white/10 shadow-2xl ml-12">
+            <Shield className="w-5 h-5 text-brand" />
+            <span className="text-sm font-bold text-slate-200">Protected Payments</span>
+          </div>
+        </motion.div>
+
+        <motion.div 
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ 
+            opacity: 1, 
+            x: 0,
+            y: [0, 15, 0] 
+          }}
+          transition={{ 
+            y: {
+              duration: 7,
+              repeat: Infinity,
+              ease: "easeInOut"
+            },
+            default: { duration: 1, delay: 0.9 }
+          }}
+          className="hidden xl:flex absolute top-[35%] right-10 lg:right-20 flex-col gap-4 pointer-events-none z-10"
+        >
+          <div className="flex items-center gap-2 px-5 py-3 rounded-full bg-[#121217]/80 backdrop-blur-md border border-white/10 shadow-2xl">
+            <Globe className="w-5 h-5 text-blue-400" />
+            <span className="text-sm font-bold text-slate-200">24/7 Premium Guest Support</span>
+          </div>
+        </motion.div>
 
         {/* 3D Dashboard Mockup */}
         <motion.div 
