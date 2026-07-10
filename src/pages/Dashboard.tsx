@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Camera, Mail, Save, List, ChevronRight, Calendar, LayoutDashboard, Shield, LogOut, Settings, Bell, Search, CheckCircle } from 'lucide-react';
+import { User, Camera, Mail, Save, List, Calendar, LayoutDashboard, Shield, LogOut, Settings, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/config/api';
