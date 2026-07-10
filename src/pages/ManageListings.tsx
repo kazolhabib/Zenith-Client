@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Eye, Trash2, MapPin, Star, Plus } from 'lucide-react';
@@ -6,7 +6,7 @@ import { LISTINGS_DATA } from '@/data/listings';
 import { Button } from '@/components/ui/button';
 import api from '@/config/api';
 
-export const ManageListings = () => {
+export const ManageListings = ({ isEmbedded = false }: { isEmbedded?: boolean }) => {
   const [listings, setListings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -29,24 +29,18 @@ export const ManageListings = () => {
     if (window.confirm('Are you sure you want to delete this listing?')) {
       try {
         await api.delete(`/listings/${id}`);
-        setListings(prev => prev.filter(item => item.id !== id));
+        setListings(prev => prev.filter(item => item.id !== id && item._id !== id));
       } catch (error) {
         console.warn('Delete via API failed, doing locally for mock');
-        setListings(prev => prev.filter(item => item.id !== id));
+        setListings(prev => prev.filter(item => item.id !== id && item._id !== id));
       }
     }
   };
 
-  return (
-    <div className="min-h-screen bg-[#09090b] text-slate-200 selection:bg-brand/30 pt-24 pb-20">
-      {/* Background Decor */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-[10%] left-[-10%] w-[30%] h-[40%] rounded-full bg-brand/5 blur-[120px]" />
-      </div>
-
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[101.25rem] relative z-10">
-        
-        {/* Header */}
+  const content = (
+    <>
+      {/* Header - Only show if not embedded */}
+      {!isEmbedded && (
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-10">
           <div>
             <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-2">
@@ -61,6 +55,20 @@ export const ManageListings = () => {
             </Button>
           </Link>
         </div>
+      )}
+
+      {/* Embedded Header */}
+      {isEmbedded && (
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold text-white">My Properties</h2>
+          <Link to="/items/add">
+            <Button className="bg-brand hover:bg-orange-600 text-white rounded-xl h-10 px-5 flex items-center gap-2 shadow-[0_0_15px_rgba(246,86,0,0.3)] transition-all text-sm">
+              <Plus className="w-4 h-4" />
+              Add New
+            </Button>
+          </Link>
+        </div>
+      )}
 
         {/* Table / Grid */}
         <div className="bg-[#121217]/80 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
@@ -80,7 +88,7 @@ export const ManageListings = () => {
                   {listings.length > 0 ? (
                     listings.map((item) => (
                       <motion.tr 
-                        key={item.id}
+                        key={item._id || item.id}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0, x: -20 }}
@@ -116,14 +124,14 @@ export const ManageListings = () => {
                         </td>
                         <td className="p-6 text-right">
                           <div className="flex justify-end gap-2">
-                            <Link to={`/listings/${item.id}`}>
+                            <Link to={`/listings/${item._id || item.id}`}>
                               <Button variant="outline" className="w-10 h-10 p-0 rounded-xl bg-white/5 border-white/10 hover:bg-white/10 hover:text-white text-slate-400 transition-colors">
                                 <Eye className="w-4 h-4" />
                               </Button>
                             </Link>
                             <Button 
                               variant="outline" 
-                              onClick={() => handleDelete(item.id)}
+                              onClick={() => handleDelete(item._id || item.id)}
                               className="w-10 h-10 p-0 rounded-xl bg-red-500/10 border-red-500/20 hover:bg-red-500 hover:text-white text-red-400 transition-colors"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -150,6 +158,20 @@ export const ManageListings = () => {
             </table>
           </div>
         </div>
+    </>
+  );
+
+  if (isEmbedded) {
+    return <>{content}</>;
+  }
+
+  return (
+    <div className="min-h-screen bg-[#09090b] text-slate-200 selection:bg-brand/30 pt-32 md:pt-40 pb-20">
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute top-[10%] left-[-10%] w-[30%] h-[40%] rounded-full bg-brand/5 blur-[120px]" />
+      </div>
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[101.25rem] relative z-10">
+        {content}
       </div>
     </div>
   );

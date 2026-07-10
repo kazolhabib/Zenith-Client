@@ -61,13 +61,15 @@ export const Register = () => {
       
       const response = await api.post('/auth/google', {
         email: result.user.email,
-        name: result.user.displayName || 'Google User'
+        name: result.user.displayName || 'Google User',
+        image: result.user.photoURL || ''
       });
       
       login(response.data.token, {
         id: response.data.id,
         name: response.data.name,
-        email: response.data.email
+        email: response.data.email,
+        image: response.data.image
       });
       
       navigate('/explore');
@@ -80,7 +82,7 @@ export const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090b] flex items-center justify-center relative overflow-hidden pt-24 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#09090b] flex items-center justify-center relative overflow-hidden pt-32 md:pt-40 pb-12 px-4 sm:px-6 lg:px-8">
       {/* Background Decor */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] rounded-full bg-brand/10 blur-[120px]" />

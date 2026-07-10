@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const plans = [
   {
@@ -97,16 +98,18 @@ const Pricing = () => {
                 ))}
               </ul>
 
-              <Button 
-                variant={plan.isPopular ? 'default' : 'outline'} 
-                className={`w-full h-14 rounded-2xl text-lg font-bold transition-all duration-300 ${
-                  plan.isPopular 
-                    ? 'bg-gradient-to-r from-brand to-orange-500 hover:opacity-90 text-white border-none shadow-[0_0_30px_rgba(246,86,0,0.4)] hover:shadow-[0_0_40px_rgba(246,86,0,0.6)]' 
-                    : 'bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:border-white/20'
-                }`}
-              >
-                {plan.price === 'Custom' ? 'Contact Sales' : 'Get Started'}
-              </Button>
+              <Link to={plan.price === 'Custom' ? '/contact' : '/register'} className="w-full">
+                <Button 
+                  variant={plan.isPopular ? 'default' : 'outline'} 
+                  className={`w-full h-14 rounded-2xl text-lg font-bold transition-all duration-300 ${
+                    plan.isPopular 
+                      ? 'bg-gradient-to-r from-brand to-orange-500 hover:opacity-90 text-white border-none shadow-[0_0_30px_rgba(246,86,0,0.4)] hover:shadow-[0_0_40px_rgba(246,86,0,0.6)]' 
+                      : 'bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:border-white/20'
+                  }`}
+                >
+                  {plan.price === 'Custom' ? 'Contact Sales' : 'Get Started'}
+                </Button>
+              </Link>
             </motion.div>
           ))}
         </div>

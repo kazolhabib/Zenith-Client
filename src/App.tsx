@@ -11,6 +11,7 @@ import AddListing from './pages/AddListing';
 import { AuthProvider } from './context/AuthContext';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import ManageListings from './pages/ManageListings';
+import Dashboard from './pages/Dashboard';
 import About from './pages/About';
 import Contact from './pages/Contact';
 
@@ -48,6 +49,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ManageListings />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/dashboard" 
+                element={
+                  <ProtectedRoute>
+                    <Dashboard />
                   </ProtectedRoute>
                 } 
               />

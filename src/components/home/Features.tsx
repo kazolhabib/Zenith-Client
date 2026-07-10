@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Zap, Shield, Rocket, Cloud, LayoutTemplate, ArrowRight, Server } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Features = () => {
   return (
@@ -214,10 +215,12 @@ const Features = () => {
             </div>
             <h3 className="text-2xl font-bold mb-3">100+ Templates</h3>
             <p className="text-slate-400 text-base font-medium mb-8">Start your next project in seconds with pre-configured stacks.</p>
-            <Button variant="outline" className="border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 text-white rounded-full px-8 h-12 flex items-center gap-2 group-hover:text-brand transition-colors">
-              Browse Library
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </Button>
+            <Link to="/explore">
+              <Button variant="outline" className="border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 text-white rounded-full px-8 h-12 flex items-center gap-2 group-hover:text-brand transition-colors">
+                Browse Library
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Button>
+            </Link>
           </motion.div>
 
         </div>

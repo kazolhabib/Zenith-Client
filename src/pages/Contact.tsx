@@ -30,7 +30,7 @@ export const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-slate-200 selection:bg-brand/30 pt-24 pb-20 relative overflow-hidden">
+    <div className="min-h-screen bg-[#09090b] text-slate-200 selection:bg-brand/30 pt-32 md:pt-40 pb-20 relative overflow-hidden">
       {/* Background Decor */}
       <div className="absolute inset-0 pointer-events-none z-0">
         <div className="absolute top-[20%] left-[-10%] w-[40%] h-[50%] rounded-full bg-brand/5 blur-[120px]" />

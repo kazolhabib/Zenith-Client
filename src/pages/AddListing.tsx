@@ -30,7 +30,17 @@ export const AddListing = () => {
     setLoading(true);
     
     try {
-      await api.post('/listings', formData);
+      const payload = {
+        title: formData.title,
+        description: formData.shortDescription,
+        fullDescription: formData.fullDescription,
+        price: Number(formData.price),
+        location: formData.location,
+        date: formData.date,
+        image: formData.imageUrl
+      };
+      
+      await api.post('/listings', payload);
       setLoading(false);
       navigate('/explore');
     } catch (error) {
@@ -41,7 +51,7 @@ export const AddListing = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#09090b] text-slate-200 selection:bg-brand/30 pt-24 pb-20">
+    <div className="min-h-screen bg-[#09090b] text-slate-200 selection:bg-brand/30 pt-32 md:pt-40 pb-20">
       {/* Background Decor */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-[10%] right-[-10%] w-[30%] h-[40%] rounded-full bg-brand/5 blur-[120px]" />

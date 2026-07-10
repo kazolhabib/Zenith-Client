@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const CallToAction = () => {
   return (
@@ -41,18 +42,22 @@ const CallToAction = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-              <Button className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-brand to-orange-500 hover:opacity-90 px-8 h-16 text-white border-none text-lg font-bold w-full sm:w-auto shadow-[0_10px_40px_rgba(246,86,0,0.6)] transition-all hover:-translate-y-1 hover:shadow-[0_15px_50px_rgba(246,86,0,0.8)]">
-                <span className="relative z-10 flex items-center gap-2">
-                  Create Free Account
-                  <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-                </span>
-                <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-150%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(150%)]">
-                  <div className="relative h-full w-8 bg-white/30 blur-[2px]" />
-                </div>
-              </Button>
-              <Button variant="outline" className="rounded-2xl h-16 px-8 text-white border-white/20 bg-white/5 backdrop-blur-md hover:bg-white/10 hover:text-white text-lg font-bold w-full sm:w-auto transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
-                Talk to Sales
-              </Button>
+              <Link to="/register" className="w-full sm:w-auto">
+                <Button className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-brand to-orange-500 hover:opacity-90 px-8 h-16 text-white border-none text-lg font-bold w-full sm:w-auto shadow-[0_10px_40px_rgba(246,86,0,0.6)] transition-all hover:-translate-y-1 hover:shadow-[0_15px_50px_rgba(246,86,0,0.8)]">
+                  <span className="relative z-10 flex items-center gap-2">
+                    Create Free Account
+                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                  </span>
+                  <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-150%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(150%)]">
+                    <div className="relative h-full w-8 bg-white/30 blur-[2px]" />
+                  </div>
+                </Button>
+              </Link>
+              <Link to="/contact" className="w-full sm:w-auto">
+                <Button variant="outline" className="rounded-2xl h-16 px-8 text-white border-white/20 bg-white/5 backdrop-blur-md hover:bg-white/10 hover:text-white text-lg font-bold w-full sm:w-auto transition-all shadow-[0_0_20px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]">
+                  Talk to Sales
+                </Button>
+              </Link>
             </div>
           </div>
         </motion.div>

@@ -96,7 +96,7 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto z-20 relative"
         >
-          <Link to="/get-started" className="w-full sm:w-auto">
+          <Link to="/register" className="w-full sm:w-auto">
             <Button className="group relative overflow-hidden rounded-full bg-white hover:bg-gray-100 px-10 h-16 text-black shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:shadow-[0_0_60px_rgba(255,255,255,0.4)] hover:scale-105 transition-all duration-300 text-lg w-full">
               <span className="relative z-10 font-bold tracking-wide flex items-center gap-2">
                 Start Building Free
@@ -106,7 +106,7 @@ const Hero = () => {
             </Button>
           </Link>
           
-          <Link to="/demo" className="w-full sm:w-auto">
+          <Link to="/explore" className="w-full sm:w-auto">
             <Button variant="outline" className="group rounded-full h-16 px-10 text-white bg-white/5 backdrop-blur-md hover:bg-white/10 border-white/10 hover:border-white/20 text-lg font-bold transition-all w-full shadow-[0_0_20px_rgba(0,0,0,0.5)]">
               <span className="flex items-center gap-2">
                 <Terminal className="w-5 h-5 text-slate-400 group-hover:text-white transition-colors" />

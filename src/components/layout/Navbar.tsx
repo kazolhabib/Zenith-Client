@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Sparkles, Menu, X, Plus, LayoutDashboard } from 'lucide-react';
+import { Sparkles, Menu, X, Plus, LayoutDashboard, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 
@@ -14,7 +14,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, user, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,7 +45,7 @@ const Navbar = () => {
               <div className="w-[2.5rem] h-[2.5rem] rounded-[0.75rem] bg-gradient-to-br from-brand to-orange-400 flex items-center justify-center shadow-[0_4px_15px_rgba(246,86,0,0.3)] group-hover:shadow-[0_8px_25px_rgba(246,86,0,0.5)] transition-all duration-300 group-hover:-translate-y-[2px]">
                 <Sparkles className="w-[1.25rem] h-[1.25rem] text-white transition-transform duration-300 group-hover:scale-110" />
               </div>
-              <span className="text-[1.25rem] font-bold tracking-tight text-gray-900">
+              <span className={`text-[1.25rem] font-bold tracking-tight transition-colors ${scrolled ? 'text-gray-900' : 'text-white'}`}>
                 Zenith
               </span>
             </Link>
@@ -59,7 +59,7 @@ const Navbar = () => {
                 className={`group relative overflow-hidden px-[1.25rem] py-[0.5rem] rounded-[1.25rem] text-[0.875rem] font-medium transition-all duration-300 border ${
                   isActive(route.path)
                     ? 'bg-white text-brand border-brand/20 shadow-[0_0.25rem_0.75rem_rgba(246,86,0,0.15)]'
-                    : 'bg-transparent text-gray-600 border-transparent hover:bg-white hover:border-gray-200/60 hover:text-gray-900 hover:shadow-sm hover:-translate-y-[1px]'
+                    : `bg-transparent border-transparent hover:bg-white hover:border-gray-200/60 hover:text-gray-900 hover:shadow-sm hover:-translate-y-[1px] ${scrolled ? 'text-gray-600' : 'text-slate-200'}`
                 }`}
               >
                 <span className="relative z-10">{route.name}</span>
@@ -80,14 +80,23 @@ const Navbar = () => {
           <div className="hidden md:flex items-center shrink-0">
             {isAuthenticated ? (
               <div className="flex items-center gap-[1rem]">
-                <Link to="/items/manage" className="text-[0.875rem] font-medium text-gray-500 hover:text-brand transition-colors mr-2">
-                  Manage Listings
+                <Link to="/dashboard" className={`text-[0.875rem] font-medium hover:text-brand transition-colors mr-2 ${scrolled ? 'text-gray-500' : 'text-slate-300'}`}>
+                  Dashboard
                 </Link>
                 <Link to="/items/add">
                   <Button className="bg-white/5 hover:bg-brand text-white border border-white/10 hover:border-brand rounded-xl h-[2.75rem] px-[1.25rem] shadow-lg flex items-center gap-2 transition-all group">
                     <Plus className="w-4 h-4" />
                     <span className="font-semibold">Add Listing</span>
                   </Button>
+                </Link>
+                <Link to="/dashboard">
+                  {user?.image ? (
+                    <img src={user.image} alt="User" className="w-[2.75rem] h-[2.75rem] rounded-[1.25rem] border border-white/10 object-cover hover:border-brand transition-all cursor-pointer" />
+                  ) : (
+                    <div className="w-[2.75rem] h-[2.75rem] rounded-[1.25rem] bg-slate-800 border border-white/10 flex items-center justify-center hover:border-brand transition-all cursor-pointer">
+                      <User className="w-5 h-5 text-slate-400" />
+                    </div>
+                  )}
                 </Link>
                 <Button 
                   variant="ghost" 
@@ -99,7 +108,7 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="flex items-center gap-[1rem]">
-                <Link to="/login" className="text-[0.875rem] font-medium text-gray-500 hover:text-brand transition-colors">
+                <Link to="/login" className={`text-[0.875rem] font-medium hover:text-brand transition-colors ${scrolled ? 'text-gray-500' : 'text-slate-300'}`}>
                   Sign In
                 </Link>
                 <Link to="/register">
@@ -117,7 +126,7 @@ const Navbar = () => {
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-[0.5rem] rounded-[1rem] hover:bg-gray-100 transition-colors"
+            className={`md:hidden p-[0.5rem] rounded-[1rem] transition-colors ${scrolled ? 'hover:bg-gray-100 text-gray-900' : 'hover:bg-white/10 text-white'}`}
           >
             {isOpen ? <X className="w-[1.5rem] h-[1.5rem]" /> : <Menu className="w-[1.5rem] h-[1.5rem]" />}
           </button>
@@ -148,10 +157,10 @@ const Navbar = () => {
             <div className="p-[1rem] border-t border-gray-100">
               {isAuthenticated ? (
                 <div className="flex flex-col gap-[0.75rem]">
-                  <Link to="/items/manage" className="w-full">
+                  <Link to="/dashboard" className="w-full">
                     <Button variant="outline" className="w-full justify-center rounded-[1rem] h-[3rem] flex items-center gap-2 border-white/10 text-white hover:bg-white/5">
                       <LayoutDashboard className="w-4 h-4" />
-                      Manage Listings
+                      Dashboard
                     </Button>
                   </Link>
                   <Link to="/items/add" className="w-full">
