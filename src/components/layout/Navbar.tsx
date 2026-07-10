@@ -94,7 +94,11 @@ const Navbar = () => {
                   Dashboard
                 </Link>
                 <Link to="/items/add">
-                  <Button className="bg-brand hover:bg-orange-500 text-white border-none rounded-xl h-[2.75rem] px-[1.25rem] shadow-[0_4px_15px_rgba(246,86,0,0.25)] flex items-center gap-2 transition-all font-bold">
+                  <Button className={`rounded-xl h-[2.75rem] px-[1.25rem] flex items-center gap-2 transition-all font-bold ${
+                    scrolled 
+                      ? 'bg-brand/20 hover:bg-brand/30 text-brand border border-brand/30 shadow-[0_4px_15px_rgba(246,86,0,0.15)]'
+                      : 'bg-brand/5 hover:bg-brand/15 text-brand/75 hover:text-brand border border-brand/20'
+                  }`}>
                     <Plus className="w-4 h-4" />
                     <span>Add Listing</span>
                   </Button>
