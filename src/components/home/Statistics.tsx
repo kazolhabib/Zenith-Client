@@ -55,8 +55,7 @@ const Statistics = () => {
   return (
     <section className="py-24 bg-transparent relative overflow-hidden border-y border-white/5">
       
-      {/* Abstract Background Element */}
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-brand/5 to-transparent pointer-events-none" />
+
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-[101.25rem]">
         <div className="flex flex-col lg:flex-row items-center gap-16">
@@ -106,7 +105,7 @@ const Statistics = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="bg-[#121217]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl h-[400px]"
+              className="bg-transparent border border-white/10 rounded-3xl p-6 h-[400px]"
             >
               <h3 className="text-white font-bold mb-6 text-lg">Monthly Bookings Growth</h3>
               <ResponsiveContainer width="100%" height="100%">

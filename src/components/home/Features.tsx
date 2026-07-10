@@ -72,7 +72,7 @@ const Features = () => {
   const [selectedFeature, setSelectedFeature] = useState<typeof features[0] | null>(null);
 
   return (
-    <section className="py-32 bg-[#09090b] relative overflow-hidden">
+    <section className="py-32 bg-transparent relative overflow-hidden">
       
       {/* Background Decor */}
       <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-brand/5 blur-[150px] rounded-full mix-blend-screen pointer-events-none" />
