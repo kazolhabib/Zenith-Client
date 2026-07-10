@@ -38,9 +38,10 @@ export const MyReservations = ({ isEmbedded = false }: { isEmbedded?: boolean })
 
   const content = (
     <>
-      {/* Table / Grid */}
-      <div className="bg-[#121217]/80 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-        <div className="overflow-x-auto">
+      {/* Table (Desktop) / Cards (Mobile & Tablet) */}
+      <div className="lg:bg-[#121217]/80 lg:backdrop-blur-2xl lg:border lg:border-white/10 lg:rounded-3xl lg:overflow-hidden lg:shadow-2xl">
+        {/* Desktop View */}
+        <div className="hidden lg:block overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-[700px]">
             <thead>
               <tr className="border-b border-white/10 bg-black/20 text-slate-400 text-sm uppercase tracking-wider">
@@ -137,6 +138,97 @@ export const MyReservations = ({ isEmbedded = false }: { isEmbedded?: boolean })
               </AnimatePresence>
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile/Tablet Card View */}
+        <div className="lg:hidden space-y-4">
+          {reservations.length > 0 ? (
+            reservations.map((item) => (
+              <motion.div
+                key={item.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-[#121217]/90 border border-white/5 hover:border-brand/20 p-5 rounded-2xl flex flex-col gap-4 relative overflow-hidden transition-all duration-300"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-white/10">
+                    <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="min-w-0">
+                    <h4 className="font-bold text-white mb-1 truncate text-base">{item.title}</h4>
+                    <div className="flex items-center gap-1 text-slate-400 text-xs">
+                      <MapPin className="w-3.5 h-3.5" />
+                      <span className="truncate">{item.location}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="h-px bg-white/5 w-full" />
+
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="text-slate-500 text-xs block mb-1 font-semibold uppercase tracking-wider">Dates</span>
+                    <span className="text-slate-200 font-medium block">{item.checkIn}</span>
+                    <span className="text-slate-400 text-xs block">to {item.checkOut}</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-500 text-xs block mb-1 font-semibold uppercase tracking-wider">Guests</span>
+                    <div className="flex items-center gap-2 text-slate-200 font-medium">
+                      <Users className="w-4 h-4 text-slate-500" />
+                      {item.guests} Stays
+                    </div>
+                  </div>
+                </div>
+
+                <div className="h-px bg-white/5 w-full" />
+
+                <div className="flex items-center justify-between mt-1">
+                  <div>
+                    <span className="text-slate-500 text-xs block mb-1.5 font-semibold uppercase tracking-wider">Status</span>
+                    {item.status === 'Pending' && (
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                        Pending
+                      </span>
+                    )}
+                    {item.status === 'Confirmed' && (
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                        Confirmed
+                      </span>
+                    )}
+                    {item.status === 'Rejected' && (
+                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-400 border border-red-500/20">
+                        Rejected
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-end h-full">
+                    <Button 
+                      variant="outline" 
+                      onClick={() => {
+                        setResToDelete(item.id);
+                        setDeleteModalOpen(true);
+                      }}
+                      className="h-10 px-4 rounded-xl bg-red-500/10 border-red-500/20 hover:bg-red-500 hover:text-white text-red-400 transition-colors flex items-center gap-2 text-xs font-bold"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            ))
+          ) : (
+            <div className="p-12 text-center text-slate-400 bg-[#121217]/50 rounded-2xl border border-white/5">
+              <div className="flex flex-col items-center justify-center">
+                <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4">
+                  <Calendar className="w-8 h-8 text-slate-600" />
+                </div>
+                <p className="text-lg font-medium text-white mb-1">No reservations found</p>
+                <p className="text-sm">You haven't booked any properties yet.</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
