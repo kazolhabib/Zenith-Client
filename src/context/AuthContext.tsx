@@ -1,10 +1,18 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
+export interface User {
+  id: string | number;
+  name: string;
+  email: string;
+  image: string;
+  role: 'user' | 'admin';
+}
+
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (token: string, user?: any) => void;
+  login: (token: string, user?: User) => void;
   logout: () => void;
-  user: any;
+  user: User | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -13,12 +21,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
     return !!localStorage.getItem('token');
   });
-  const [user, setUser] = useState<any>(() => {
+  const [user, setUser] = useState<User | null>(() => {
     const savedUser = localStorage.getItem('user');
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
-  const login = (token: string, userData?: any) => {
+  const login = (token: string, userData?: User) => {
     setIsAuthenticated(true);
     localStorage.setItem('token', token);
     if (userData) {

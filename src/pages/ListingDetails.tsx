@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { MapPin, Star, ArrowLeft, Share2, Heart, Shield, Zap, Wifi, Coffee, Car } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { MapPin, Star, ArrowLeft, Share2, Heart, Shield, Zap, Wifi, Coffee, Car, CheckCircle2, Minus, Plus, ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LISTINGS_DATA } from '@/data/listings';
 import api from '@/config/api';
+import { useAuth } from '@/context/AuthContext';
 
 // Helper to get the correct icon component based on string
 const getIcon = (iconName: string) => {
@@ -15,8 +16,25 @@ const getIcon = (iconName: string) => {
 const ListingDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [listing, setListing] = useState<any>(null);
+  const [checkIn, setCheckIn] = useState('');
+  const [checkOut, setCheckOut] = useState('');
+  const [guests, setGuests] = useState(1);
+  const [bookingModalOpen, setBookingModalOpen] = useState(false);
+  const [isRequested, setIsRequested] = useState(false);
+  const [photoGalleryOpen, setPhotoGalleryOpen] = useState(false);
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+  const [toastMessage, setToastMessage] = useState('');
+
+  // Clear toast after 3 seconds
+  useEffect(() => {
+    if (toastMessage) {
+      const timer = setTimeout(() => setToastMessage(''), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [toastMessage]);
   
   // Get related items (just other items from the mock data)
   const related = LISTINGS_DATA.filter(item => item.id !== Number(id)).slice(0, 3);
@@ -134,7 +152,13 @@ const ListingDetails = () => {
           <div className="col-span-4 md:col-span-2 row-span-1 relative group overflow-hidden hidden md:block">
             <img src={safeListing.images[3]} alt="Exterior" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
             <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-            <div className="absolute bottom-4 right-4 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-lg cursor-pointer hover:bg-white/20 transition-colors">
+            <div 
+              onClick={() => {
+                setCurrentPhotoIndex(0);
+                setPhotoGalleryOpen(true);
+              }}
+              className="absolute bottom-4 right-4 bg-white/10 backdrop-blur-md border border-white/20 px-4 py-2 rounded-lg cursor-pointer hover:bg-white/20 transition-colors"
+            >
               <span className="text-white font-medium text-sm">View all photos</span>
             </div>
           </div>
@@ -226,26 +250,92 @@ const ListingDetails = () => {
               
               <div className="border border-white/10 rounded-xl mb-6 overflow-hidden">
                 <div className="flex border-b border-white/10">
-                  <div className="flex-1 p-3 border-r border-white/10 cursor-pointer hover:bg-white/5 transition-colors">
-                    <div className="text-[10px] uppercase font-bold text-slate-500">Check-in</div>
-                    <div className="text-sm font-medium">Add date</div>
+                  <div className="flex-1 p-3 border-r border-white/10 hover:bg-white/5 transition-colors relative cursor-pointer">
+                    <div className="text-[10px] uppercase font-bold text-slate-500 mb-1">Check-in</div>
+                    <input 
+                      type="date" 
+                      value={checkIn}
+                      onChange={(e) => setCheckIn(e.target.value)}
+                      className="bg-transparent text-sm font-medium outline-none text-white w-full cursor-pointer appearance-none [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert"
+                    />
                   </div>
-                  <div className="flex-1 p-3 cursor-pointer hover:bg-white/5 transition-colors">
-                    <div className="text-[10px] uppercase font-bold text-slate-500">Checkout</div>
-                    <div className="text-sm font-medium">Add date</div>
+                  <div className="flex-1 p-3 hover:bg-white/5 transition-colors relative cursor-pointer">
+                    <div className="text-[10px] uppercase font-bold text-slate-500 mb-1">Checkout</div>
+                    <input 
+                      type="date" 
+                      value={checkOut}
+                      onChange={(e) => setCheckOut(e.target.value)}
+                      className="bg-transparent text-sm font-medium outline-none text-white w-full cursor-pointer appearance-none [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert"
+                    />
                   </div>
                 </div>
-                <div className="p-3 cursor-pointer hover:bg-white/5 transition-colors">
-                  <div className="text-[10px] uppercase font-bold text-slate-500">Guests</div>
-                  <div className="text-sm font-medium">1 guest</div>
+                <div className="p-3 flex items-center justify-between hover:bg-white/5 transition-colors">
+                  <div>
+                    <div className="text-[10px] uppercase font-bold text-slate-500 mb-1">Guests</div>
+                    <div className="text-sm font-medium">{guests} guest{guests > 1 ? 's' : ''}</div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button 
+                      onClick={() => setGuests(Math.max(1, guests - 1))}
+                      className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors disabled:opacity-50"
+                      disabled={guests <= 1}
+                    >
+                      <Minus className="w-3 h-3" />
+                    </button>
+                    <span className="font-semibold text-sm w-4 text-center">{guests}</span>
+                    <button 
+                      onClick={() => setGuests(guests + 1)}
+                      className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors"
+                    >
+                      <Plus className="w-3 h-3" />
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <Link to="/contact">
-                <Button className="w-full h-14 bg-gradient-to-r from-brand to-orange-500 hover:from-brand hover:to-orange-400 text-white font-bold text-lg rounded-xl shadow-[0_10px_30px_rgba(246,86,0,0.3)] transition-all">
-                  Reserve
-                </Button>
-              </Link>
+              <Button 
+                onClick={() => {
+                  if (!checkIn || !checkOut) {
+                    setToastMessage("Please select check-in and checkout dates.");
+                    return;
+                  }
+                  
+                  // Save to localStorage
+                  const stored = localStorage.getItem('my_reservations');
+                  const reservations = stored ? JSON.parse(stored) : [];
+                  const newReservation = {
+                    id: Math.random().toString(36).substr(2, 9),
+                    listingId: safeListing?.id,
+                    title: safeListing?.title,
+                    image: safeListing?.images?.[0] || safeListing?.image,
+                    location: safeListing?.location,
+                    price: safeListing?.price,
+                    checkIn,
+                    checkOut,
+                    guests,
+                    status: 'Pending',
+                    userId: user?.id
+                  };
+                  localStorage.setItem('my_reservations', JSON.stringify([...reservations, newReservation]));
+
+                  setBookingModalOpen(true);
+                  setIsRequested(true);
+                }}
+                disabled={isRequested}
+                className={`w-full h-14 font-bold text-lg rounded-xl shadow-[0_10px_30px_rgba(246,86,0,0.3)] transition-all ${
+                  isRequested 
+                    ? "bg-green-500/20 text-green-400 border border-green-500/50 shadow-none cursor-not-allowed hover:bg-green-500/20" 
+                    : "bg-gradient-to-r from-brand to-orange-500 hover:from-brand hover:to-orange-400 text-white"
+                }`}
+              >
+                {isRequested ? (
+                  <span className="flex items-center gap-2">
+                    <CheckCircle2 className="w-5 h-5" /> Requested
+                  </span>
+                ) : (
+                  "Reserve"
+                )}
+              </Button>
               <div className="text-center text-xs text-slate-500 mt-4">You won't be charged yet</div>
             </div>
           </div>
@@ -287,6 +377,118 @@ const ListingDetails = () => {
         </section>
 
       </div>
+
+      {/* Booking Confirmation Modal */}
+      <AnimatePresence>
+        {bookingModalOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              onClick={() => setBookingModalOpen(false)}
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative bg-[#121217] border border-white/10 rounded-3xl p-8 w-full max-w-md shadow-2xl flex flex-col items-center text-center"
+            >
+              <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mb-6">
+                <CheckCircle2 className="w-8 h-8 text-green-500" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">Reservation Request Sent!</h3>
+              <p className="text-slate-400 mb-8 leading-relaxed">
+                Your request for <strong className="text-white">{safeListing?.title}</strong> from <strong className="text-white">{checkIn}</strong> to <strong className="text-white">{checkOut}</strong> for {guests} guest{guests > 1 ? 's' : ''} has been submitted successfully. The host will confirm your booking shortly.
+              </p>
+              <div className="w-full flex flex-col gap-3">
+                <Button 
+                  onClick={() => navigate('/dashboard')}
+                  className="w-full bg-brand hover:bg-orange-600 text-white h-12 rounded-xl font-bold shadow-[0_0_20px_rgba(246,86,0,0.3)] transition-all"
+                >
+                  Go to Dashboard
+                </Button>
+                <Button 
+                  onClick={() => {
+                    setBookingModalOpen(false);
+                  }}
+                  variant="outline"
+                  className="w-full bg-transparent border-white/20 text-white hover:bg-white/10 h-12 rounded-xl font-bold transition-all"
+                >
+                  Close
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Photo Gallery Modal */}
+      <AnimatePresence>
+        {photoGalleryOpen && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center bg-[#09090b]">
+            {/* Header */}
+            <div className="absolute top-0 left-0 w-full p-4 md:p-6 flex justify-between items-center z-10 bg-gradient-to-b from-black/80 to-transparent">
+              <div className="text-white font-medium bg-black/50 px-4 py-2 rounded-full backdrop-blur-md border border-white/10">
+                {currentPhotoIndex + 1} / {safeListing.images.length}
+              </div>
+              <button 
+                onClick={() => setPhotoGalleryOpen(false)}
+                className="w-12 h-12 rounded-full bg-black/50 flex items-center justify-center hover:bg-white/20 transition-colors backdrop-blur-md border border-white/10"
+              >
+                <X className="w-6 h-6 text-white" />
+              </button>
+            </div>
+            
+            {/* Main Image */}
+            <div className="relative w-full h-full flex items-center justify-center p-4 md:p-12">
+              <motion.img 
+                key={currentPhotoIndex}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+                src={safeListing.images[currentPhotoIndex]} 
+                alt={`Gallery ${currentPhotoIndex + 1}`} 
+                className="max-w-full max-h-full object-contain rounded-xl shadow-2xl"
+              />
+            </div>
+
+            {/* Navigation */}
+            <button 
+              onClick={() => setCurrentPhotoIndex(prev => Math.max(0, prev - 1))}
+              disabled={currentPhotoIndex === 0}
+              className="absolute left-4 md:left-12 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/50 flex items-center justify-center hover:bg-white/20 transition-colors disabled:opacity-30 disabled:cursor-not-allowed backdrop-blur-md border border-white/10 z-10"
+            >
+              <ChevronLeft className="w-8 h-8 text-white" />
+            </button>
+            <button 
+              onClick={() => setCurrentPhotoIndex(prev => Math.min(safeListing.images.length - 1, prev + 1))}
+              disabled={currentPhotoIndex === safeListing.images.length - 1}
+              className="absolute right-4 md:right-12 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/50 flex items-center justify-center hover:bg-white/20 transition-colors disabled:opacity-30 disabled:cursor-not-allowed backdrop-blur-md border border-white/10 z-10"
+            >
+              <ChevronRight className="w-8 h-8 text-white" />
+            </button>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Toast Notification */}
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div 
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-[300] bg-red-500/10 border border-red-500/20 backdrop-blur-xl px-6 py-3 rounded-full flex items-center gap-3 shadow-[0_10px_40px_rgba(239,68,68,0.2)]"
+          >
+            <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+            <span className="text-red-100 font-medium text-sm">{toastMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </div>
   );
 };

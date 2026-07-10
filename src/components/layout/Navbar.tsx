@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
-import { Sparkles, Menu, X, Plus, LayoutDashboard, User } from 'lucide-react';
+import { Mountain, Menu, X, Plus, LayoutDashboard, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 
@@ -29,12 +30,19 @@ const Navbar = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex justify-center px-4 pt-4 md:pt-6">
-      <nav
+      <motion.nav
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ 
+          y: scrolled ? 10 : 0,
+          scale: scrolled ? 0.98 : 1,
+          opacity: 1
+        }}
+        transition={{ duration: 0.5, type: 'spring', stiffness: 100, damping: 20 }}
         className={`w-full max-w-[101.25rem] transition-all duration-500 ease-out ${
           scrolled
-            ? 'bg-white/80 backdrop-blur-2xl shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-white/60'
-            : 'bg-transparent border border-transparent'
-        } rounded-[2rem] px-[1.5rem] py-[0.75rem]`}
+            ? 'bg-white/80 backdrop-blur-2xl shadow-[0_20px_40px_rgba(0,0,0,0.1)] border border-white/60 py-[0.5rem]'
+            : 'bg-transparent border border-transparent py-[1rem]'
+        } rounded-[2rem] px-[1.5rem]`}
       >
         <div className="flex justify-between items-center w-full gap-4 md:gap-8">
           
@@ -43,7 +51,7 @@ const Navbar = () => {
             {/* Brand Logo */}
             <Link to="/" className="flex items-center gap-[0.75rem] group cursor-pointer shrink-0">
               <div className="w-[2.5rem] h-[2.5rem] rounded-[0.75rem] bg-gradient-to-br from-brand to-orange-400 flex items-center justify-center shadow-[0_4px_15px_rgba(246,86,0,0.3)] group-hover:shadow-[0_8px_25px_rgba(246,86,0,0.5)] transition-all duration-300 group-hover:-translate-y-[2px]">
-                <Sparkles className="w-[1.25rem] h-[1.25rem] text-white transition-transform duration-300 group-hover:scale-110" />
+                <Mountain className="w-[1.25rem] h-[1.25rem] text-white transition-transform duration-300 group-hover:scale-110" />
               </div>
               <span className={`text-[1.25rem] font-bold tracking-tight transition-colors ${scrolled ? 'text-gray-900' : 'text-white'}`}>
                 Zenith
@@ -194,7 +202,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-      </nav>
+      </motion.nav>
     </header>
   );
 };

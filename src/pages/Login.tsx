@@ -36,6 +36,37 @@ export const Login = () => {
       return;
     }
 
+    // Demo Intercept
+    if (email === 'admin@example.com' && password === 'admin123') {
+      setTimeout(() => {
+        login('demo-admin-token', {
+          id: 'admin-1',
+          name: 'System Admin',
+          email: 'admin@example.com',
+          image: 'https://i.pravatar.cc/150?u=admin',
+          role: 'admin'
+        });
+        setLoading(false);
+        navigate('/dashboard');
+      }, 1000);
+      return;
+    }
+
+    if (email === 'user@example.com' && password === 'user123') {
+      setTimeout(() => {
+        login('demo-user-token', {
+          id: 'user-1',
+          name: 'Demo User',
+          email: 'user@example.com',
+          image: 'https://i.pravatar.cc/150?u=user',
+          role: 'user'
+        });
+        setLoading(false);
+        navigate('/dashboard');
+      }, 1000);
+      return;
+    }
+
     try {
       const response = await api.post('/auth/login', { email, password });
       
@@ -44,19 +75,26 @@ export const Login = () => {
         id: response.data.id,
         name: response.data.name,
         email: response.data.email,
-        image: response.data.image
+        image: response.data.image,
+        role: response.data.role || 'user'
       }); 
       
-      navigate('/explore');
+      navigate('/dashboard');
     } catch (err: any) {
       setLoading(false);
       setError(err.response?.data?.message || 'Login failed. Please try again.');
     }
   };
 
-  const handleDemoLogin = () => {
-    setEmail('demo@example.com');
-    setPassword('demo123');
+  const handleDemoUserLogin = () => {
+    setEmail('user@example.com');
+    setPassword('user123');
+    setError('');
+  };
+
+  const handleDemoAdminLogin = () => {
+    setEmail('admin@example.com');
+    setPassword('admin123');
     setError('');
   };
 
@@ -76,7 +114,8 @@ export const Login = () => {
         id: response.data.id,
         name: response.data.name,
         email: response.data.email,
-        image: response.data.image
+        image: response.data.image,
+        role: 'user'
       });
       
       navigate('/explore');
@@ -197,14 +236,23 @@ export const Login = () => {
 
           {/* Demo Login Shortcut */}
           <div className="mt-8 pt-6 border-t border-white/10 text-center">
-            <p className="text-sm text-slate-400 mb-3">Just want to look around?</p>
-            <Button 
-              onClick={handleDemoLogin}
-              variant="outline"
-              className="w-full bg-brand/10 border-brand/20 text-brand hover:bg-brand/20 hover:text-orange-400 hover:border-brand/40 rounded-xl h-11"
-            >
-              Use Demo Account
-            </Button>
+            <p className="text-sm text-slate-400 mb-3">Demo Credentials for Evaluation</p>
+            <div className="flex gap-3">
+              <Button 
+                onClick={handleDemoUserLogin}
+                variant="outline"
+                className="flex-1 bg-white/5 border-white/10 text-slate-300 hover:bg-white/10 hover:text-white rounded-xl h-11"
+              >
+                Login as User
+              </Button>
+              <Button 
+                onClick={handleDemoAdminLogin}
+                variant="outline"
+                className="flex-1 bg-brand/10 border-brand/20 text-brand hover:bg-brand/20 hover:text-orange-400 hover:border-brand/40 rounded-xl h-11"
+              >
+                Login as Admin
+              </Button>
+            </div>
           </div>
 
           <p className="text-center text-sm text-slate-400 mt-8">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, Trash2, MapPin, Star, Plus } from 'lucide-react';
+import { Eye, Trash2, MapPin, Star, Plus, AlertTriangle } from 'lucide-react';
 import { LISTINGS_DATA } from '@/data/listings';
 import { Button } from '@/components/ui/button';
 import api from '@/config/api';
@@ -9,6 +9,8 @@ import api from '@/config/api';
 export const ManageListings = ({ isEmbedded = false }: { isEmbedded?: boolean }) => {
   const [listings, setListings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [listingToDelete, setListingToDelete] = useState<string | number | null>(null);
 
   useEffect(() => {
     const fetchMyListings = async () => {
@@ -25,15 +27,17 @@ export const ManageListings = ({ isEmbedded = false }: { isEmbedded?: boolean })
     fetchMyListings();
   }, []);
 
-  const handleDelete = async (id: string | number) => {
-    if (window.confirm('Are you sure you want to delete this listing?')) {
-      try {
-        await api.delete(`/listings/${id}`);
-        setListings(prev => prev.filter(item => item.id !== id && item._id !== id));
-      } catch (error) {
-        console.warn('Delete via API failed, doing locally for mock');
-        setListings(prev => prev.filter(item => item.id !== id && item._id !== id));
-      }
+  const confirmDelete = async () => {
+    if (!listingToDelete) return;
+    try {
+      await api.delete(`/listings/${listingToDelete}`);
+      setListings(prev => prev.filter(item => item.id !== listingToDelete && item._id !== listingToDelete));
+    } catch (error) {
+      console.warn('Delete via API failed, doing locally for mock');
+      setListings(prev => prev.filter(item => item.id !== listingToDelete && item._id !== listingToDelete));
+    } finally {
+      setDeleteModalOpen(false);
+      setListingToDelete(null);
     }
   };
 
@@ -131,7 +135,10 @@ export const ManageListings = ({ isEmbedded = false }: { isEmbedded?: boolean })
                             </Link>
                             <Button 
                               variant="outline" 
-                              onClick={() => handleDelete(item._id || item.id)}
+                              onClick={() => {
+                                setListingToDelete(item._id || item.id);
+                                setDeleteModalOpen(true);
+                              }}
                               className="w-10 h-10 p-0 rounded-xl bg-red-500/10 border-red-500/20 hover:bg-red-500 hover:text-white text-red-400 transition-colors"
                             >
                               <Trash2 className="w-4 h-4" />
@@ -158,6 +165,55 @@ export const ManageListings = ({ isEmbedded = false }: { isEmbedded?: boolean })
             </table>
           </div>
         </div>
+
+        {/* Delete Confirmation Modal */}
+        <AnimatePresence>
+          {deleteModalOpen && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                onClick={() => setDeleteModalOpen(false)}
+              />
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                className="relative bg-[#121217] border border-white/10 rounded-2xl p-6 w-full max-w-md shadow-2xl overflow-hidden"
+              >
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-orange-500" />
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center shrink-0 border border-red-500/20">
+                    <AlertTriangle className="w-6 h-6 text-red-500" />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <h3 className="text-xl font-bold text-white">Delete Listing?</h3>
+                    <p className="text-sm text-slate-400 leading-relaxed">
+                      Are you sure you want to delete this listing? This action cannot be undone and the property will be permanently removed.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex justify-end gap-3 mt-8">
+                  <Button 
+                    variant="outline" 
+                    className="bg-transparent border-white/10 text-white hover:bg-white/5 h-10 px-6 rounded-xl"
+                    onClick={() => setDeleteModalOpen(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    className="bg-red-500 hover:bg-red-600 text-white h-10 px-6 rounded-xl shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all"
+                    onClick={confirmDelete}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
     </>
   );
 

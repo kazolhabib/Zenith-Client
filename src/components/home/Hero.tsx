@@ -150,7 +150,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-24 w-full max-w-5xl mx-auto relative group perspective-[2000px]"
+          className="mt-24 w-full max-w-[1400px] mx-auto relative group perspective-[2000px] px-4 md:px-8"
         >
           <motion.div
             animate={{ 
@@ -170,7 +170,7 @@ const Hero = () => {
             {/* Subtle glowing effect behind the dashboard */}
             <div className="absolute -inset-[1px] bg-gradient-to-r from-brand/30 via-purple-500/30 to-brand/30 rounded-2xl blur-sm opacity-50 group-hover:opacity-100 transition duration-500 -z-10" />
             
-            <div className="relative bg-[#0a0a0c]/80 rounded-2xl overflow-hidden flex flex-col md:flex-row h-full md:h-[450px]">
+            <div className="relative bg-[#0a0a0c]/80 rounded-2xl overflow-hidden flex flex-col md:flex-row h-full md:h-[550px]">
               {/* Sidebar */}
               <div className="w-full md:w-20 bg-[#121217]/90 border-r border-white/5 flex flex-row md:flex-col items-center justify-between py-4 px-4 md:px-0">
                 <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-brand to-orange-500 flex items-center justify-center shadow-lg shadow-brand/20">
@@ -194,7 +194,8 @@ const Hero = () => {
               <div className="flex-1 p-6 flex flex-col gap-6">
                 
                 {/* Top Stats */}
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* Top Stats */}
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                   <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
                     <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Total Requests</span>
                     <div className="flex items-end gap-2">
@@ -209,6 +210,20 @@ const Hero = () => {
                       <span className="text-green-400 text-xs mb-1 flex items-center">↓ 4ms</span>
                     </div>
                   </div>
+                  <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
+                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Bandwidth</span>
+                    <div className="flex items-end gap-2">
+                      <span className="text-2xl font-bold text-white">42.5 TB</span>
+                      <span className="text-green-400 text-xs mb-1 flex items-center">↑ 8%</span>
+                    </div>
+                  </div>
+                  <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
+                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Cache Hit Rate</span>
+                    <div className="flex items-end gap-2">
+                      <span className="text-2xl font-bold text-white">99.8%</span>
+                      <span className="text-green-400 text-xs mb-1 flex items-center">↑ 0.2%</span>
+                    </div>
+                  </div>
                   <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1 relative overflow-hidden group/card">
                     <div className="absolute -right-4 -top-4 w-16 h-16 bg-brand/20 blur-xl rounded-full group-hover/card:bg-brand/30 transition-colors" />
                     <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Active Nodes</span>
@@ -219,84 +234,131 @@ const Hero = () => {
                   </div>
                 </div>
 
-                {/* Chart Area */}
-                <div className="flex-1 bg-white/5 border border-white/5 rounded-xl p-5 flex flex-col relative overflow-hidden">
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-white text-sm font-semibold">Global Traffic</span>
-                    <div className="flex gap-2">
-                      <span className="px-2 py-1 rounded bg-white/10 text-white text-[10px] font-medium cursor-pointer">24h</span>
-                      <span className="px-2 py-1 rounded text-slate-400 hover:text-white text-[10px] font-medium cursor-pointer transition-colors">7d</span>
+                {/* Charts and Data */}
+                <div className="flex-1 flex flex-col lg:flex-row gap-4">
+                  {/* Chart Area */}
+                  <div className="flex-[2] bg-white/5 border border-white/5 rounded-xl p-5 flex flex-col relative overflow-hidden">
+                    <div className="flex justify-between items-center mb-4">
+                      <span className="text-white text-sm font-semibold">Global Traffic</span>
+                      <div className="flex gap-2">
+                        <span className="px-2 py-1 rounded bg-white/10 text-white text-[10px] font-medium cursor-pointer">24h</span>
+                        <span className="px-2 py-1 rounded text-slate-400 hover:text-white text-[10px] font-medium cursor-pointer transition-colors">7d</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex-1 relative mt-4">
+                      {/* Fake Chart Lines */}
+                      <div className="absolute inset-0 flex items-end justify-between px-2">
+                        {[30, 45, 35, 60, 50, 80, 65, 95, 80, 100, 85, 110, 90, 75, 85, 60, 70, 90, 105, 80].map((h, i) => (
+                          <motion.div 
+                            key={i}
+                            initial={{ height: "0%" }}
+                            animate={{ height: `${h}%` }}
+                            transition={{ duration: 1.5, delay: i * 0.05, ease: "easeOut" }}
+                            className="w-full mx-[2px] md:mx-1 bg-gradient-to-t from-brand/80 to-orange-400/80 rounded-t-sm relative group/bar"
+                          >
+                            <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-white text-black text-[10px] font-bold py-0.5 px-1.5 rounded opacity-0 group-hover/bar:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                              {h}k reqs
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                      {/* Grid lines */}
+                      <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20">
+                        <div className="w-full border-b border-dashed border-slate-500"></div>
+                        <div className="w-full border-b border-dashed border-slate-500"></div>
+                        <div className="w-full border-b border-dashed border-slate-500"></div>
+                        <div className="w-full border-b border-dashed border-slate-500"></div>
+                      </div>
                     </div>
                   </div>
-                  
-                  <div className="flex-1 relative mt-4">
-                    {/* Fake Chart Lines */}
-                    <div className="absolute inset-0 flex items-end justify-between px-2">
-                      {[30, 45, 35, 60, 50, 80, 65, 95, 80, 100, 85, 110, 90, 75, 85].map((h, i) => (
-                        <motion.div 
-                          key={i}
-                          initial={{ height: "0%" }}
-                          animate={{ height: `${h}%` }}
-                          transition={{ duration: 1.5, delay: i * 0.05, ease: "easeOut" }}
-                          className="w-full mx-[2px] md:mx-1 bg-gradient-to-t from-brand/80 to-orange-400/80 rounded-t-sm relative group/bar"
-                        >
-                          <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-white text-black text-[10px] font-bold py-0.5 px-1.5 rounded opacity-0 group-hover/bar:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
-                            {h}k reqs
+
+                  {/* Secondary Data (Regions) */}
+                  <div className="flex-1 bg-white/5 border border-white/5 rounded-xl p-5 flex flex-col overflow-hidden">
+                    <span className="text-white text-sm font-semibold mb-4">Top Edge Regions</span>
+                    <div className="flex flex-col gap-4 flex-1 justify-center">
+                      {[
+                        { name: "US East (N. Virginia)", value: "32%", color: "bg-brand" },
+                        { name: "Europe (Frankfurt)", value: "24%", color: "bg-orange-400" },
+                        { name: "Asia Pacific (Tokyo)", value: "18%", color: "bg-blue-400" },
+                        { name: "South America (São Paulo)", value: "12%", color: "bg-green-400" }
+                      ].map((region, i) => (
+                        <div key={i} className="flex flex-col gap-2">
+                          <div className="flex justify-between text-xs">
+                            <span className="text-slate-300 font-medium">{region.name}</span>
+                            <span className="text-white font-bold">{region.value}</span>
                           </div>
-                        </motion.div>
+                          <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                            <motion.div 
+                              initial={{ width: 0 }}
+                              animate={{ width: region.value }}
+                              transition={{ duration: 1.5, delay: 0.5 + (i * 0.2) }}
+                              className={`h-full ${region.color} rounded-full`}
+                            />
+                          </div>
+                        </div>
                       ))}
                     </div>
-                    {/* Grid lines */}
-                    <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20">
-                      <div className="w-full border-b border-dashed border-slate-500"></div>
-                      <div className="w-full border-b border-dashed border-slate-500"></div>
-                      <div className="w-full border-b border-dashed border-slate-500"></div>
-                      <div className="w-full border-b border-dashed border-slate-500"></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Panel - Active Deployments & Health */}
+              <div className="w-full md:w-80 bg-white/[0.02] border-l border-white/5 p-6 flex flex-col gap-6">
+                
+                <div className="flex flex-col gap-4">
+                  <span className="text-white text-sm font-semibold">Live Deployments</span>
+                  <div className="flex flex-col gap-3">
+                    {/* Deployment Item */}
+                    <div className="bg-white/5 border border-white/5 rounded-lg p-3 flex flex-col gap-2">
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_#22c55e]" />
+                          <span className="text-slate-200 text-xs font-medium">Production</span>
+                        </div>
+                        <span className="text-slate-500 text-[10px]">2m ago</span>
+                      </div>
+                      <div className="text-slate-400 text-[11px] font-mono truncate">fc8d1a2 • Add authentication</div>
+                    </div>
+
+                    {/* Deployment Item */}
+                    <div className="bg-white/5 border border-white/5 rounded-lg p-3 flex flex-col gap-2">
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]" />
+                          <span className="text-slate-200 text-xs font-medium">Staging</span>
+                        </div>
+                        <span className="text-slate-500 text-[10px]">1h ago</span>
+                      </div>
+                      <div className="text-slate-400 text-[11px] font-mono truncate">a2b9c3f • Update hero copy</div>
+                    </div>
+
+                    {/* Deployment Item */}
+                    <div className="bg-white/5 border border-white/5 rounded-lg p-3 flex flex-col gap-2 opacity-60">
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full bg-slate-500" />
+                          <span className="text-slate-200 text-xs font-medium">Preview</span>
+                        </div>
+                        <span className="text-slate-500 text-[10px]">5h ago</span>
+                      </div>
+                      <div className="text-slate-400 text-[11px] font-mono truncate">e4f5g6h • Fix layout bug</div>
                     </div>
                   </div>
                 </div>
 
-              </div>
-
-              {/* Right Panel - Active Deployments */}
-              <div className="w-full md:w-64 bg-white/[0.02] border-l border-white/5 p-6 flex flex-col gap-4">
-                <span className="text-white text-sm font-semibold">Live Deployments</span>
-                
-                <div className="flex flex-col gap-3">
-                  {/* Deployment Item */}
-                  <div className="bg-white/5 border border-white/5 rounded-lg p-3 flex flex-col gap-2">
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_#22c55e]" />
-                        <span className="text-slate-200 text-xs font-medium">Production</span>
+                <div className="flex flex-col gap-4 mt-auto">
+                  <span className="text-white text-sm font-semibold">System Health</span>
+                  <div className="flex items-center justify-between bg-white/5 border border-white/5 rounded-lg p-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                       </div>
-                      <span className="text-slate-500 text-[10px]">2m ago</span>
-                    </div>
-                    <div className="text-slate-400 text-[11px] font-mono truncate">fc8d1a2 • Add authentication</div>
-                  </div>
-
-                  {/* Deployment Item */}
-                  <div className="bg-white/5 border border-white/5 rounded-lg p-3 flex flex-col gap-2">
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]" />
-                        <span className="text-slate-200 text-xs font-medium">Staging</span>
+                      <div className="flex flex-col">
+                        <span className="text-slate-200 text-xs font-medium">All Systems Operational</span>
+                        <span className="text-slate-500 text-[10px]">Updated just now</span>
                       </div>
-                      <span className="text-slate-500 text-[10px]">1h ago</span>
                     </div>
-                    <div className="text-slate-400 text-[11px] font-mono truncate">a2b9c3f • Update hero copy</div>
-                  </div>
-
-                  {/* Deployment Item */}
-                  <div className="bg-white/5 border border-white/5 rounded-lg p-3 flex flex-col gap-2 opacity-60">
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-slate-500" />
-                        <span className="text-slate-200 text-xs font-medium">Preview</span>
-                      </div>
-                      <span className="text-slate-500 text-[10px]">5h ago</span>
-                    </div>
-                    <div className="text-slate-400 text-[11px] font-mono truncate">e4f5g6h • Fix layout bug</div>
                   </div>
                 </div>
 

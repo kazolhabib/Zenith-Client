@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { User, Camera, Mail, Save, List, ChevronRight } from 'lucide-react';
+import { User, Camera, Mail, Save, List, ChevronRight, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/config/api';
-import ManageListings from './ManageListings';
+import { ManageListings } from './ManageListings';
+import { MyReservations } from './MyReservations';
+import { AllReservations } from './AllReservations';
 
 export const Dashboard = () => {
   const { user, login } = useAuth();
-  const [activeTab, setActiveTab] = useState<'profile' | 'listings'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'listings' | 'reservations' | 'all-reservations'>('profile');
   
   const [name, setName] = useState(user?.name || '');
   const [image, setImage] = useState(user?.image || '');
@@ -68,7 +70,7 @@ export const Dashboard = () => {
           <p className="text-slate-400">Manage your profile and properties in one place.</p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
           
           {/* Sidebar Navigation */}
           <div className="w-full lg:w-64 shrink-0">
@@ -84,16 +86,45 @@ export const Dashboard = () => {
                   </div>
                   {activeTab === 'profile' && <ChevronRight className="w-4 h-4" />}
                 </button>
-                <button 
-                  onClick={() => setActiveTab('listings')}
-                  className={`w-full flex items-center justify-between p-4 rounded-2xl transition-all ${activeTab === 'listings' ? 'bg-brand text-white shadow-[0_0_20px_rgba(246,86,0,0.2)]' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}
-                >
-                  <div className="flex items-center gap-3 font-medium">
-                    <List className="w-5 h-5" />
-                    My Listings
-                  </div>
-                  {activeTab === 'listings' && <ChevronRight className="w-4 h-4" />}
-                </button>
+                {user?.role === 'admin' && (
+                  <>
+                    <button 
+                      onClick={() => setActiveTab('listings')}
+                      className={`w-full flex items-center justify-between p-4 rounded-2xl transition-all ${activeTab === 'listings' ? 'bg-brand text-white shadow-[0_0_20px_rgba(246,86,0,0.2)]' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}
+                    >
+                      <div className="flex items-center gap-3 font-medium">
+                        <List className="w-5 h-5" />
+                        Manage Listings
+                      </div>
+                      {activeTab === 'listings' && <ChevronRight className="w-4 h-4" />}
+                    </button>
+                    <button 
+                      onClick={() => setActiveTab('all-reservations')}
+                      className={`w-full flex items-center justify-between p-4 rounded-2xl transition-all ${activeTab === 'all-reservations' ? 'bg-brand text-white shadow-[0_0_20px_rgba(246,86,0,0.2)]' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}
+                    >
+                      <div className="flex items-center gap-3 font-medium">
+                        <Calendar className="w-5 h-5" />
+                        All Reservations
+                      </div>
+                      {activeTab === 'all-reservations' && <ChevronRight className="w-4 h-4" />}
+                    </button>
+                  </>
+                )}
+
+                {user?.role !== 'admin' && (
+                  <>
+                    <button 
+                      onClick={() => setActiveTab('reservations')}
+                      className={`w-full flex items-center justify-between p-4 rounded-2xl transition-all ${activeTab === 'reservations' ? 'bg-brand text-white shadow-[0_0_20px_rgba(246,86,0,0.2)]' : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}
+                    >
+                      <div className="flex items-center gap-3 font-medium">
+                        <Calendar className="w-5 h-5" />
+                        My Reservations
+                      </div>
+                      {activeTab === 'reservations' && <ChevronRight className="w-4 h-4" />}
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -207,9 +238,30 @@ export const Dashboard = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
-                {/* Embedded ManageListings component */}
-                <div className="bg-[#121217]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden p-6 md:p-8">
+                <div className="md:px-2">
                   <ManageListings isEmbedded={true} />
+                </div>
+              </motion.div>
+            )}
+
+            {activeTab === 'reservations' && user?.role !== 'admin' && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <div className="md:px-2">
+                  <MyReservations isEmbedded={true} />
+                </div>
+              </motion.div>
+            )}
+
+            {activeTab === 'all-reservations' && user?.role === 'admin' && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+              >
+                <div className="md:px-2">
+                  <AllReservations isEmbedded={true} />
                 </div>
               </motion.div>
             )}
