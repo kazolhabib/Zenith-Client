@@ -1,29 +1,29 @@
 import React from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Code2, GitBranch, Rocket } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Compass, Shield, Sparkles } from 'lucide-react';
 
 const steps = [
   {
     id: '01',
-    title: 'Connect Repository',
-    description: 'Link your GitHub, GitLab, or Bitbucket account. We automatically detect your framework and configure the build settings.',
-    icon: GitBranch,
+    title: 'Explore Collections',
+    description: 'Browse our curated collection of verified premium properties, tropical villas, and alpine chalets to find your perfect oasis.',
+    icon: Compass,
     color: 'from-blue-500 to-cyan-400',
     shadow: 'shadow-[0_0_30px_rgba(59,130,246,0.3)]'
   },
   {
     id: '02',
-    title: 'Review & Build',
-    description: 'Every push creates a preview deployment. Review changes with your team before merging to production.',
-    icon: Code2,
+    title: 'Reserve Seamlessly',
+    description: 'Secure your dates with our instant, fully protected payment system. Concierge coordination starts immediately.',
+    icon: Shield,
     color: 'from-purple-500 to-pink-500',
     shadow: 'shadow-[0_0_30px_rgba(168,85,247,0.3)]'
   },
   {
     id: '03',
-    title: 'Global Deployment',
-    description: 'Merge to main and your code is instantly deployed to our global edge network in milliseconds.',
-    icon: Rocket,
+    title: 'Arrive & Indulge',
+    description: 'Arrive to a fully prepared villa. Enjoy 24/7 personal butler service, custom excursions, and absolute luxury.',
+    icon: Sparkles,
     color: 'from-brand to-orange-400',
     shadow: 'shadow-[0_0_30px_rgba(246,86,0,0.3)]'
   }
@@ -44,7 +44,7 @@ const HowItWorks = () => {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6"
           >
-            From code to global in <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand via-orange-400 to-yellow-400 drop-shadow-[0_0_10px_rgba(246,86,0,0.5)]">seconds.</span>
+            Your luxury getaway in <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand via-orange-400 to-yellow-400 drop-shadow-[0_0_10px_rgba(246,86,0,0.5)]">three simple steps.</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -53,7 +53,7 @@ const HowItWorks = () => {
             transition={{ delay: 0.1 }}
             className="text-lg md:text-xl text-slate-400 font-medium"
           >
-            A streamlined workflow designed for maximum developer velocity.
+            A seamless booking and concierge experience tailored for elite travelers.
           </motion.p>
         </div>
 

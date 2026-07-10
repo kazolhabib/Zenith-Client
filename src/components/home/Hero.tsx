@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles, Terminal, Cpu, Globe } from 'lucide-react';
+import { ArrowRight, Sparkles, Compass, Shield, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
@@ -53,9 +53,9 @@ const Hero = () => {
         >
           <div className="absolute inset-0 rounded-full bg-gradient-to-r from-brand/20 via-orange-400/20 to-yellow-400/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity" />
           <Sparkles className="w-4 h-4 text-brand relative z-10" />
-          <span className="relative z-10">Introducing Zenith 2.0</span>
+          <span className="relative z-10">Introducing Zenith Collections</span>
           <span className="relative z-10 ml-2 pl-2 border-l border-white/20 text-brand flex items-center gap-1 group-hover:gap-2 transition-all">
-            Read launch post <ArrowRight className="w-3.5 h-3.5" />
+            Explore new properties <ArrowRight className="w-3.5 h-3.5" />
           </span>
         </motion.div>
 
@@ -66,14 +66,14 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           className="text-5xl md:text-7xl lg:text-[6.5rem] font-extrabold tracking-tight text-white max-w-6xl mb-8 leading-[1.05]"
         >
-          The Engine for <br className="hidden md:block" />
+          The Gateway to <br className="hidden md:block" />
           <span className="relative inline-block mt-2">
             <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-200 to-slate-400">
-              Modern
+              Extraordinary
             </span>
             {' '}
             <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-r from-brand via-orange-400 to-yellow-400 drop-shadow-[0_0_30px_rgba(246,86,0,0.4)]">
-              Engineering
+              Escapes
             </span>
           </span>
         </motion.h1>
@@ -85,8 +85,8 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="text-lg md:text-2xl text-slate-400 max-w-3xl mb-12 leading-relaxed font-medium"
         >
-          Deploy your applications globally in milliseconds. 
-          Experience zero-config scaling with our <span className="text-white">next-generation</span> edge infrastructure.
+          Discover handpicked luxury villas, cabins, and private estates globally. 
+          Experience a new standard of travel with our <span className="text-white">24/7 dedicated</span> concierge service.
         </motion.p>
 
         {/* Call to Actions */}
@@ -96,21 +96,21 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col sm:flex-row items-center gap-6 w-full sm:w-auto z-20 relative"
         >
-          <Link to="/register" className="w-full sm:w-auto">
+          <Link to="/explore" className="w-full sm:w-auto">
             <Button className="group relative overflow-hidden rounded-full bg-white hover:bg-gray-100 px-10 h-16 text-black shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:shadow-[0_0_60px_rgba(255,255,255,0.4)] hover:scale-105 transition-all duration-300 text-lg w-full">
               <span className="relative z-10 font-bold tracking-wide flex items-center gap-2">
-                Start Building Free
+                Explore Elite Villas
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-brand/10 to-orange-400/10 opacity-0 group-hover:opacity-100 transition-opacity" />
             </Button>
           </Link>
           
-          <Link to="/explore" className="w-full sm:w-auto">
+          <Link to="/contact" className="w-full sm:w-auto">
             <Button variant="outline" className="group rounded-full h-16 px-10 text-white bg-white/5 backdrop-blur-md hover:bg-white/10 border-white/10 hover:border-white/20 text-lg font-bold transition-all w-full shadow-[0_0_20px_rgba(0,0,0,0.5)]">
               <span className="flex items-center gap-2">
-                <Terminal className="w-5 h-5 text-slate-400 group-hover:text-white transition-colors" />
-                View Documentation
+                <Compass className="w-5 h-5 text-slate-400 group-hover:text-white transition-colors" />
+                Contact Concierge
               </span>
             </Button>
           </Link>
@@ -125,11 +125,11 @@ const Hero = () => {
         >
           <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#121217]/80 backdrop-blur-md border border-white/10 shadow-xl">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-sm font-medium text-slate-300">Global Edge Network</span>
+            <span className="text-sm font-medium text-slate-300">Verified Properties Only</span>
           </div>
           <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#121217]/80 backdrop-blur-md border border-white/10 shadow-xl ml-8">
-            <Cpu className="w-4 h-4 text-brand" />
-            <span className="text-sm font-medium text-slate-300">Auto-scaling Compute</span>
+            <Shield className="w-4 h-4 text-brand" />
+            <span className="text-sm font-medium text-slate-300">Protected Payments</span>
           </div>
         </motion.div>
 
@@ -141,7 +141,7 @@ const Hero = () => {
         >
           <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#121217]/80 backdrop-blur-md border border-white/10 shadow-xl">
             <Globe className="w-4 h-4 text-blue-400" />
-            <span className="text-sm font-medium text-slate-300">99.99% Uptime SLA</span>
+            <span className="text-sm font-medium text-slate-300">24/7 Premium Guest Support</span>
           </div>
         </motion.div>
 
@@ -194,42 +194,41 @@ const Hero = () => {
               <div className="flex-1 p-6 flex flex-col gap-6">
                 
                 {/* Top Stats */}
-                {/* Top Stats */}
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                   <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
-                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Total Requests</span>
+                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Active Bookings</span>
                     <div className="flex items-end gap-2">
-                      <span className="text-2xl font-bold text-white">2.4B</span>
-                      <span className="text-green-400 text-xs mb-1 flex items-center">↑ 12%</span>
-                    </div>
-                  </div>
-                  <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
-                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Avg Latency</span>
-                    <div className="flex items-end gap-2">
-                      <span className="text-2xl font-bold text-white">12ms</span>
-                      <span className="text-green-400 text-xs mb-1 flex items-center">↓ 4ms</span>
-                    </div>
-                  </div>
-                  <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
-                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Bandwidth</span>
-                    <div className="flex items-end gap-2">
-                      <span className="text-2xl font-bold text-white">42.5 TB</span>
+                      <span className="text-2xl font-bold text-white">42</span>
                       <span className="text-green-400 text-xs mb-1 flex items-center">↑ 8%</span>
                     </div>
                   </div>
                   <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
-                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Cache Hit Rate</span>
+                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Occupancy Rate</span>
                     <div className="flex items-end gap-2">
-                      <span className="text-2xl font-bold text-white">99.8%</span>
-                      <span className="text-green-400 text-xs mb-1 flex items-center">↑ 0.2%</span>
+                      <span className="text-2xl font-bold text-white">94%</span>
+                      <span className="text-green-400 text-xs mb-1 flex items-center">↑ 3%</span>
+                    </div>
+                  </div>
+                  <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
+                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Total Revenue</span>
+                    <div className="flex items-end gap-2">
+                      <span className="text-2xl font-bold text-white">$182.5K</span>
+                      <span className="text-green-400 text-xs mb-1 flex items-center">↑ 12%</span>
+                    </div>
+                  </div>
+                  <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
+                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Avg Guest Rating</span>
+                    <div className="flex items-end gap-2">
+                      <span className="text-2xl font-bold text-white">4.98</span>
+                      <span className="text-green-400 text-xs mb-1 flex items-center">★</span>
                     </div>
                   </div>
                   <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1 relative overflow-hidden group/card">
                     <div className="absolute -right-4 -top-4 w-16 h-16 bg-brand/20 blur-xl rounded-full group-hover/card:bg-brand/30 transition-colors" />
-                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Active Nodes</span>
+                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Destinations</span>
                     <div className="flex items-end gap-2 relative z-10">
-                      <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400">142</span>
-                      <span className="text-slate-500 text-xs mb-1">Global</span>
+                      <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400">12</span>
+                      <span className="text-slate-500 text-xs mb-1">Active</span>
                     </div>
                   </div>
                 </div>
@@ -239,17 +238,17 @@ const Hero = () => {
                   {/* Chart Area */}
                   <div className="flex-[2] bg-white/5 border border-white/5 rounded-xl p-5 flex flex-col relative overflow-hidden">
                     <div className="flex justify-between items-center mb-4">
-                      <span className="text-white text-sm font-semibold">Global Traffic</span>
+                      <span className="text-white text-sm font-semibold">Monthly Bookings Overview</span>
                       <div className="flex gap-2">
-                        <span className="px-2 py-1 rounded bg-white/10 text-white text-[10px] font-medium cursor-pointer">24h</span>
-                        <span className="px-2 py-1 rounded text-slate-400 hover:text-white text-[10px] font-medium cursor-pointer transition-colors">7d</span>
+                        <span className="px-2 py-1 rounded bg-white/10 text-white text-[10px] font-medium cursor-pointer">30d</span>
+                        <span className="px-2 py-1 rounded text-slate-400 hover:text-white text-[10px] font-medium cursor-pointer transition-colors">12m</span>
                       </div>
                     </div>
                     
                     <div className="flex-1 relative mt-4">
                       {/* Fake Chart Lines */}
                       <div className="absolute inset-0 flex items-end justify-between px-2">
-                        {[30, 45, 35, 60, 50, 80, 65, 95, 80, 100, 85, 110, 90, 75, 85, 60, 70, 90, 105, 80].map((h, i) => (
+                        {[30, 45, 35, 60, 50, 80, 65, 95, 80, 100, 85, 110, 90, 75, 85, 60, 70, 90, 105, 120].map((h, i) => (
                           <motion.div 
                             key={i}
                             initial={{ height: "0%" }}
@@ -258,7 +257,7 @@ const Hero = () => {
                             className="w-full mx-[2px] md:mx-1 bg-gradient-to-t from-brand/80 to-orange-400/80 rounded-t-sm relative group/bar"
                           >
                             <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-white text-black text-[10px] font-bold py-0.5 px-1.5 rounded opacity-0 group-hover/bar:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
-                              {h}k reqs
+                              {h} stays
                             </div>
                           </motion.div>
                         ))}
@@ -273,27 +272,27 @@ const Hero = () => {
                     </div>
                   </div>
 
-                  {/* Secondary Data (Regions) */}
+                  {/* Secondary Data (Stays Types) */}
                   <div className="flex-1 bg-white/5 border border-white/5 rounded-xl p-5 flex flex-col overflow-hidden">
-                    <span className="text-white text-sm font-semibold mb-4">Top Edge Regions</span>
+                    <span className="text-white text-sm font-semibold mb-4">Popular Categories</span>
                     <div className="flex flex-col gap-4 flex-1 justify-center">
                       {[
-                        { name: "US East (N. Virginia)", value: "32%", color: "bg-brand" },
-                        { name: "Europe (Frankfurt)", value: "24%", color: "bg-orange-400" },
-                        { name: "Asia Pacific (Tokyo)", value: "18%", color: "bg-blue-400" },
-                        { name: "South America (São Paulo)", value: "12%", color: "bg-green-400" }
-                      ].map((region, i) => (
+                        { name: "Luxury Villas", value: "45%", color: "bg-brand" },
+                        { name: "Beachfront Resorts", value: "25%", color: "bg-orange-400" },
+                        { name: "Remote Cabins", value: "18%", color: "bg-blue-400" },
+                        { name: "Castles & Mansions", value: "12%", color: "bg-green-400" }
+                      ].map((category, i) => (
                         <div key={i} className="flex flex-col gap-2">
                           <div className="flex justify-between text-xs">
-                            <span className="text-slate-300 font-medium">{region.name}</span>
-                            <span className="text-white font-bold">{region.value}</span>
+                            <span className="text-slate-300 font-medium">{category.name}</span>
+                            <span className="text-white font-bold">{category.value}</span>
                           </div>
                           <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
                             <motion.div 
                               initial={{ width: 0 }}
-                              animate={{ width: region.value }}
+                              animate={{ width: category.value }}
                               transition={{ duration: 1.5, delay: 0.5 + (i * 0.2) }}
-                              className={`h-full ${region.color} rounded-full`}
+                              className={`h-full ${category.color} rounded-full`}
                             />
                           </div>
                         </div>
@@ -303,70 +302,70 @@ const Hero = () => {
                 </div>
               </div>
 
-              {/* Right Panel - Active Deployments & Health */}
+              {/* Right Panel - Active Bookings & Concierge */}
               <div className="w-full md:w-80 bg-white/[0.02] border-l border-white/5 p-6 flex flex-col gap-6">
                 
                 <div className="flex flex-col gap-4">
-                  <span className="text-white text-sm font-semibold">Live Deployments</span>
+                  <span className="text-white text-sm font-semibold">Upcoming Itineraries</span>
                   <div className="flex flex-col gap-3">
-                    {/* Deployment Item */}
+                    {/* Stay Item */}
                     <div className="bg-white/5 border border-white/5 rounded-lg p-3 flex flex-col gap-2">
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-[0_0_8px_#22c55e]" />
-                          <span className="text-slate-200 text-xs font-medium">Production</span>
+                          <span className="text-slate-200 text-xs font-medium">Italian Villa</span>
                         </div>
-                        <span className="text-slate-500 text-[10px]">2m ago</span>
+                        <span className="text-slate-500 text-[10px]">Jul 15</span>
                       </div>
-                      <div className="text-slate-400 text-[11px] font-mono truncate">fc8d1a2 • Add authentication</div>
+                      <div className="text-slate-400 text-[11px] truncate">Tuscany, Italy • 5 Nights</div>
                     </div>
 
-                    {/* Deployment Item */}
+                    {/* Stay Item */}
                     <div className="bg-white/5 border border-white/5 rounded-lg p-3 flex flex-col gap-2">
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 rounded-full bg-blue-500 shadow-[0_0_8px_#3b82f6]" />
-                          <span className="text-slate-200 text-xs font-medium">Staging</span>
+                          <span className="text-slate-200 text-xs font-medium">Cyberpunk Studio</span>
                         </div>
-                        <span className="text-slate-500 text-[10px]">1h ago</span>
+                        <span className="text-slate-500 text-[10px]">Aug 20</span>
                       </div>
-                      <div className="text-slate-400 text-[11px] font-mono truncate">a2b9c3f • Update hero copy</div>
+                      <div className="text-slate-400 text-[11px] truncate">Tokyo, Japan • 3 Nights</div>
                     </div>
 
-                    {/* Deployment Item */}
+                    {/* Stay Item */}
                     <div className="bg-white/5 border border-white/5 rounded-lg p-3 flex flex-col gap-2 opacity-60">
                       <div className="flex justify-between items-center">
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 rounded-full bg-slate-500" />
-                          <span className="text-slate-200 text-xs font-medium">Preview</span>
+                          <span className="text-slate-200 text-xs font-medium">Rustic Farmhouse</span>
                         </div>
-                        <span className="text-slate-500 text-[10px]">5h ago</span>
+                        <span className="text-slate-500 text-[10px]">Sep 12</span>
                       </div>
-                      <div className="text-slate-400 text-[11px] font-mono truncate">e4f5g6h • Fix layout bug</div>
+                      <div className="text-slate-400 text-[11px] truncate">Provence, France • 7 Nights</div>
                     </div>
                   </div>
                 </div>
 
                 <div className="flex flex-col gap-4 mt-auto">
-                  <span className="text-white text-sm font-semibold">System Health</span>
+                  <span className="text-white text-sm font-semibold">Concierge Support</span>
                   <div className="flex items-center justify-between bg-white/5 border border-white/5 rounded-lg p-3">
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-green-500/20 flex items-center justify-center">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                       </div>
                       <div className="flex flex-col">
-                        <span className="text-slate-200 text-xs font-medium">All Systems Operational</span>
-                        <span className="text-slate-500 text-[10px]">Updated just now</span>
+                        <span className="text-slate-200 text-xs font-medium">Personal Assistant Online</span>
+                        <span className="text-slate-500 text-[10px]">Ready to assist you</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <div className="mt-auto pt-4 border-t border-white/5">
-                  <div className="flex items-center gap-2 text-brand text-xs font-medium hover:text-orange-400 cursor-pointer transition-colors">
-                    View all environments
-                    <ArrowRight className="w-3 h-3" />
-                  </div>
+                  <Link to="/explore" className="flex items-center gap-2 text-brand text-xs font-medium hover:text-orange-400 cursor-pointer transition-colors">
+                    Browse all destinations
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
               </div>
             </div>

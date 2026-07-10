@@ -6,24 +6,24 @@ import { Link } from 'react-router-dom';
 
 const plans = [
   {
-    name: 'Hobby',
+    name: 'Silver Club',
     price: '$0',
-    description: 'Perfect for side projects and learning.',
-    features: ['1 Project', '100k API Requests', 'Community Support', 'Basic Analytics'],
+    description: 'Perfect for starting your luxury travel journey.',
+    features: ['5% Stay Discount', 'Complimentary High-speed Wi-Fi', 'Member-Only Priority Booking', 'Standard Guest Support'],
     isPopular: false,
   },
   {
-    name: 'Pro',
-    price: '$29',
-    description: 'For professional developers and small teams.',
-    features: ['Unlimited Projects', '10M API Requests', 'Priority Support', 'Advanced Analytics', 'Custom Domains'],
+    name: 'Gold VIP',
+    price: '$49',
+    description: 'For frequent travelers seeking premium privileges.',
+    features: ['15% Stay Discount', 'Complimentary Room Upgrades', 'Early Check-In / Late Check-Out', 'Priority Concierge & Excursions', 'Airport Welcome Service'],
     isPopular: true,
   },
   {
-    name: 'Enterprise',
+    name: 'Platinum Royal',
     price: 'Custom',
-    description: 'For large scale organizations and high traffic.',
-    features: ['Unlimited Everything', 'Dedicated Success Manager', '24/7 Phone Support', 'Custom SLA', 'On-premise deployment'],
+    description: 'For the ultimate bespoke travel experience.',
+    features: ['25% Stay Discount', 'Guaranteed Room Upgrades', '24/7 Dedicated Concierge Advisor', 'Complimentary Private Chauffeur', 'Private Airport Lounge Access'],
     isPopular: false,
   },
 ];
@@ -43,7 +43,7 @@ const Pricing = () => {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6"
           >
-            Simple, transparent <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand via-orange-400 to-yellow-400 drop-shadow-[0_0_10px_rgba(246,86,0,0.5)]">pricing</span>
+            Elite member <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand via-orange-400 to-yellow-400 drop-shadow-[0_0_10px_rgba(246,86,0,0.5)]">privileges</span>
           </motion.h2>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -52,7 +52,7 @@ const Pricing = () => {
             transition={{ delay: 0.1 }}
             className="text-lg md:text-xl text-slate-400 font-medium"
           >
-            No hidden fees. No surprise charges. Choose the plan that best fits your needs.
+            Unlock private discounts, guaranteed room upgrades, and dedicated concierge support.
           </motion.p>
         </div>
 
@@ -107,7 +107,7 @@ const Pricing = () => {
                       : 'bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:border-white/20'
                   }`}
                 >
-                  {plan.price === 'Custom' ? 'Contact Sales' : 'Get Started'}
+                  {plan.price === 'Custom' ? 'Contact Concierge' : 'Join the Club'}
                 </Button>
               </Link>
             </motion.div>

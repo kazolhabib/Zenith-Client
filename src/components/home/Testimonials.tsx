@@ -4,40 +4,40 @@ import { motion } from 'framer-motion';
 const testimonials = [
   {
     name: 'Sarah Jenkins',
-    role: 'CTO at TechFlow',
-    content: 'Zenith has completely transformed how we deploy our applications. The speed and reliability are simply unmatched.',
+    role: 'Luxury Travel Writer',
+    content: 'Zenith has completely transformed how we book our retreats. The properties are stunning and the service is unmatched.',
     image: 'https://i.pravatar.cc/150?u=sarah',
     color: 'bg-blue-500',
     shadow: 'shadow-[0_0_15px_rgba(59,130,246,0.5)]'
   },
   {
     name: 'David Chen',
-    role: 'Lead Developer',
-    content: 'The best developer experience I have ever had. The UI is gorgeous and everything just works out of the box.',
+    role: 'Frequent Traveler',
+    content: 'The best booking experience I have ever had. The villas are gorgeous and everything from check-in to check-out is seamless.',
     image: 'https://i.pravatar.cc/150?u=david',
     color: 'bg-brand',
     shadow: 'shadow-[0_0_15px_rgba(246,86,0,0.5)]'
   },
   {
     name: 'Emma Watson',
-    role: 'Product Manager',
-    content: 'We cut our deployment time by 80%. The analytics dashboard gives us exactly the insights we need.',
+    role: 'Lifestyle Consultant',
+    content: 'The 24/7 concierge service is phenomenal. They arranged a private chef and excursions that made our trip unforgettable.',
     image: 'https://i.pravatar.cc/150?u=emma',
     color: 'bg-purple-500',
     shadow: 'shadow-[0_0_15px_rgba(168,85,247,0.5)]'
   },
   {
     name: 'Michael Ross',
-    role: 'System Architect',
-    content: 'Global edge network scaling used to be our biggest headache. Zenith made it a one-click process.',
+    role: 'Elite Club Member',
+    content: 'Finding premium villas was always a headache. Zenith made it a simple, verified, and luxurious process.',
     image: 'https://i.pravatar.cc/150?u=michael',
     color: 'bg-green-500',
     shadow: 'shadow-[0_0_15px_rgba(34,197,94,0.5)]'
   },
   {
     name: 'Lisa Ray',
-    role: 'Frontend Engineer',
-    content: 'I love how intuitive the platform is. The Framer Motion integration examples helped us a lot.',
+    role: 'Travel Photographer',
+    content: 'Every property is a design masterpiece. The aesthetic of the stays is absolutely breathtaking and perfect for content creation.',
     image: 'https://i.pravatar.cc/150?u=lisa',
     color: 'bg-orange-400',
     shadow: 'shadow-[0_0_15px_rgba(251,146,60,0.5)]'
@@ -56,7 +56,7 @@ const Testimonials = () => {
           viewport={{ once: true }}
           className="text-4xl md:text-5xl font-extrabold tracking-tight text-white"
         >
-          Loved by <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand via-orange-400 to-yellow-400">engineers</span>
+          Loved by <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand via-orange-400 to-yellow-400">global travelers</span>
         </motion.h2>
       </div>
 

@@ -4,24 +4,24 @@ import { Plus, Minus } from 'lucide-react';
 
 const faqs = [
   {
-    question: 'How fast is the setup process?',
-    answer: 'You can connect your repository and have your first deployment live in under 3 minutes. Our zero-config deployment engine handles all the complexity for standard frameworks.',
+    question: 'What are the check-in and check-out times?',
+    answer: 'Standard check-in is at 3:00 PM and check-out is at 11:00 AM. Early check-in or late check-out can be requested through your concierge, subject to availability (and is guaranteed for Gold VIP and Platinum Royal members).',
   },
   {
-    question: 'Do you offer a free tier?',
-    answer: 'Yes! Our Hobby tier is completely free forever. It includes 1 project and 100k API requests per month, which is perfect for side projects and learning.',
+    question: 'How does the property verification work?',
+    answer: 'Every listing on Zenith undergoes a rigorous 100-point physical inspection by our luxury travel experts. We verify safety, cleanliness, structural design, amenities, and high-speed Wi-Fi before adding it to our collection.',
   },
   {
-    question: 'Can I use a custom domain?',
-    answer: 'Absolutely. Custom domains with free automatic SSL certificates are included in our Pro and Enterprise plans.',
+    question: 'What is the cancellation and refund policy?',
+    answer: 'Cancellations made 14 days or more prior to the check-in date are eligible for a 100% refund. Cancellations made between 7 and 14 days before check-in receive a 50% refund. Cancellations under 7 days are non-refundable.',
   },
   {
-    question: 'What kind of support do you provide?',
-    answer: 'Hobby users have access to our community forum. Pro users get priority email support, and Enterprise customers receive 24/7 phone support and a dedicated success manager.',
+    question: 'Is concierge assistance included in bookings?',
+    answer: 'Yes! Every booking includes standard guest support. For Gold VIP and Platinum Royal club members, we assign a dedicated personal travel advisor to coordinate private transport, private chefs, and custom excursions.',
   },
   {
-    question: 'Is my data secure?',
-    answer: 'Security is our top priority. All data is encrypted at rest and in transit. We are SOC2 compliant and undergo regular third-party security audits.',
+    question: 'Are pets allowed in the properties?',
+    answer: 'Pet policies vary by estate. You can check the specific amenities and rules listed on the property details page or reach out to our support team before booking.',
   }
 ];
 
@@ -51,7 +51,7 @@ const FAQ = () => {
             transition={{ delay: 0.1 }}
             className="text-lg text-slate-400 font-medium max-w-3xl mx-auto"
           >
-            Everything you need to know about the product and billing. Can't find the answer you're looking for? Please chat to our friendly team.
+            Everything you need to know about Zenith stays, bookings, and VIP privileges. Can't find the answer you're looking for? Contact our concierge team.
           </motion.p>
         </div>
 

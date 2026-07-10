@@ -3,19 +3,19 @@ import { motion, useInView } from 'framer-motion';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const stats = [
-  { label: 'Active Users', to: 1, suffix: 'M+', decimals: 0 },
-  { label: 'Deployments', to: 50, suffix: 'M+', decimals: 0 },
-  { label: 'Uptime', to: 99.99, suffix: '%', decimals: 2 },
-  { label: 'Countries', to: 150, suffix: '+', decimals: 0 },
+  { label: 'Happy Guests', to: 15, suffix: 'K+', decimals: 0 },
+  { label: 'Booked Nights', to: 42, suffix: 'K+', decimals: 0 },
+  { label: 'Five-Star Reviews', to: 99.4, suffix: '%', decimals: 1 },
+  { label: 'Elite Villas', to: 120, suffix: '+', decimals: 0 },
 ];
 
 const chartData = [
-  { name: 'Jan', users: 100 },
-  { name: 'Feb', users: 150 },
-  { name: 'Mar', users: 200 },
-  { name: 'Apr', users: 350 },
-  { name: 'May', users: 600 },
-  { name: 'Jun', users: 1000 },
+  { name: 'Jan', bookings: 120 },
+  { name: 'Feb', bookings: 180 },
+  { name: 'Mar', bookings: 240 },
+  { name: 'Apr', bookings: 380 },
+  { name: 'May', bookings: 510 },
+  { name: 'Jun', bookings: 750 },
 ];
 
 const Counter = ({ to, suffix, decimals = 0 }: { to: number, suffix: string, decimals?: number }) => {
@@ -68,7 +68,7 @@ const Statistics = () => {
               viewport={{ once: true }}
               className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6"
             >
-              Trusted by users <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400">worldwide</span>.
+              Trusted by travelers <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400">worldwide</span>.
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0, x: -20 }}
@@ -77,7 +77,7 @@ const Statistics = () => {
               transition={{ delay: 0.1 }}
               className="text-lg text-slate-400 font-medium mb-12"
             >
-              Our platform is rapidly growing to ensure your experiences stay fast, reliable, and secure across the globe.
+              Our platform is rapidly growing to ensure your luxury stays and bookings remain seamless, protected, and exceptional.
             </motion.p>
             
             <div className="grid grid-cols-2 gap-8">
@@ -108,14 +108,14 @@ const Statistics = () => {
               viewport={{ once: true }}
               className="bg-[#121217]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl h-[400px]"
             >
-              <h3 className="text-white font-bold mb-6 text-lg">Platform Growth</h3>
+              <h3 className="text-white font-bold mb-6 text-lg">Monthly Bookings Growth</h3>
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart
                   data={chartData}
                   margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
                 >
                   <defs>
-                    <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                    <linearGradient id="colorBookings" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#f97316" stopOpacity={0.8}/>
                       <stop offset="95%" stopColor="#f97316" stopOpacity={0}/>
                     </linearGradient>
@@ -140,11 +140,11 @@ const Statistics = () => {
                   />
                   <Area 
                     type="monotone" 
-                    dataKey="users" 
+                    dataKey="bookings" 
                     stroke="#f97316" 
                     strokeWidth={3}
                     fillOpacity={1} 
-                    fill="url(#colorUsers)" 
+                    fill="url(#colorBookings)" 
                   />
                 </AreaChart>
               </ResponsiveContainer>
