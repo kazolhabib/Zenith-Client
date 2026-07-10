@@ -43,6 +43,8 @@ const Hero = () => {
 
       {/* Sleek Dark Mesh Gradient Overlay */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {/* Vector Grid Pattern with Fade */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_20%,transparent_100%)] pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#09090b]/60 to-[#09090b]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#09090b_85%)]" />
       </div>
