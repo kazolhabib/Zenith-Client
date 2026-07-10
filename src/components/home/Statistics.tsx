@@ -1,11 +1,21 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const stats = [
   { label: 'Active Users', to: 1, suffix: 'M+', decimals: 0 },
   { label: 'Deployments', to: 50, suffix: 'M+', decimals: 0 },
   { label: 'Uptime', to: 99.99, suffix: '%', decimals: 2 },
   { label: 'Countries', to: 150, suffix: '+', decimals: 0 },
+];
+
+const chartData = [
+  { name: 'Jan', users: 100 },
+  { name: 'Feb', users: 150 },
+  { name: 'Mar', users: 200 },
+  { name: 'Apr', users: 350 },
+  { name: 'May', users: 600 },
+  { name: 'Jun', users: 1000 },
 ];
 
 const Counter = ({ to, suffix, decimals = 0 }: { to: number, suffix: string, decimals?: number }) => {
@@ -24,7 +34,6 @@ const Counter = ({ to, suffix, decimals = 0 }: { to: number, suffix: string, dec
       const elapsedTime = currentTime - startTime;
       const progress = Math.min(elapsedTime / duration, 1);
       
-      // easeOutExpo
       const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
       
       setValue(start + (to - start) * easeProgress);
@@ -50,51 +59,96 @@ const Statistics = () => {
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-brand/5 to-transparent pointer-events-none" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-[101.25rem]">
-        <div className="flex flex-col lg:flex-row items-center gap-20">
+        <div className="flex flex-col lg:flex-row items-center gap-16">
           
-          <div className="lg:w-1/3 text-center lg:text-left">
+          <div className="lg:w-1/2 text-center lg:text-left">
             <motion.h2 
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6"
             >
-              Trusted by developers <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400">worldwide</span>.
+              Trusted by users <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400">worldwide</span>.
             </motion.h2>
             <motion.p 
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-lg text-slate-400 font-medium"
+              className="text-lg text-slate-400 font-medium mb-12"
             >
-              Our platform operates at a massive scale to ensure your applications stay fast, reliable, and secure.
+              Our platform is rapidly growing to ensure your experiences stay fast, reliable, and secure across the globe.
             </motion.p>
+            
+            <div className="grid grid-cols-2 gap-8">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 + (index * 0.1), type: "spring", stiffness: 100 }}
+                  className="flex flex-col items-center lg:items-start relative group"
+                >
+                  <span className="text-4xl md:text-5xl font-semibold text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 mb-2 tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.1)] group-hover:from-white group-hover:to-white transition-all duration-300">
+                    <Counter to={stat.to} suffix={stat.suffix} decimals={stat.decimals} />
+                  </span>
+                  <span className="text-xs md:text-sm font-bold text-brand uppercase tracking-widest drop-shadow-[0_0_10px_rgba(246,86,0,0.3)]">
+                    {stat.label}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
           </div>
 
-          <div className="lg:w-2/3 grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 + (index * 0.1), type: "spring", stiffness: 100 }}
-                className="flex flex-col items-center lg:items-start relative group"
-              >
-                {/* Vertical Divider line except first */}
-                {index !== 0 && index !== 2 && (
-                  <div className="hidden md:block absolute left-[-2rem] top-1/2 -translate-y-1/2 w-px h-16 bg-white/10" />
-                )}
-                
-                <span className="text-5xl md:text-6xl font-semibold text-transparent bg-clip-text bg-gradient-to-br from-white to-slate-400 mb-2 tracking-tighter drop-shadow-[0_0_15px_rgba(255,255,255,0.1)] group-hover:from-white group-hover:to-white transition-all duration-300">
-                  <Counter to={stat.to} suffix={stat.suffix} decimals={stat.decimals} />
-                </span>
-                <span className="text-sm md:text-base font-bold text-brand uppercase tracking-widest drop-shadow-[0_0_10px_rgba(246,86,0,0.3)]">
-                  {stat.label}
-                </span>
-              </motion.div>
-            ))}
+          <div className="lg:w-1/2 w-full mt-12 lg:mt-0">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-[#121217]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl h-[400px]"
+            >
+              <h3 className="text-white font-bold mb-6 text-lg">Platform Growth</h3>
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={chartData}
+                  margin={{ top: 10, right: 30, left: 0, bottom: 20 }}
+                >
+                  <defs>
+                    <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#f97316" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#f97316" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
+                  <XAxis 
+                    dataKey="name" 
+                    stroke="#94a3b8" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    dy={10} 
+                  />
+                  <YAxis 
+                    stroke="#94a3b8" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    dx={-10}
+                  />
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: '#121217', borderColor: '#ffffff20', borderRadius: '12px' }}
+                    itemStyle={{ color: '#f97316' }}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="users" 
+                    stroke="#f97316" 
+                    strokeWidth={3}
+                    fillOpacity={1} 
+                    fill="url(#colorUsers)" 
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </motion.div>
           </div>
 
         </div>

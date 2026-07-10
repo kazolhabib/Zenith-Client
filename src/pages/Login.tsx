@@ -5,6 +5,8 @@ import { Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/config/api';
+import { auth, googleProvider } from '@/config/firebase';
+import { signInWithPopup } from 'firebase/auth';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -14,7 +16,7 @@ export const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     
@@ -55,8 +57,32 @@ export const Login = () => {
     setEmail('demo@example.com');
     setPassword('demo123');
     setError('');
-    // Optionally auto-submit:
-    // handleLogin(new Event('submit') as unknown as React.FormEvent);
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      setLoading(true);
+      setError('');
+      const result = await signInWithPopup(auth, googleProvider);
+      
+      const response = await api.post('/auth/google', {
+        email: result.user.email,
+        name: result.user.displayName || 'Google User'
+      });
+      
+      login(response.data.token, {
+        id: response.data.id,
+        name: response.data.name,
+        email: response.data.email
+      });
+      
+      navigate('/explore');
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || 'Google Sign-In failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -149,7 +175,7 @@ export const Login = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <Button variant="outline" className="h-11 bg-white/5 border-white/10 hover:bg-white/10 text-white rounded-xl flex items-center gap-2">
+            <Button onClick={handleGoogleSignIn} disabled={loading} variant="outline" className="h-11 bg-white/5 border-white/10 hover:bg-white/10 text-white rounded-xl flex items-center gap-2">
               <svg className="w-5 h-5" viewBox="0 0 24 24">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                 <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
