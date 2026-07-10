@@ -43,7 +43,7 @@ export const Dashboard = () => {
     setLoading(true);
     setSuccessMsg('');
     try {
-      const { data } = await api.put('/profile', { name, image });
+      const { data } = await api.put('/auth/profile', { name, image });
       login(data.token, {
         ...data,
         role: user?.role || 'user'
@@ -150,7 +150,7 @@ export const Dashboard = () => {
                       onClick={() => setActiveTab(item.id as any)}
                       className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 group text-left ${
                         isActive 
-                        ? 'bg-gradient-to-r from-brand to-orange-500 shadow-lg text-white font-bold' 
+                        ? 'bg-gradient-to-r from-brand to-orange-500 text-white font-bold' 
                         : 'text-slate-400 hover:bg-white/5 hover:text-white'
                       }`}
                     >
@@ -282,10 +282,10 @@ export const Dashboard = () => {
                     )}
 
                     <div className="pt-2">
-                      <Button 
+                      <button 
                         type="submit" 
                         disabled={loading}
-                        className="bg-white hover:bg-slate-100 text-[#09090b] rounded-2xl h-14 px-10 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 w-full sm:w-auto font-bold text-lg"
+                        className="bg-brand hover:bg-orange-600 text-white rounded-2xl h-14 px-10 flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 w-full sm:w-auto font-bold text-lg border border-transparent cursor-pointer"
                       >
                         {loading ? (
                           <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -295,7 +295,7 @@ export const Dashboard = () => {
                             <span className="text-lg tracking-wide">Save Changes</span>
                           </>
                         )}
-                      </Button>
+                      </button>
                     </div>
                   </form>
                 </motion.div>
