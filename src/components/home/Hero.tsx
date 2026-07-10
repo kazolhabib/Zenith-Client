@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
-    <section className="relative w-full min-h-[85vh] flex items-center justify-center overflow-hidden bg-[#FAFAFA] pt-[7rem] pb-[5rem]">
+    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-[#FAFAFA] pt-[10rem] pb-[8rem]">
       
       {/* Modern Mesh Gradient Background */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
@@ -77,6 +77,49 @@ const Hero = () => {
               Book a Demo
             </Button>
           </Link>
+        </motion.div>
+        
+        {/* Code Editor Mockup */}
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5, ease: 'easeOut' }}
+          className="mt-20 w-full max-w-5xl mx-auto rounded-xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.2)] bg-[#0d1117] border border-gray-800 text-left relative group"
+        >
+          {/* Subtle glowing effect behind the editor */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-brand via-orange-500 to-yellow-500 rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200" />
+          
+          <div className="relative bg-[#0d1117] rounded-xl overflow-hidden h-full">
+            {/* Header */}
+            <div className="bg-[#161b22] px-4 py-3 flex items-center gap-2 border-b border-gray-800">
+              <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
+              <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
+              <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
+              <div className="ml-4 text-xs font-mono text-gray-500 select-none">zenith.config.ts</div>
+            </div>
+            
+            {/* Code Body */}
+            <div className="p-6 md:p-8 text-sm md:text-base font-mono leading-relaxed md:leading-loose overflow-x-auto text-gray-300">
+              <pre>
+                <code>
+                  <span className="text-[#ff7b72]">import</span> {'{'} <span className="text-[#d2a8ff]">defineConfig</span> {'}'} <span className="text-[#ff7b72]">from</span> <span className="text-[#a5d6ff]">'@zenith/core'</span>;<br/><br/>
+                  <span className="text-[#ff7b72]">export default</span> <span className="text-[#d2a8ff]">defineConfig</span>({'{'}<br/>
+                  {'  '}project: <span className="text-[#a5d6ff]">'next-gen-app'</span>,<br/>
+                  {'  '}framework: <span className="text-[#a5d6ff]">'react'</span>,<br/>
+                  {'  '}deployment: {'{'}<br/>
+                  {'    '}region: <span className="text-[#a5d6ff]">'global-edge'</span>,<br/>
+                  {'    '}autoScaling: <span className="text-[#79c0ff]">true</span>,<br/>
+                  {'    '}cdn: <span className="text-[#79c0ff]">true</span>,<br/>
+                  {'  '}{'}'},<br/>
+                  {'  '}features: {'{'}<br/>
+                  {'    '}analytics: <span className="text-[#79c0ff]">true</span>,<br/>
+                  {'    '}ddosProtection: <span className="text-[#79c0ff]">true</span><br/>
+                  {'  '}{'}'}<br/>
+                  {'}'});
+                </code>
+              </pre>
+            </div>
+          </div>
         </motion.div>
         
       </div>

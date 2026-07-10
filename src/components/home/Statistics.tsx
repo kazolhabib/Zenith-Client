@@ -1,12 +1,46 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useEffect, useState, useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 
 const stats = [
-  { label: 'Active Users', value: '1M+' },
-  { label: 'Deployments', value: '50M+' },
-  { label: 'Uptime', value: '99.99%' },
-  { label: 'Countries', value: '150+' },
+  { label: 'Active Users', to: 1, suffix: 'M+', decimals: 0 },
+  { label: 'Deployments', to: 50, suffix: 'M+', decimals: 0 },
+  { label: 'Uptime', to: 99.99, suffix: '%', decimals: 2 },
+  { label: 'Countries', to: 150, suffix: '+', decimals: 0 },
 ];
+
+const Counter = ({ to, suffix, decimals = 0 }: { to: number, suffix: string, decimals?: number }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    
+    let start = 0;
+    const duration = 2000;
+    const startTime = performance.now();
+    
+    const animate = (currentTime: number) => {
+      const elapsedTime = currentTime - startTime;
+      const progress = Math.min(elapsedTime / duration, 1);
+      
+      // easeOutExpo
+      const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      
+      setValue(start + (to - start) * easeProgress);
+      
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        setValue(to);
+      }
+    };
+    
+    requestAnimationFrame(animate);
+  }, [isInView, to]);
+
+  return <span ref={ref}>{value.toFixed(decimals)}{suffix}</span>;
+};
 
 const Statistics = () => {
   return (
@@ -54,8 +88,8 @@ const Statistics = () => {
                   <div className="hidden md:block absolute left-[-2rem] top-1/2 -translate-y-1/2 w-px h-16 bg-gray-200" />
                 )}
                 
-                <span className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-gray-900 to-gray-600 mb-2 tracking-tighter">
-                  {stat.value}
+                <span className="text-5xl md:text-6xl font-light text-transparent bg-clip-text bg-gradient-to-br from-gray-900 to-gray-600 mb-2 tracking-tighter">
+                  <Counter to={stat.to} suffix={stat.suffix} decimals={stat.decimals} />
                 </span>
                 <span className="text-sm md:text-base font-bold text-brand uppercase tracking-widest">
                   {stat.label}

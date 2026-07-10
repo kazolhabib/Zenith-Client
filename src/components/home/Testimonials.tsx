@@ -74,25 +74,29 @@ const Testimonials = () => {
           {duplicatedTestimonials.map((testimonial, index) => (
             <div 
               key={index}
-              className="w-[340px] shrink-0 bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-gray-100 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-300 relative overflow-hidden group"
+              className="w-[320px] min-h-[400px] shrink-0 bg-white p-8 rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-gray-100 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-300 relative overflow-hidden group flex flex-col justify-between"
             >
               {/* Colorful Top Accent */}
-              <div className={`absolute top-0 left-0 w-full h-1 ${testimonial.color} opacity-80 group-hover:opacity-100 transition-opacity`} />
+              <div className={`absolute top-0 left-0 w-full h-1.5 ${testimonial.color} opacity-80 group-hover:opacity-100 transition-opacity`} />
               
-              <div className="flex items-center gap-4 mb-6">
+              <div>
+                <svg className="w-10 h-10 text-gray-200 mb-6" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" /></svg>
+                <p className="text-gray-700 whitespace-normal leading-relaxed text-lg font-medium">
+                  "{testimonial.content}"
+                </p>
+              </div>
+
+              <div className="flex items-center gap-4 mt-8 pt-6 border-t border-gray-50">
                 <img 
                   src={testimonial.image} 
                   alt={testimonial.name} 
-                  className="w-14 h-14 rounded-full object-cover shadow-sm"
+                  className="w-12 h-12 rounded-full object-cover shadow-sm ring-2 ring-gray-50"
                 />
                 <div>
-                  <h4 className="font-bold text-gray-900 text-lg">{testimonial.name}</h4>
+                  <h4 className="font-bold text-gray-900">{testimonial.name}</h4>
                   <p className="text-sm text-gray-500 font-medium">{testimonial.role}</p>
                 </div>
               </div>
-              <p className="text-gray-600 whitespace-normal leading-relaxed text-base">
-                "{testimonial.content}"
-              </p>
             </div>
           ))}
         </motion.div>
