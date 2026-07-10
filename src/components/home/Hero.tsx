@@ -423,6 +423,7 @@ const Hero = () => {
                     </div>
                   </div>
                 )}
+              </div>
 
               {/* Right Panel - Active Bookings & Concierge */}
               <div className="w-full md:w-80 bg-white/[0.02] border-l border-white/5 p-6 flex flex-col gap-6">
