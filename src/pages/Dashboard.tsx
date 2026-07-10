@@ -1,20 +1,21 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Camera, Mail, Save, List, Calendar, LayoutDashboard, Shield, LogOut, Settings, CheckCircle } from 'lucide-react';
+import { User, Camera, Mail, Save, List, Calendar, LayoutDashboard, Shield, LogOut, Settings, CheckCircle, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/config/api';
 import { ManageListings } from './ManageListings';
 import { MyReservations } from './MyReservations';
 import { AllReservations } from './AllReservations';
+import { ManageUsers } from './ManageUsers';
 
 export const Dashboard = () => {
   const location = useLocation();
   const { user, login, logout } = useAuth();
   
   const initialState = (location.state as any)?.activeTab || 'profile';
-  const [activeTab, setActiveTab] = useState<'profile' | 'listings' | 'reservations' | 'all-reservations'>(initialState);
+  const [activeTab, setActiveTab] = useState<'profile' | 'listings' | 'reservations' | 'all-reservations' | 'users'>(initialState);
   
   const [name, setName] = useState(user?.name || '');
   const [image, setImage] = useState(user?.image || '');
@@ -71,7 +72,8 @@ export const Dashboard = () => {
     { id: 'profile', label: 'Settings & Profile', icon: Settings, show: true, desc: 'Manage your account' },
     { id: 'reservations', label: 'My Trips', icon: Calendar, show: user?.role !== 'admin', desc: 'View your bookings' },
     { id: 'listings', label: 'Properties', icon: LayoutDashboard, show: user?.role === 'admin', desc: 'Manage listings' },
-    { id: 'all-reservations', label: 'Bookings', icon: List, show: user?.role === 'admin', desc: 'All user reservations' }
+    { id: 'all-reservations', label: 'Bookings', icon: List, show: user?.role === 'admin', desc: 'All user reservations' },
+    { id: 'users', label: 'Users', icon: Users, show: user?.role === 'admin', desc: 'All registered users' }
   ].filter(item => item.show);
 
   return (
@@ -317,6 +319,12 @@ export const Dashboard = () => {
               {activeTab === 'all-reservations' && user?.role === 'admin' && (
                 <motion.div key="all-reservations" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="bg-[#121217]/80 backdrop-blur-3xl border border-white/5 rounded-3xl p-8 shadow-2xl">
                   <AllReservations isEmbedded={true} />
+                </motion.div>
+              )}
+
+              {activeTab === 'users' && user?.role === 'admin' && (
+                <motion.div key="users" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="bg-[#121217]/80 backdrop-blur-3xl border border-white/5 rounded-3xl p-8 shadow-2xl">
+                  <ManageUsers />
                 </motion.div>
               )}
             </AnimatePresence>
