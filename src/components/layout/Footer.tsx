@@ -16,10 +16,10 @@ const Footer = () => {
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-[101.25rem] relative z-10">
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-24 mb-24">
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-12 xl:gap-24 mb-24">
           
           {/* Brand & Newsletter (Spans 5 cols) */}
-          <div className="lg:col-span-5 pr-0 lg:pr-12">
+          <div className="xl:col-span-5 pr-0 xl:pr-12">
             <Link to="/" className="flex items-center gap-[0.75rem] group cursor-pointer mb-8 inline-flex">
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand to-orange-400 p-[2px] shadow-[0_0_20px_rgba(246,86,0,0.3)] group-hover:shadow-[0_0_30px_rgba(246,86,0,0.5)] transition-all duration-300">
                 <div className="w-full h-full rounded-[14px] bg-[#121217] flex items-center justify-center">
@@ -35,23 +35,23 @@ const Footer = () => {
               Elevating the standard of luxury living. Discover, book, and experience the world's most extraordinary properties.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-3 w-full">
               <input 
                 type="email" 
                 placeholder="Enter your email" 
-                className="flex-1 h-14 rounded-2xl border border-white/10 bg-black/40 px-6 text-white focus:outline-none focus:ring-1 focus:ring-brand/50 focus:border-brand/50 transition-all placeholder:text-slate-600 font-medium"
+                className="w-full sm:flex-1 h-14 rounded-2xl border border-white/10 bg-black/40 px-6 text-white focus:outline-none focus:ring-1 focus:ring-brand/50 focus:border-brand/50 transition-all placeholder:text-slate-600 font-medium shrink-0"
               />
-              <button className="h-14 px-8 rounded-2xl bg-gradient-to-r from-brand to-orange-500 text-white font-bold hover:scale-105 transition-transform shadow-[0_10px_30px_rgba(246,86,0,0.3)]">
+              <button className="w-full sm:w-auto h-14 px-8 rounded-2xl bg-gradient-to-r from-brand to-orange-500 text-white font-bold hover:scale-105 transition-transform shadow-[0_10px_30px_rgba(246,86,0,0.3)] shrink-0">
                 Subscribe
               </button>
             </div>
           </div>
 
           {/* Spacer for large screens */}
-          <div className="hidden lg:block lg:col-span-1" />
-
+          <div className="hidden xl:block xl:col-span-1" />
+ 
           {/* Links Grid (Spans 6 cols) */}
-          <div className="lg:col-span-6 grid grid-cols-2 sm:grid-cols-3 gap-8">
+          <div className="xl:col-span-6 grid grid-cols-2 sm:grid-cols-3 gap-8">
             
             {/* Product Links */}
             <div>
