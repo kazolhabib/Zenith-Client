@@ -1,17 +1,42 @@
 import { motion } from 'framer-motion';
-import { Shield, Sparkles, Compass, MapPin, ArrowRight, Star, Coffee } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Shield, Sparkles, Compass, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+const features = [
+  {
+    title: 'Elite Sanctuaries',
+    description: 'Every estate in our collection meets a strict 100-point physical check for architectural grandeur, security, and absolute privacy.',
+    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1000&q=80',
+    icon: Compass,
+    badge: '100% Verified'
+  },
+  {
+    title: 'Bespoke Concierge',
+    description: 'Michelin-starred dining in your villa, private yacht charters, helicopter transfers, and custom local itineraries managed 24/7.',
+    image: 'https://images.unsplash.com/photo-1544025162-d76694265947?w=1000&q=80',
+    icon: Sparkles,
+    badge: '24/7 Support'
+  },
+  {
+    title: 'Absolute Discretion',
+    description: 'End-to-end booking protection, secure escrow payments, and verified hosts ensuring absolute confidentiality and peace of mind.',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1000&q=80',
+    icon: Shield,
+    badge: 'Protected'
+  }
+];
 
 const Features = () => {
   return (
-    <section className="py-32 bg-transparent relative overflow-hidden">
+    <section className="py-32 bg-[#09090b] relative overflow-hidden">
       
       {/* Background Decor */}
-      <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-brand/10 blur-[150px] rounded-full mix-blend-screen pointer-events-none" />
-      <div className="absolute bottom-1/4 right-0 w-[600px] h-[600px] bg-purple-600/10 blur-[150px] rounded-full mix-blend-screen pointer-events-none" />
+      <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-brand/5 blur-[150px] rounded-full mix-blend-screen pointer-events-none" />
+      <div className="absolute bottom-1/4 right-0 w-[600px] h-[600px] bg-purple-600/5 blur-[150px] rounded-full mix-blend-screen pointer-events-none" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-[101.25rem]">
+        
+        {/* Header */}
         <div className="text-center max-w-4xl mx-auto mb-24">
           <motion.h2 
             initial={{ opacity: 0, y: 30 }}
@@ -38,187 +63,74 @@ const Features = () => {
           </motion.p>
         </div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-3 gap-6 auto-rows-[300px]">
-          
-          {/* Card 1: Large Featured */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1, duration: 0.7 }}
-            className="md:col-span-2 md:row-span-2 relative overflow-hidden rounded-[2.5rem] bg-[#121217]/80 backdrop-blur-2xl border border-white/5 shadow-[0_20px_60px_rgba(0,0,0,0.5)] hover:border-white/20 hover:shadow-[0_20px_80px_rgba(246,86,0,0.15)] transition-all duration-700 group flex flex-col justify-end p-10 lg:p-12"
-          >
-            {/* Animated Glow Behind */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-brand/20 blur-[100px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none rounded-full" />
-            
-            {/* Faux UI Element / Itinerary Mockup */}
-            <div className="absolute top-10 right-10 w-2/3 h-[120%] bg-[#0a0a0c]/90 backdrop-blur-xl rounded-2xl shadow-[0_30px_100px_-10px_rgba(0,0,0,0.9)] border border-white/10 overflow-hidden transform rotate-3 group-hover:rotate-0 transition-all duration-700 ease-[0.16,1,0.3,1] translate-x-12 -translate-y-4 group-hover:-translate-y-8 group-hover:shadow-[0_30px_100px_rgba(246,86,0,0.2)]">
-              
-              {/* Dashboard Header */}
-              <div className="w-full h-12 bg-white/5 border-b border-white/5 flex items-center px-4 justify-between">
-                <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
-                  <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
-                  <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
+        {/* Luxury Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {features.map((feature, index) => {
+            const Icon = feature.icon;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: index * 0.2, ease: [0.16, 1, 0.3, 1] }}
+                className="group relative h-[550px] rounded-[2.5rem] overflow-hidden border border-white/10 hover:border-brand/40 shadow-2xl transition-all duration-700 cursor-pointer flex flex-col justify-between p-8 md:p-10"
+              >
+                {/* Background Image */}
+                <div className="absolute inset-0 z-0">
+                  <img 
+                    src={feature.image} 
+                    alt={feature.title} 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out opacity-60 group-hover:opacity-80"
+                  />
+                  {/* Luxury Gradients */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+                  <div className="absolute inset-0 bg-brand/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 mix-blend-overlay" />
                 </div>
-                <div className="text-xs font-mono text-slate-500">concierge.itinerary</div>
-              </div>
-              
-              {/* Itinerary Content */}
-              <div className="p-8 h-full flex flex-col gap-6">
-                <div className="flex justify-between items-center">
-                  <div className="w-1/2 h-6 bg-white/10 rounded-md" />
-                  <div className="w-1/4 h-8 bg-brand/20 rounded-full border border-brand/30 flex items-center justify-center text-xs font-bold text-brand">Confirmed</div>
+
+                {/* Top Badge & Icon */}
+                <div className="relative z-10 flex justify-between items-start w-full">
+                  <div className="w-14 h-14 rounded-2xl bg-[#121217]/90 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-lg group-hover:border-brand/40 transition-colors">
+                    <Icon className="w-6 h-6 text-brand" />
+                  </div>
+                  <span className="px-4 py-1.5 rounded-full bg-white/5 backdrop-blur-md border border-white/10 text-xs font-bold text-slate-300 uppercase tracking-widest">
+                    {feature.badge}
+                  </span>
                 </div>
-                
-                {/* Stay details */}
-                <div className="flex items-center gap-4 bg-white/5 border border-white/5 p-4 rounded-xl">
-                  <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0 bg-slate-800">
-                    <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?w=100&q=80" alt="Villa" className="w-full h-full object-cover" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-bold text-white truncate">Historic Italian Villa</div>
-                    <div className="text-xs text-slate-500 truncate">Tuscany, Italy • Jul 15 - Jul 20</div>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="h-16 bg-white/5 rounded-xl border border-white/5 flex flex-col justify-center px-4">
-                    <span className="text-xs text-slate-500">Chef Service</span>
-                    <span className="text-sm font-mono text-green-400">Included</span>
-                  </div>
-                  <div className="h-16 bg-white/5 rounded-xl border border-white/5 flex flex-col justify-center px-4">
-                    <span className="text-xs text-slate-500">Airport Pickup</span>
-                    <span className="text-sm font-mono text-brand">Private Tesla</span>
+
+                {/* Bottom Content */}
+                <div className="relative z-10">
+                  <h3 className="text-3xl font-bold text-white mb-4 tracking-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-brand group-hover:to-orange-400 transition-all duration-300">
+                    {feature.title}
+                  </h3>
+                  <p className="text-slate-300 text-base leading-relaxed mb-6 font-medium">
+                    {feature.description}
+                  </p>
+                  <div className="inline-flex items-center gap-2 text-brand font-bold text-sm tracking-wider uppercase group-hover:translate-x-2 transition-transform">
+                    Learn More
+                    <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
-              </div>
-            </div>
 
-            <div className="relative z-10 w-full md:w-1/2">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#121217] to-[#1a1a24] border border-white/10 flex items-center justify-center mb-8 shadow-xl shadow-black/50 group-hover:border-brand/50 transition-colors duration-500">
-                <Compass className="w-6 h-6 text-brand drop-shadow-[0_0_10px_rgba(246,86,0,0.8)]" />
-              </div>
-              <h3 className="text-3xl font-bold text-white mb-4">Elite Handpicked Collections</h3>
-              <p className="text-slate-400 font-medium leading-relaxed text-lg">Only 1% of submitted estates make it into our directory. Every villa is verified in-person for flawless design and security.</p>
-            </div>
-          </motion.div>
-
-          {/* Card 2: Small */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2, duration: 0.7 }}
-            className="md:col-span-1 md:row-span-1 relative overflow-hidden rounded-[2.5rem] bg-[#121217]/80 backdrop-blur-2xl border border-white/5 hover:border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)] transition-all duration-500 group p-10 flex flex-col"
-          >
-            <div className="absolute -top-24 -right-24 w-48 h-48 bg-orange-500/20 blur-[60px] rounded-full group-hover:bg-orange-500/30 transition-colors duration-500" />
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#121217] to-[#1a1a24] border border-white/10 flex items-center justify-center mb-auto shadow-xl group-hover:border-orange-500/50 transition-colors duration-500">
-              <Shield className="w-6 h-6 text-orange-400 drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]" />
-            </div>
-            <div className="relative z-10 mt-8">
-              <h3 className="text-2xl font-bold text-white mb-3">Secure Stays & Booking</h3>
-              <p className="text-slate-400 text-base font-medium leading-relaxed">End-to-end booking encryption, verified property hosts, and 100% secure escrow payments.</p>
-            </div>
-          </motion.div>
-
-          {/* Card 3: Small Accent (Animated Gradient) */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 0.7 }}
-            className="md:col-span-1 md:row-span-1 relative overflow-hidden rounded-[2.5rem] border border-brand/50 shadow-[0_0_40px_rgba(246,86,0,0.3)] hover:shadow-[0_0_60px_rgba(246,86,0,0.5)] hover:-translate-y-1 transition-all duration-500 group p-10 flex flex-col text-white"
-          >
-            {/* Moving Gradient Background */}
-            <motion.div 
-              animate={{ 
-                backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
-              }}
-              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-0 bg-[length:200%_200%] bg-gradient-to-br from-brand via-orange-500 to-yellow-500 -z-10"
-            />
-            
-            <div className="absolute top-0 right-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 mix-blend-overlay" />
-            <div className="absolute top-0 right-0 w-48 h-48 bg-white/20 blur-[50px] rounded-full mix-blend-overlay" />
-            
-            <div className="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center mb-auto border border-white/30 backdrop-blur-md shadow-lg shadow-black/20">
-              <Sparkles className="w-7 h-7 text-white drop-shadow-md" />
-            </div>
-            <div className="relative z-10 mt-8">
-              <h3 className="text-2xl font-bold mb-3 drop-shadow-sm">24/7 Dedicated Concierge</h3>
-              <p className="text-white/90 text-base font-medium leading-relaxed drop-shadow-sm">From private jets to chef service and excursions. Our advisors handle everything.</p>
-            </div>
-          </motion.div>
-
-          {/* Card 4: Medium Horizontal */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4, duration: 0.7 }}
-            className="md:col-span-2 md:row-span-1 relative overflow-hidden rounded-[2.5rem] bg-[#121217]/80 backdrop-blur-2xl border border-white/5 hover:border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)] hover:shadow-[0_20px_80px_rgba(59,130,246,0.15)] transition-all duration-700 group flex items-center p-10 lg:p-12"
-          >
-            <div className="absolute right-0 top-0 w-2/3 h-full bg-gradient-to-l from-blue-600/10 to-transparent -z-10 group-hover:from-blue-600/20 transition-colors duration-700" />
-            <div className="flex-1 relative z-10">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#121217] to-[#1a1a24] border border-white/10 flex items-center justify-center mb-6 shadow-xl group-hover:border-blue-500/50 transition-colors duration-500">
-                <Coffee className="w-6 h-6 text-blue-400 drop-shadow-[0_0_10px_rgba(96,165,250,0.8)]" />
-              </div>
-              <h3 className="text-3xl font-bold text-white mb-3">Premium Fine Dining</h3>
-              <p className="text-slate-400 text-base font-medium max-w-md leading-relaxed">Partner with local Michelin-starred chefs to prepare bespoke dining experiences right inside your private villa.</p>
-            </div>
-            
-            {/* 3D Graphic */}
-            <div className="hidden md:flex flex-1 justify-end relative z-10 perspective-1000">
-              <div className="relative w-48 h-48 flex items-center justify-center transform-gpu group-hover:rotate-y-12 transition-transform duration-700 ease-out">
-                {/* Orbit Rings */}
-                <motion.div 
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                  className="absolute inset-0 border border-dashed border-blue-500/30 rounded-full"
-                />
-                <motion.div 
-                  animate={{ rotate: -360 }}
-                  transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-                  className="absolute inset-4 border border-blue-500/20 rounded-full"
-                />
-                <motion.div 
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-                  className="absolute inset-8 border border-dashed border-blue-400/40 rounded-full"
-                />
-                
-                {/* Center Core */}
-                <div className="relative w-24 h-24 bg-gradient-to-br from-[#0a0a0c] to-[#1a1a24] rounded-full border border-blue-500/50 flex items-center justify-center shadow-[0_0_40px_rgba(59,130,246,0.4)] backdrop-blur-md">
-                  <Star className="w-10 h-10 text-blue-400 drop-shadow-[0_0_15px_rgba(96,165,250,1)]" />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Card 5: Small */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5, duration: 0.7 }}
-            className="md:col-span-1 md:row-span-1 relative overflow-hidden rounded-[2.5rem] bg-[#121217]/80 backdrop-blur-2xl border border-white/5 hover:border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.5)] transition-all duration-500 group p-10 flex flex-col justify-center items-center text-center text-white hover:bg-white/5"
-          >
-            <div className="w-16 h-16 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-brand/10 group-hover:border-brand/30 transition-all duration-500">
-              <MapPin className="w-7 h-7 text-slate-400 group-hover:text-brand drop-shadow-[0_0_10px_rgba(246,86,0,0)] group-hover:drop-shadow-[0_0_15px_rgba(246,86,0,0.8)] transition-all duration-500" />
-            </div>
-            <h3 className="text-2xl font-bold mb-3">12+ Destinations</h3>
-            <p className="text-slate-400 text-base font-medium mb-8">From tropical beaches to alpine heights. Find your dream escape.</p>
-            <Link to="/explore">
-              <Button variant="outline" className="border-white/10 bg-white/5 hover:bg-white/10 hover:border-white/20 text-white rounded-full px-8 h-12 flex items-center gap-2 group-hover:text-brand transition-colors">
-                Browse Destinations
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </Link>
-          </motion.div>
-
+                {/* Glow border overlay */}
+                <div className="absolute inset-0 rounded-[2.5rem] border border-transparent group-hover:border-brand/30 transition-all duration-700 pointer-events-none" />
+              </motion.div>
+            );
+          })}
         </div>
+
+        {/* View All CTA */}
+        <div className="text-center mt-20">
+          <Link to="/explore">
+            <Button className="group relative overflow-hidden rounded-full bg-white hover:bg-gray-100 px-10 h-16 text-black shadow-lg hover:scale-105 transition-all duration-300 text-lg font-bold">
+              <span className="relative z-10 flex items-center gap-2">
+                Browse All Stays
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </span>
+            </Button>
+          </Link>
+        </div>
+
       </div>
     </section>
   );
