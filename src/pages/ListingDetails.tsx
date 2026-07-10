@@ -256,7 +256,8 @@ const ListingDetails = () => {
                       type="date" 
                       value={checkIn}
                       onChange={(e) => setCheckIn(e.target.value)}
-                      className="bg-transparent text-sm font-medium outline-none text-white w-full cursor-pointer appearance-none [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert"
+                      disabled={user?.role === 'admin'}
+                      className="bg-transparent text-sm font-medium outline-none text-white w-full cursor-pointer appearance-none [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
                   <div className="flex-1 p-3 hover:bg-white/5 transition-colors relative cursor-pointer">
@@ -265,7 +266,8 @@ const ListingDetails = () => {
                       type="date" 
                       value={checkOut}
                       onChange={(e) => setCheckOut(e.target.value)}
-                      className="bg-transparent text-sm font-medium outline-none text-white w-full cursor-pointer appearance-none [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert"
+                      disabled={user?.role === 'admin'}
+                      className="bg-transparent text-sm font-medium outline-none text-white w-full cursor-pointer appearance-none [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
                 </div>
@@ -278,14 +280,15 @@ const ListingDetails = () => {
                     <button 
                       onClick={() => setGuests(Math.max(1, guests - 1))}
                       className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors disabled:opacity-50"
-                      disabled={guests <= 1}
+                      disabled={guests <= 1 || user?.role === 'admin'}
                     >
                       <Minus className="w-3 h-3" />
                     </button>
                     <span className="font-semibold text-sm w-4 text-center">{guests}</span>
                     <button 
                       onClick={() => setGuests(guests + 1)}
-                      className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors"
+                      className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center hover:bg-white/10 transition-colors disabled:opacity-50"
+                      disabled={user?.role === 'admin'}
                     >
                       <Plus className="w-3 h-3" />
                     </button>
@@ -293,50 +296,71 @@ const ListingDetails = () => {
                 </div>
               </div>
 
-              <Button 
-                onClick={() => {
-                  if (!checkIn || !checkOut) {
-                    setToastMessage("Please select check-in and checkout dates.");
-                    return;
-                  }
-                  
-                  // Save to localStorage
-                  const stored = localStorage.getItem('my_reservations');
-                  const reservations = stored ? JSON.parse(stored) : [];
-                  const newReservation = {
-                    id: Math.random().toString(36).substr(2, 9),
-                    listingId: safeListing?.id,
-                    title: safeListing?.title,
-                    image: safeListing?.images?.[0] || safeListing?.image,
-                    location: safeListing?.location,
-                    price: safeListing?.price,
-                    checkIn,
-                    checkOut,
-                    guests,
-                    status: 'Pending',
-                    userId: user?.id
-                  };
-                  localStorage.setItem('my_reservations', JSON.stringify([...reservations, newReservation]));
+              {!user ? (
+                <Button 
+                  onClick={() => navigate('/login')}
+                  className="w-full h-14 font-bold text-lg rounded-xl bg-gradient-to-r from-brand to-orange-500 hover:from-brand hover:to-orange-400 text-white shadow-[0_10px_30px_rgba(246,86,0,0.3)] transition-all"
+                >
+                  Sign In to Reserve
+                </Button>
+              ) : user?.role === 'admin' ? (
+                <>
+                  <Button 
+                    disabled
+                    className="w-full h-14 font-bold text-lg rounded-xl bg-white/5 border border-white/10 text-slate-500 cursor-not-allowed shadow-none"
+                  >
+                    Cannot Reserve (Admin)
+                  </Button>
+                  <div className="text-center text-xs text-brand/80 mt-4 font-bold">Admin accounts cannot make reservations.</div>
+                </>
+              ) : (
+                <>
+                  <Button 
+                    onClick={() => {
+                      if (!checkIn || !checkOut) {
+                        setToastMessage("Please select check-in and checkout dates.");
+                        return;
+                      }
+                      
+                      // Save to localStorage
+                      const stored = localStorage.getItem('my_reservations');
+                      const reservations = stored ? JSON.parse(stored) : [];
+                      const newReservation = {
+                        id: Math.random().toString(36).substr(2, 9),
+                        listingId: safeListing?.id,
+                        title: safeListing?.title,
+                        image: safeListing?.images?.[0] || safeListing?.image,
+                        location: safeListing?.location,
+                        price: safeListing?.price,
+                        checkIn,
+                        checkOut,
+                        guests,
+                        status: 'Pending',
+                        userId: user?.id
+                      };
+                      localStorage.setItem('my_reservations', JSON.stringify([...reservations, newReservation]));
 
-                  setBookingModalOpen(true);
-                  setIsRequested(true);
-                }}
-                disabled={isRequested}
-                className={`w-full h-14 font-bold text-lg rounded-xl shadow-[0_10px_30px_rgba(246,86,0,0.3)] transition-all ${
-                  isRequested 
-                    ? "bg-green-500/20 text-green-400 border border-green-500/50 shadow-none cursor-not-allowed hover:bg-green-500/20" 
-                    : "bg-gradient-to-r from-brand to-orange-500 hover:from-brand hover:to-orange-400 text-white"
-                }`}
-              >
-                {isRequested ? (
-                  <span className="flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5" /> Requested
-                  </span>
-                ) : (
-                  "Reserve"
-                )}
-              </Button>
-              <div className="text-center text-xs text-slate-500 mt-4">You won't be charged yet</div>
+                      setBookingModalOpen(true);
+                      setIsRequested(true);
+                    }}
+                    disabled={isRequested}
+                    className={`w-full h-14 font-bold text-lg rounded-xl shadow-[0_10px_30px_rgba(246,86,0,0.3)] transition-all ${
+                      isRequested 
+                        ? "bg-green-500/20 text-green-400 border border-green-500/50 shadow-none cursor-not-allowed hover:bg-green-500/20" 
+                        : "bg-gradient-to-r from-brand to-orange-500 hover:from-brand hover:to-orange-400 text-white"
+                    }`}
+                  >
+                    {isRequested ? (
+                      <span className="flex items-center gap-2">
+                        <CheckCircle2 className="w-5 h-5" /> Requested
+                      </span>
+                    ) : (
+                      "Reserve"
+                    )}
+                  </Button>
+                  <div className="text-center text-xs text-slate-500 mt-4">You won't be charged yet</div>
+                </>
+              )}
             </div>
           </div>
 
