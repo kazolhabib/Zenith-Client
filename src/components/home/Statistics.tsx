@@ -60,132 +60,128 @@ const Statistics = () => {
       <div className="absolute top-1/2 left-1/4 w-[400px] h-[400px] bg-brand/5 blur-[120px] rounded-full pointer-events-none -translate-y-1/2" />
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 max-w-[101.25rem]">
-        <div className="flex flex-col lg:flex-row items-center gap-16">
+        
+        {/* Section Header (Full Width at Top) */}
+        <div className="text-center max-w-3xl mx-auto mb-20">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6 leading-tight"
+          >
+            Trusted by travelers{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400 drop-shadow-[0_0_15px_rgba(246,86,0,0.25)]">
+              worldwide
+            </span>.
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-lg text-slate-400 font-medium"
+          >
+            Our platform is rapidly growing to ensure your luxury stays and bookings remain seamless, protected, and exceptional.
+          </motion.p>
+        </div>
+
+        {/* 2-Column Grid (Level at the Top) */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
           
-          {/* Left Column: Heading and Stats Cards */}
-          <div className="lg:w-1/2 w-full">
-            <div className="text-center lg:text-left mb-12">
-              <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6 leading-tight"
-              >
-                Trusted by travelers <br className="hidden md:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400 drop-shadow-[0_0_15px_rgba(246,86,0,0.25)]">
-                  worldwide
-                </span>.
-              </motion.h2>
-              <motion.p 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="text-lg text-slate-400 font-medium max-w-xl mx-auto lg:mx-0"
-              >
-                Our platform is rapidly growing to ensure your luxury stays and bookings remain seamless, protected, and exceptional.
-              </motion.p>
-            </div>
-            
-            {/* Bento Grid Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {stats.map((stat, index) => {
-                const Icon = stat.icon;
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1, duration: 0.6 }}
-                    className="bg-[#121217]/35 border border-white/5 hover:border-brand/30 hover:bg-[#121217]/60 backdrop-blur-xl rounded-[2rem] p-8 shadow-xl flex flex-col justify-between transition-all duration-500 group relative overflow-hidden min-h-[180px]"
-                  >
-                    {/* Glowing effect inside card */}
-                    <div className="absolute inset-0 bg-brand/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    
-                    <div className="flex justify-between items-center relative z-10">
-                      <div className={`w-10 h-10 rounded-xl border flex items-center justify-center ${stat.color}`}>
-                        <Icon className="w-5 h-5" />
-                      </div>
+          {/* Left Column: Bento Grid Stats */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {stats.map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.6 }}
+                  className="bg-[#121217]/35 border border-white/5 hover:border-brand/30 hover:bg-[#121217]/60 backdrop-blur-xl rounded-[2rem] p-8 shadow-xl flex flex-col justify-between transition-all duration-500 group relative overflow-hidden min-h-[180px]"
+                >
+                  <div className="absolute inset-0 bg-brand/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  
+                  <div className="flex justify-between items-center relative z-10">
+                    <div className={`w-10 h-10 rounded-xl border flex items-center justify-center ${stat.color}`}>
+                      <Icon className="w-5 h-5" />
                     </div>
-                    
-                    <div className="mt-6 relative z-10">
-                      <div className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-2">
-                        <Counter to={stat.to} suffix={stat.suffix} decimals={stat.decimals} />
-                      </div>
-                      <div className="text-xs md:text-sm font-bold text-slate-400 uppercase tracking-widest">
-                        {stat.label}
-                      </div>
+                  </div>
+                  
+                  <div className="mt-6 relative z-10">
+                    <div className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-2">
+                      <Counter to={stat.to} suffix={stat.suffix} decimals={stat.decimals} />
                     </div>
-                  </motion.div>
-                );
-              })}
-            </div>
+                    <div className="text-xs md:text-sm font-bold text-slate-400 uppercase tracking-widest">
+                      {stat.label}
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
 
           {/* Right Column: Premium Chart Card */}
-          <div className="lg:w-1/2 w-full">
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="bg-[#121217]/20 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 h-[480px] shadow-2xl flex flex-col justify-between relative overflow-hidden group"
-            >
-              {/* Inner ambient glow */}
-              <div className="absolute inset-0 bg-brand/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-              
-              <div className="relative z-10 mb-6">
-                <h3 className="text-white font-bold text-xl tracking-tight mb-1">Monthly Bookings Growth</h3>
-                <p className="text-slate-400 text-xs font-semibold">Live record of reservations completed worldwide.</p>
-              </div>
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="bg-[#121217]/20 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-8 min-h-[380px] lg:h-full shadow-2xl flex flex-col justify-between relative overflow-hidden group"
+          >
+            <div className="absolute inset-0 bg-brand/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+            
+            <div className="relative z-10 mb-6">
+              <h3 className="text-white font-bold text-xl tracking-tight mb-1">Monthly Bookings Growth</h3>
+              <p className="text-slate-400 text-xs font-semibold">Live record of reservations completed worldwide.</p>
+            </div>
 
-              <div className="flex-1 w-full relative z-10">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart
-                    data={chartData}
-                    margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-                  >
-                    <defs>
-                      <linearGradient id="colorBookings" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#f65600" stopOpacity={0.4}/>
-                        <stop offset="95%" stopColor="#f65600" stopOpacity={0}/>
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#ffffff08" vertical={false} />
-                    <XAxis 
-                      dataKey="name" 
-                      stroke="#475569" 
-                      axisLine={false} 
-                      tickLine={false} 
-                      dy={10} 
-                      className="text-xs font-semibold"
-                    />
-                    <YAxis 
-                      stroke="#475569" 
-                      axisLine={false} 
-                      tickLine={false} 
-                      dx={-10}
-                      className="text-xs font-semibold"
-                    />
-                    <Tooltip 
-                      contentStyle={{ backgroundColor: '#121217', borderColor: '#ffffff10', borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}
-                      itemStyle={{ color: '#f65600', fontWeight: 'bold' }}
-                      labelStyle={{ color: '#ffffff', fontWeight: 'bold' }}
-                    />
-                    <Area 
-                      type="monotone" 
-                      dataKey="bookings" 
-                      stroke="#f65600" 
-                      strokeWidth={3}
-                      fillOpacity={1} 
-                      fill="url(#colorBookings)" 
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
-            </motion.div>
-          </div>
+            <div className="flex-1 w-full min-h-[220px] relative z-10">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={chartData}
+                  margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                >
+                  <defs>
+                    <linearGradient id="colorBookings" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#f65600" stopOpacity={0.4}/>
+                      <stop offset="95%" stopColor="#f65600" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#ffffff08" vertical={false} />
+                  <XAxis 
+                    dataKey="name" 
+                    stroke="#475569" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    dy={10} 
+                    className="text-xs font-semibold"
+                  />
+                  <YAxis 
+                    stroke="#475569" 
+                    axisLine={false} 
+                    tickLine={false} 
+                    dx={-10}
+                    className="text-xs font-semibold"
+                  />
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: '#121217', borderColor: '#ffffff10', borderRadius: '16px', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}
+                    itemStyle={{ color: '#f65600', fontWeight: 'bold' }}
+                    labelStyle={{ color: '#ffffff', fontWeight: 'bold' }}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="bookings" 
+                    stroke="#f65600" 
+                    strokeWidth={3}
+                    fillOpacity={1} 
+                    fill="url(#colorBookings)" 
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </motion.div>
 
         </div>
       </div>
