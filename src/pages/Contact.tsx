@@ -65,7 +65,7 @@ export const Contact = () => {
       </div>
 
       {/* Right Side - Form Area */}
-      <div className="lg:w-1/2 relative flex items-center justify-center p-8 lg:p-16 xl:p-24 bg-[#050505]">
+      <div className="lg:w-1/2 relative flex items-center justify-center px-8 pt-8 pb-24 md:pb-32 lg:p-16 xl:p-24 bg-[#050505]">
         
         {/* Subtle background glow */}
         <div className="absolute top-0 right-0 w-full h-full overflow-hidden pointer-events-none z-0">
