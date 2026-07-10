@@ -14,13 +14,15 @@ const CallToAction = () => {
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="relative rounded-[3.5rem] overflow-hidden px-8 py-28 text-center shadow-[0_30px_100px_rgba(0,0,0,0.8)] border border-white/10"
-          style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1600&q=80')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
+          className="relative rounded-[3.5rem] overflow-hidden px-8 py-28 text-center shadow-[0_30px_100px_rgba(0,0,0,0.8)] border border-white/5 isolate"
         >
+          {/* Background Image Container (Separate layer to prevent Webkit border-radius overflow bleed) */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center pointer-events-none rounded-[3.5rem] transform translate-z-0"
+            style={{
+              backgroundImage: "url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1600&q=80')",
+            }}
+          />
           {/* Overlay Dark Gradients to match the premium theme */}
           <div className="absolute inset-0 bg-black/75 pointer-events-none" />
           <div className="absolute inset-0 bg-gradient-to-r from-[#09090b] via-[#09090b]/40 to-[#09090b] pointer-events-none" />
