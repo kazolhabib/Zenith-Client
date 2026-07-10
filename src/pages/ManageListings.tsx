@@ -76,9 +76,10 @@ export const ManageListings = ({ isEmbedded = false }: { isEmbedded?: boolean })
         </div>
       )}
 
-        {/* Table / Grid */}
-        <div className="bg-[#121217]/80 backdrop-blur-2xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-          <div className="overflow-x-auto">
+        {/* Table (Desktop) / Cards (Mobile & Tablet) */}
+        <div className="lg:bg-[#121217]/80 lg:backdrop-blur-2xl lg:border lg:border-white/10 lg:rounded-3xl lg:overflow-hidden lg:shadow-2xl">
+          {/* Desktop View */}
+          <div className="hidden lg:block overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-white/10 bg-black/20 text-slate-400 text-sm uppercase tracking-wider">
@@ -165,6 +166,90 @@ export const ManageListings = ({ isEmbedded = false }: { isEmbedded?: boolean })
                 </AnimatePresence>
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile/Tablet Card View */}
+          <div className="lg:hidden space-y-4">
+            {listings.length > 0 ? (
+              listings.map((item) => (
+                <motion.div
+                  key={item._id || item.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-[#121217]/90 border border-white/5 hover:border-brand/20 p-5 rounded-2xl flex flex-col gap-4 relative overflow-hidden transition-all duration-300"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-white/10">
+                      <img src={item.image} alt={item.title} className="w-full h-full object-cover" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-bold text-white mb-1 truncate text-base group-hover:text-brand transition-colors">{item.title}</h3>
+                      <p className="text-slate-500 text-xs truncate max-w-full">{item.description}</p>
+                    </div>
+                  </div>
+
+                  <div className="h-px bg-white/5 w-full" />
+
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div>
+                      <span className="text-slate-500 text-xs block mb-1 font-semibold uppercase tracking-wider">Location</span>
+                      <div className="flex items-center gap-1 text-slate-300">
+                        <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                        <span className="truncate">{item.location}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-slate-500 text-xs block mb-1 font-semibold uppercase tracking-wider">Price</span>
+                      <div className="font-bold text-white">
+                        ${item.price} <span className="text-xs text-slate-500 font-normal">/ night</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="h-px bg-white/5 w-full" />
+
+                  <div className="flex items-center justify-between mt-1">
+                    <div>
+                      <span className="text-slate-500 text-xs block mb-1.5 font-semibold uppercase tracking-wider">Rating</span>
+                      <div className="flex items-center gap-1.5 bg-white/5 w-max px-2.5 py-1 rounded-full text-xs font-medium border border-white/5">
+                        <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
+                        {item.rating}
+                      </div>
+                    </div>
+
+                    <div className="flex items-end h-full gap-2">
+                      <Link to={`/listings/${item._id || item.id}`}>
+                        <Button variant="outline" className="h-10 px-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:text-white text-slate-400 transition-colors flex items-center gap-1.5 text-xs font-bold">
+                          <Eye className="w-4 h-4" />
+                          View
+                        </Button>
+                      </Link>
+                      <Button 
+                        variant="outline" 
+                        onClick={() => {
+                          setListingToDelete(item._id || item.id);
+                          setDeleteModalOpen(true);
+                        }}
+                        className="h-10 px-4 rounded-xl bg-red-500/10 border-red-500/20 hover:bg-red-500 hover:text-white text-red-400 transition-colors flex items-center gap-1.5 text-xs font-bold"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        Delete
+                      </Button>
+                    </div>
+                  </div>
+                </motion.div>
+              ))
+            ) : (
+              <div className="p-12 text-center text-slate-400 bg-[#121217]/50 rounded-2xl border border-white/5">
+                <div className="flex flex-col items-center justify-center">
+                  <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4">
+                    <Trash2 className="w-8 h-8 text-slate-600" />
+                  </div>
+                  <p className="text-lg font-medium text-white mb-1">No listings found</p>
+                  <p className="text-sm">You have deleted all your listings.</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
