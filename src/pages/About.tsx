@@ -146,7 +146,7 @@ export const About = () => {
               Our commitment to excellence ensures that every stay is nothing short of extraordinary.
             </p>
           </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
             {[
               { title: "Uncompromised Quality", desc: "Every property undergoes a rigorous 50-point inspection before being listed on our platform.", icon: Star },
               { title: "24/7 Concierge", desc: "Our dedicated support team is available around the clock to assist you with any requests.", icon: Star }, // Note: changed from HeadphonesIcon since Star is also safe or standard
@@ -158,7 +158,9 @@ export const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.2 }}
-                className="bg-[#121217]/60 backdrop-blur-xl border border-white/5 rounded-3xl p-8 hover:bg-[#1a1a24] hover:border-brand/30 transition-all duration-300 group"
+                className={`bg-[#121217]/60 backdrop-blur-xl border border-white/5 rounded-3xl p-8 hover:bg-[#1a1a24] hover:border-brand/30 transition-all duration-300 group ${
+                  i === 2 ? 'md:col-span-2 xl:col-span-1' : ''
+                }`}
               >
                 <div className="w-14 h-14 bg-brand/10 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-brand/20 transition-all">
                   <value.icon className="w-7 h-7 text-brand" />
