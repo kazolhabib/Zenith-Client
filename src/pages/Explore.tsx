@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Search, Filter, Sliders, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 import { LISTINGS_DATA } from '@/data/listings';
 import { ListingCard } from '@/components/listings/ListingCard';
+import api from '@/config/api';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -13,12 +14,24 @@ export const Explore = () => {
   
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [allListings, setAllListings] = useState<any[]>([]);
 
-  // Scroll to top on mount
+  // Fetch listings on mount
   useEffect(() => {
+    const fetchListings = async () => {
+      try {
+        const { data } = await api.get('/listings');
+        setAllListings(data);
+      } catch (error) {
+        console.warn('API not reachable, falling back to mock data');
+        setAllListings(LISTINGS_DATA);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
     window.scrollTo(0, 0);
-    const timer = setTimeout(() => setLoading(false), 800);
-    return () => clearTimeout(timer);
+    fetchListings();
   }, []);
 
   // Reset to page 1 when filters change
@@ -28,7 +41,7 @@ export const Explore = () => {
 
   // Derived state for filtered and sorted data
   const filteredData = useMemo(() => {
-    let result = LISTINGS_DATA;
+    let result = allListings;
 
     if (searchTerm) {
       const lowerSearch = searchTerm.toLowerCase();
@@ -63,7 +76,7 @@ export const Explore = () => {
     }
 
     return result;
-  }, [searchTerm, maxPrice, minRating, sortBy]);
+  }, [allListings, searchTerm, maxPrice, minRating, sortBy]);
 
   // Pagination logic
   const totalPages = Math.ceil(filteredData.length / ITEMS_PER_PAGE);

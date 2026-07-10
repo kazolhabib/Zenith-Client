@@ -4,14 +4,36 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Eye, Trash2, MapPin, Star, Plus } from 'lucide-react';
 import { LISTINGS_DATA } from '@/data/listings';
 import { Button } from '@/components/ui/button';
+import api from '@/config/api';
 
 export const ManageListings = () => {
-  const [listings, setListings] = useState(LISTINGS_DATA);
+  const [listings, setListings] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleDelete = (id: number) => {
-    // In a real app, this would be an API call
+  useEffect(() => {
+    const fetchMyListings = async () => {
+      try {
+        const { data } = await api.get('/listings/my');
+        setListings(data);
+      } catch (error) {
+        console.warn('API not reachable, falling back to mock data');
+        setListings(LISTINGS_DATA.slice(0, 3)); // Mock a subset for "my listings"
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMyListings();
+  }, []);
+
+  const handleDelete = async (id: string | number) => {
     if (window.confirm('Are you sure you want to delete this listing?')) {
-      setListings(prev => prev.filter(item => item.id !== id));
+      try {
+        await api.delete(`/listings/${id}`);
+        setListings(prev => prev.filter(item => item.id !== id));
+      } catch (error) {
+        console.warn('Delete via API failed, doing locally for mock');
+        setListings(prev => prev.filter(item => item.id !== id));
+      }
     }
   };
 

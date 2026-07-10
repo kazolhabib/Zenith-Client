@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { User, Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import api from '@/config/api';
 
 export const Register = () => {
   const navigate = useNavigate();
@@ -37,14 +38,15 @@ export const Register = () => {
       return;
     }
 
-    setLoading(true);
-    
-    // Mock API Call
-    setTimeout(() => {
+    try {
+      await api.post('/auth/register', { name, email, password });
+      
       setLoading(false);
-      // Assume success and redirect to login
       navigate('/login');
-    }, 1500);
+    } catch (err: any) {
+      setLoading(false);
+      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+    }
   };
 
   return (

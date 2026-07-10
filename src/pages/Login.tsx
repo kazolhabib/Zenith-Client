@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
+import api from '@/config/api';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -33,15 +34,21 @@ export const Login = () => {
       return;
     }
 
-    setLoading(true);
-    
-    // Mock API Call
-    setTimeout(() => {
+    try {
+      const response = await api.post('/auth/login', { email, password });
+      
       setLoading(false);
-      login(); // Update global auth state
-      // Assume success and redirect
+      login(response.data.token, {
+        id: response.data.id,
+        name: response.data.name,
+        email: response.data.email
+      }); 
+      
       navigate('/explore');
-    }, 1500);
+    } catch (err: any) {
+      setLoading(false);
+      setError(err.response?.data?.message || 'Login failed. Please try again.');
+    }
   };
 
   const handleDemoLogin = () => {

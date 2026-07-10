@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { MapPin, Star, ArrowLeft, Share2, Heart, Shield, Zap, Wifi, Coffee, Car } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LISTINGS_DATA } from '@/data/listings';
+import api from '@/config/api';
 
 // Helper to get the correct icon component based on string
 const getIcon = (iconName: string) => {
@@ -15,19 +16,27 @@ const ListingDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-
-  // Find the specific listing based on ID
-  const listing = LISTINGS_DATA.find(item => item.id === Number(id));
+  const [listing, setListing] = useState<any>(null);
   
   // Get related items (just other items from the mock data)
   const related = LISTINGS_DATA.filter(item => item.id !== Number(id)).slice(0, 3);
 
   // Scroll to top on mount
   useEffect(() => {
+    const fetchListing = async () => {
+      try {
+        const { data } = await api.get(`/listings/${id}`);
+        setListing(data);
+      } catch (error) {
+        console.warn('API not reachable, falling back to mock data');
+        const found = LISTINGS_DATA.find(item => item.id.toString() === id);
+        setListing(found);
+      } finally {
+        setLoading(false);
+      }
+    };
     window.scrollTo(0, 0);
-    setLoading(true);
-    const timer = setTimeout(() => setLoading(false), 500);
-    return () => clearTimeout(timer);
+    fetchListing();
   }, [id]);
 
   if (loading) {

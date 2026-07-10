@@ -5,6 +5,7 @@ import { MapPin, Star, Calendar, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LISTINGS_DATA } from '@/data/listings';
 import { ListingCard } from '@/components/listings/ListingCard';
+import api from '@/config/api';
 
 // Skeleton Loader Component
 const SkeletonCard = () => (
@@ -26,17 +27,23 @@ const SkeletonCard = () => (
   </div>
 );
 
-const Listings = () => {
+export const Listings = () => {
+  const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<typeof LISTINGS_DATA>([]);
 
   useEffect(() => {
-    // Simulate network request loading state
-    const timer = setTimeout(() => {
-      setData(LISTINGS_DATA);
-      setLoading(false);
-    }, 1500); // 1.5 seconds loading to show skeletons
-    return () => clearTimeout(timer);
+    const fetchListings = async () => {
+      try {
+        const res = await api.get('/listings');
+        setData(res.data);
+      } catch (error) {
+        console.warn('API not reachable, falling back to mock data');
+        setData(LISTINGS_DATA);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchListings();
   }, []);
 
   return (

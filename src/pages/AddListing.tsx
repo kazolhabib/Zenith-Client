@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Plus, Image as ImageIcon, MapPin, DollarSign, Calendar, Type, AlignLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import api from '@/config/api';
 
 export const AddListing = () => {
   const navigate = useNavigate();
@@ -24,17 +25,19 @@ export const AddListing = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     
-    // Mock API Call to save the listing
-    setTimeout(() => {
+    try {
+      await api.post('/listings', formData);
       setLoading(false);
-      // In a real app, we would add the new item to the database or state here.
-      // For now, just navigate to explore page after successful add
       navigate('/explore');
-    }, 1500);
+    } catch (error) {
+      console.error('Error adding listing:', error);
+      setLoading(false);
+      alert('Failed to add listing');
+    }
   };
 
   return (
