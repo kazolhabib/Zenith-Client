@@ -32,7 +32,7 @@ export const About = () => {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-24">
+        <div className="grid grid-cols-2 xl:grid-cols-4 gap-4 md:gap-8 mb-24">
           {[
             { value: "10K+", label: "Premium Properties", icon: Building2 },
             { value: "2.5M", label: "Happy Travelers", icon: Users },
