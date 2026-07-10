@@ -41,8 +41,17 @@ const Hero = () => {
         />
       </div>
 
-      {/* Grid Pattern with Fade */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_20%,transparent_100%)] pointer-events-none" />
+      {/* Background Image with Luxury Overlay */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <img 
+          src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1800&q=80" 
+          alt="Luxury Villa Background" 
+          className="w-full h-full object-cover opacity-20 filter brightness-[0.7] saturate-[0.8]"
+        />
+        {/* Radial and Linear Gradient Masks for text readability and fading */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#09090b]/70 via-[#09090b]/95 to-[#09090b]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,#09090b_80%)]" />
+      </div>
 
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 max-w-[101.25rem] flex flex-col items-center text-center mt-12">
         
