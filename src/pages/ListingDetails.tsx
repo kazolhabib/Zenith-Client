@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Star, ArrowLeft, Share2, Heart, Shield, Zap, Wifi, Coffee, Car, CheckCircle2, Minus, Plus, ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { MapPin, Star, ArrowLeft, Share2, Heart, Shield, Zap, Wifi, Coffee, Car, CheckCircle2, Minus, Plus, ChevronLeft, ChevronRight, X, Edit3, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LISTINGS_DATA } from '@/data/listings';
 import api from '@/config/api';
@@ -28,6 +28,15 @@ const ListingDetails = () => {
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [toastMessage, setToastMessage] = useState('');
 
+  // Custom States for Booked Badge and Review System
+  const [userReservations, setUserReservations] = useState<any[]>([]);
+  const [reviewsList, setReviewsList] = useState<any[]>([]);
+  const [newReviewText, setNewReviewText] = useState('');
+  const [newRating, setNewRating] = useState(5);
+  const [editingReviewId, setEditingReviewId] = useState<any | null>(null);
+  const [editingText, setEditingText] = useState('');
+  const [editingRating, setEditingRating] = useState(5);
+
   // Clear toast after 3 seconds
   useEffect(() => {
     if (toastMessage) {
@@ -45,17 +54,39 @@ const ListingDetails = () => {
       try {
         const { data } = await api.get(`/listings/${id}`);
         setListing(data);
+
+        // Load reviews from localStorage
+        const storedReviews = localStorage.getItem('listing_reviews');
+        const allReviewsMap = storedReviews ? JSON.parse(storedReviews) : {};
+        const listingReviews = allReviewsMap[data.id] || data.reviews || [];
+        setReviewsList(listingReviews);
       } catch (error) {
         console.warn('API not reachable, falling back to mock data');
         const found = LISTINGS_DATA.find(item => item.id.toString() === id);
         setListing(found);
+
+        if (found) {
+          const storedReviews = localStorage.getItem('listing_reviews');
+          const allReviewsMap = storedReviews ? JSON.parse(storedReviews) : {};
+          const listingReviews = allReviewsMap[found.id] || found.reviews || [];
+          setReviewsList(listingReviews);
+        }
       } finally {
         setLoading(false);
       }
     };
+
+    // Load reservations for booked badge check
+    if (user) {
+      const stored = localStorage.getItem('my_reservations');
+      const reservations = stored ? JSON.parse(stored) : [];
+      const matched = reservations.filter((r: any) => String(r.listingId) === String(id) && String(r.userId) === String(user.id));
+      setUserReservations(matched);
+    }
+
     window.scrollTo(0, 0);
     fetchListing();
-  }, [id]);
+  }, [id, user]);
 
   if (loading) {
     return (
@@ -94,6 +125,83 @@ const ListingDetails = () => {
     ]
   };
 
+  const handleAddReview = () => {
+    if (!newReviewText.trim()) {
+      setToastMessage("Please enter some feedback text.");
+      return;
+    }
+
+    const newReview = {
+      id: Math.random().toString(36).substr(2, 9),
+      author: user?.name || "Guest User",
+      userId: user?.id,
+      date: new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+      rating: newRating,
+      text: newReviewText.trim()
+    };
+
+    const updatedReviews = [newReview, ...reviewsList];
+    setReviewsList(updatedReviews);
+
+    // Save to localStorage
+    const storedReviews = localStorage.getItem('listing_reviews');
+    const allReviewsMap = storedReviews ? JSON.parse(storedReviews) : {};
+    allReviewsMap[safeListing.id] = updatedReviews;
+    localStorage.setItem('listing_reviews', JSON.stringify(allReviewsMap));
+
+    // Reset form
+    setNewReviewText('');
+    setNewRating(5);
+    setToastMessage("Thank you for your feedback!");
+  };
+
+  const handleStartEdit = (review: any) => {
+    setEditingReviewId(review.id);
+    setEditingText(review.text);
+    setEditingRating(review.rating);
+  };
+
+  const handleSaveEdit = (reviewId: any) => {
+    if (!editingText.trim()) {
+      setToastMessage("Review text cannot be empty.");
+      return;
+    }
+
+    const updatedReviews = reviewsList.map((r: any) => {
+      if (r.id === reviewId) {
+        return {
+          ...r,
+          text: editingText.trim(),
+          rating: editingRating
+        };
+      }
+      return r;
+    });
+    setReviewsList(updatedReviews);
+
+    const storedReviews = localStorage.getItem('listing_reviews');
+    const allReviewsMap = storedReviews ? JSON.parse(storedReviews) : {};
+    allReviewsMap[safeListing.id] = updatedReviews;
+    localStorage.setItem('listing_reviews', JSON.stringify(allReviewsMap));
+
+    setEditingReviewId(null);
+    setToastMessage("Review updated successfully!");
+  };
+
+  const handleDeleteReview = (reviewId: any) => {
+    if (window.confirm("Are you sure you want to delete your review?")) {
+      const updatedReviews = reviewsList.filter((r: any) => r.id !== reviewId);
+      setReviewsList(updatedReviews);
+
+      const storedReviews = localStorage.getItem('listing_reviews');
+      const allReviewsMap = storedReviews ? JSON.parse(storedReviews) : {};
+      allReviewsMap[safeListing.id] = updatedReviews;
+      localStorage.setItem('listing_reviews', JSON.stringify(allReviewsMap));
+
+      setToastMessage("Review deleted.");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#09090b] text-slate-200 selection:bg-brand/30 pb-24 pt-32 md:pt-40">
       {/* Background Decor */}
@@ -121,11 +229,22 @@ const ListingDetails = () => {
 
         {/* Title & Meta */}
         <div className="mb-8">
-          <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">{safeListing.title}</h1>
+          <div className="flex flex-wrap items-center gap-4 mb-4">
+            <h1 className="text-3xl md:text-5xl font-bold text-white">{safeListing.title}</h1>
+            {userReservations.some(r => r.status === 'Confirmed') ? (
+              <span className="px-3.5 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-xs font-bold flex items-center gap-1.5 shadow-[0_0_15px_rgba(16,185,129,0.15)]">
+                <CheckCircle2 className="w-3.5 h-3.5" /> Booked Stay
+              </span>
+            ) : userReservations.some(r => r.status === 'Pending') ? (
+              <span className="px-3.5 py-1.5 rounded-full bg-brand/20 border border-brand/40 text-brand text-xs font-bold flex items-center gap-1.5 shadow-[0_0_15px_rgba(246,86,0,0.1)]">
+                Request Pending
+              </span>
+            ) : null}
+          </div>
           <div className="flex flex-wrap items-center gap-4 text-sm font-medium text-slate-300">
             <div className="flex items-center gap-1 text-white">
               <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-              {safeListing.rating} <span className="text-slate-400 underline decoration-slate-600 underline-offset-4 cursor-pointer hover:text-white">({safeListing.reviewsCount} reviews)</span>
+              {safeListing.rating} <span className="text-slate-400 underline decoration-slate-600 underline-offset-4 cursor-pointer hover:text-white">({reviewsList.length} reviews)</span>
             </div>
             <span className="text-slate-600">•</span>
             <div className="flex items-center gap-1">
@@ -218,23 +337,165 @@ const ListingDetails = () => {
             <section className="pt-8 border-t border-white/10">
               <div className="flex items-center gap-2 text-2xl font-bold text-white mb-8">
                 <Star className="w-6 h-6 text-yellow-400 fill-yellow-400" />
-                {safeListing.rating} <span className="text-slate-400 text-lg">({safeListing.reviewsCount} reviews)</span>
+                {safeListing.rating} <span className="text-slate-400 text-lg">({reviewsList.length} reviews)</span>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {safeListing.reviews.map((review: any) => (
-                  <div key={review.id} className="bg-white/5 border border-white/10 p-6 rounded-2xl">
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold">
-                        {review.author.charAt(0)}
-                      </div>
-                      <div>
-                        <div className="font-bold text-white">{review.author}</div>
-                        <div className="text-xs text-slate-500">{review.date}</div>
-                      </div>
-                    </div>
-                    <p className="text-slate-300 text-sm leading-relaxed">"{review.text}"</p>
+
+              {/* Leave a Review Box */}
+              {user && user.role !== 'admin' && (
+                <div className="bg-[#121217] border border-white/10 p-6 md:p-8 rounded-3xl mb-10 shadow-lg relative z-10">
+                  <h3 className="text-xl font-bold text-white mb-2">Leave your feedback</h3>
+                  <p className="text-slate-400 text-sm mb-6">Share your luxury stay experience with other travelers.</p>
+                  
+                  {/* Rating Stars Selection */}
+                  <div className="flex items-center gap-2 mb-4">
+                    <span className="text-slate-300 text-sm font-semibold mr-2">Your Rating:</span>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        onClick={() => setNewRating(star)}
+                        className="p-1 transition-transform hover:scale-110"
+                      >
+                        <Star 
+                          className={`w-6 h-6 ${
+                            star <= newRating 
+                              ? 'text-yellow-400 fill-yellow-400' 
+                              : 'text-slate-600 hover:text-yellow-400/80'
+                          }`}
+                        />
+                      </button>
+                    ))}
                   </div>
-                ))}
+
+                  {/* Review Text */}
+                  <div className="relative mb-6">
+                    <textarea
+                      value={newReviewText}
+                      onChange={(e) => setNewReviewText(e.target.value)}
+                      placeholder="Describe your experience during the stay (amenities, hospitality, concierge)..."
+                      className="w-full min-h-[120px] bg-white/5 border border-white/10 rounded-2xl p-4 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-brand/50 transition-colors resize-none"
+                    />
+                  </div>
+
+                  <Button 
+                    onClick={handleAddReview}
+                    className="bg-brand hover:bg-orange-500 text-white rounded-xl h-12 px-6 font-bold flex items-center gap-2 shadow-lg"
+                  >
+                    Submit Review
+                  </Button>
+                </div>
+              )}
+
+              {/* Reviews List */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {reviewsList.map((review: any) => {
+                  const isEditing = editingReviewId === review.id;
+                  const isOwner = review.userId === user?.id;
+
+                  return (
+                    <div key={review.id} className="bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col justify-between group relative z-10">
+                      {isEditing ? (
+                        <div className="flex flex-col gap-4 w-full">
+                          <div className="flex items-center gap-2">
+                            <span className="text-slate-300 text-xs font-semibold">Rating:</span>
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <button
+                                key={star}
+                                onClick={() => setEditingRating(star)}
+                                className="p-0.5"
+                              >
+                                <Star 
+                                  className={`w-4 h-4 ${
+                                    star <= editingRating 
+                                      ? 'text-yellow-400 fill-yellow-400' 
+                                      : 'text-slate-600'
+                                  }`}
+                                />
+                              </button>
+                            ))}
+                          </div>
+                          <textarea
+                            value={editingText}
+                            onChange={(e) => setEditingText(e.target.value)}
+                            className="w-full min-h-[80px] bg-black/30 border border-white/10 rounded-xl p-3 text-white text-xs placeholder-slate-500 focus:outline-none focus:border-brand/50 transition-colors resize-none"
+                          />
+                          <div className="flex gap-2 justify-end">
+                            <Button 
+                              variant="outline" 
+                              onClick={() => setEditingReviewId(null)}
+                              className="rounded-lg h-8 px-3 text-xs border-white/10 hover:bg-white/5 text-white"
+                            >
+                              Cancel
+                            </Button>
+                            <Button 
+                              onClick={() => handleSaveEdit(review.id)}
+                              className="bg-brand hover:bg-orange-500 text-white rounded-lg h-8 px-3 text-xs font-bold"
+                            >
+                              Save
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        <div>
+                          <div className="flex items-start justify-between mb-4">
+                            <div className="flex items-center gap-4">
+                              <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold text-white">
+                                {review.author ? review.author.charAt(0) : "U"}
+                              </div>
+                              <div>
+                                <div className="font-bold text-white flex items-center gap-2">
+                                  {review.author || "Guest User"}
+                                  {isOwner && (
+                                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-brand/10 border border-brand/20 text-brand font-semibold">
+                                      You
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="text-xs text-slate-500">{review.date}</div>
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-1.5">
+                              {/* Show rating stars */}
+                              <div className="flex gap-0.5">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                  <Star 
+                                    key={i} 
+                                    className={`w-3.5 h-3.5 ${
+                                      i < (review.rating || 5) 
+                                        ? 'text-yellow-400 fill-yellow-400' 
+                                        : 'text-slate-700'
+                                    }`}
+                                  />
+                                ))}
+                              </div>
+
+                              {/* Edit / Delete actions for owner */}
+                              {isOwner && (
+                                <div className="flex gap-1 ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <button
+                                    onClick={() => handleStartEdit(review)}
+                                    className="p-1 rounded bg-white/5 border border-white/5 text-slate-400 hover:text-white hover:bg-white/10 transition-all"
+                                    title="Edit Review"
+                                  >
+                                    <Edit3 className="w-3.5 h-3.5" />
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteReview(review.id)}
+                                    className="p-1 rounded bg-red-500/10 border border-red-500/20 text-red-400 hover:text-white hover:bg-red-500 transition-all"
+                                    title="Delete Review"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <p className="text-slate-300 text-sm leading-relaxed font-medium">"{review.text}"</p>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </section>
             
