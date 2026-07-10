@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Building2, Users, Globe2, ShieldCheck, Star, HeadphonesIcon, Sparkles } from 'lucide-react';
+import { Building2, Users, Globe2, ShieldCheck, Star, Sparkles } from 'lucide-react';
 import CallToAction from '@/components/home/CallToAction';
 
 export const About = () => {

@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Search, Filter, Sliders, ChevronLeft, ChevronRight, Star, Mail, Sparkles } from 'lucide-react';
 import { LISTINGS_DATA } from '@/data/listings';
 import { ListingCard } from '@/components/listings/ListingCard';
@@ -291,6 +291,7 @@ export const Explore = () => {
             </div>
 
           </div>
+        </div>
       </div>
 
       {/* Call to Action */}
