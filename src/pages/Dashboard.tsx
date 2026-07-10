@@ -285,7 +285,7 @@ export const Dashboard = () => {
                       <Button 
                         type="submit" 
                         disabled={loading}
-                        className="bg-brand hover:bg-orange-500 text-white rounded-2xl h-14 px-10 flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(246,86,0,0.15)] hover:shadow-[0_8px_25px_rgba(246,86,0,0.3)] hover:-translate-y-[2px] transition-all duration-300 w-full sm:w-auto font-bold"
+                        className="bg-brand hover:bg-orange-600 text-white rounded-2xl h-14 px-10 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:shadow-black/20 hover:-translate-y-[2px] transition-all duration-300 w-full sm:w-auto font-bold"
                       >
                         {loading ? (
                           <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
