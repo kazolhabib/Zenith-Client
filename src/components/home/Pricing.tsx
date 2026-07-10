@@ -56,7 +56,7 @@ const Pricing = () => {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
           {plans.map((plan, index) => (
             <motion.div
               key={index}
@@ -68,6 +68,8 @@ const Pricing = () => {
                 plan.isPopular 
                   ? 'bg-gradient-to-b from-brand/10 to-[#121217]/90 text-white shadow-[0_0_50px_rgba(246,86,0,0.15)] scale-105 z-10 border border-brand/50' 
                   : 'bg-[#121217]/80 text-white border border-white/10 shadow-[0_8px_30px_rgba(0,0,0,0.5)] hover:border-white/20'
+              } ${
+                index === 2 ? 'md:col-span-2 lg:col-span-1' : ''
               }`}
             >
               {plan.isPopular && (
