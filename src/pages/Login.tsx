@@ -42,6 +42,7 @@ export const Login = () => {
           id: 'admin-1',
           name: 'System Admin',
           email: 'admin@example.com',
+          image: '',
           role: 'admin'
         });
         setLoading(false);
@@ -56,6 +57,7 @@ export const Login = () => {
           id: 'user-1',
           name: 'Demo User',
           email: 'user@example.com',
+          image: '',
           role: 'user'
         });
         setLoading(false);
