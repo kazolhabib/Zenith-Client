@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, Compass, Shield, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 const Hero = () => {
+  const [activeMockTab, setActiveMockTab] = useState<'overview' | 'bookings' | 'settings'>('overview');
+
   return (
     <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden bg-[#09090b] pt-[8rem] pb-[8rem]">
       
@@ -177,13 +179,28 @@ const Hero = () => {
                   <span className="text-white font-bold text-lg leading-none">Z</span>
                 </div>
                 <div className="flex flex-row md:flex-col gap-6">
-                  <div className="w-6 h-6 rounded-md bg-white/10 flex items-center justify-center text-slate-300 hover:text-white hover:bg-white/20 transition-colors cursor-pointer">
+                  <div 
+                    onClick={() => setActiveMockTab('overview')}
+                    className={`w-6 h-6 rounded-md flex items-center justify-center transition-colors cursor-pointer ${
+                      activeMockTab === 'overview' ? 'bg-white/10 text-white' : 'text-slate-500 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
                   </div>
-                  <div className="w-6 h-6 rounded-md flex items-center justify-center text-slate-500 hover:text-white transition-colors cursor-pointer">
+                  <div 
+                    onClick={() => setActiveMockTab('bookings')}
+                    className={`w-6 h-6 rounded-md flex items-center justify-center transition-colors cursor-pointer ${
+                      activeMockTab === 'bookings' ? 'bg-white/10 text-white' : 'text-slate-500 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
                   </div>
-                  <div className="w-6 h-6 rounded-md flex items-center justify-center text-slate-500 hover:text-white transition-colors cursor-pointer">
+                  <div 
+                    onClick={() => setActiveMockTab('settings')}
+                    className={`w-6 h-6 rounded-md flex items-center justify-center transition-colors cursor-pointer ${
+                      activeMockTab === 'settings' ? 'bg-white/10 text-white' : 'text-slate-500 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                   </div>
                 </div>
@@ -192,115 +209,220 @@ const Hero = () => {
               
               {/* Main Content */}
               <div className="flex-1 p-6 flex flex-col gap-6">
-                
-                {/* Top Stats */}
-                <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                  <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
-                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Active Bookings</span>
-                    <div className="flex items-end gap-2">
-                      <span className="text-2xl font-bold text-white">42</span>
-                      <span className="text-green-400 text-xs mb-1 flex items-center">↑ 8%</span>
+                {activeMockTab === 'overview' && (
+                  <>
+                    {/* Top Stats */}
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                      <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
+                        <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Active Bookings</span>
+                        <div className="flex items-end gap-2">
+                          <span className="text-2xl font-bold text-white">42</span>
+                          <span className="text-green-400 text-xs mb-1 flex items-center">↑ 8%</span>
+                        </div>
+                      </div>
+                      <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
+                        <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Occupancy Rate</span>
+                        <div className="flex items-end gap-2">
+                          <span className="text-2xl font-bold text-white">94%</span>
+                          <span className="text-green-400 text-xs mb-1 flex items-center">↑ 3%</span>
+                        </div>
+                      </div>
+                      <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
+                        <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Total Revenue</span>
+                        <div className="flex items-end gap-2">
+                          <span className="text-2xl font-bold text-white">$182.5K</span>
+                          <span className="text-green-400 text-xs mb-1 flex items-center">↑ 12%</span>
+                        </div>
+                      </div>
+                      <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
+                        <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Avg Guest Rating</span>
+                        <div className="flex items-end gap-2">
+                          <span className="text-2xl font-bold text-white">4.98</span>
+                          <span className="text-green-400 text-xs mb-1 flex items-center">★</span>
+                        </div>
+                      </div>
+                      <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1 relative overflow-hidden group/card">
+                        <div className="absolute -right-4 -top-4 w-16 h-16 bg-brand/20 blur-xl rounded-full group-hover/card:bg-brand/30 transition-colors" />
+                        <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Destinations</span>
+                        <div className="flex items-end gap-2 relative z-10">
+                          <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400">12</span>
+                          <span className="text-slate-500 text-xs mb-1">Active</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
-                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Occupancy Rate</span>
-                    <div className="flex items-end gap-2">
-                      <span className="text-2xl font-bold text-white">94%</span>
-                      <span className="text-green-400 text-xs mb-1 flex items-center">↑ 3%</span>
-                    </div>
-                  </div>
-                  <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
-                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Total Revenue</span>
-                    <div className="flex items-end gap-2">
-                      <span className="text-2xl font-bold text-white">$182.5K</span>
-                      <span className="text-green-400 text-xs mb-1 flex items-center">↑ 12%</span>
-                    </div>
-                  </div>
-                  <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1">
-                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Avg Guest Rating</span>
-                    <div className="flex items-end gap-2">
-                      <span className="text-2xl font-bold text-white">4.98</span>
-                      <span className="text-green-400 text-xs mb-1 flex items-center">★</span>
-                    </div>
-                  </div>
-                  <div className="bg-white/5 border border-white/5 rounded-xl p-4 flex flex-col gap-1 relative overflow-hidden group/card">
-                    <div className="absolute -right-4 -top-4 w-16 h-16 bg-brand/20 blur-xl rounded-full group-hover/card:bg-brand/30 transition-colors" />
-                    <span className="text-slate-400 text-xs font-medium uppercase tracking-wider">Destinations</span>
-                    <div className="flex items-end gap-2 relative z-10">
-                      <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand to-orange-400">12</span>
-                      <span className="text-slate-500 text-xs mb-1">Active</span>
-                    </div>
-                  </div>
-                </div>
 
-                {/* Charts and Data */}
-                <div className="flex-1 flex flex-col lg:flex-row gap-4">
-                  {/* Chart Area */}
-                  <div className="flex-[2] bg-white/5 border border-white/5 rounded-xl p-5 flex flex-col relative overflow-hidden">
-                    <div className="flex justify-between items-center mb-4">
-                      <span className="text-white text-sm font-semibold">Monthly Bookings Overview</span>
-                      <div className="flex gap-2">
-                        <span className="px-2 py-1 rounded bg-white/10 text-white text-[10px] font-medium cursor-pointer">30d</span>
-                        <span className="px-2 py-1 rounded text-slate-400 hover:text-white text-[10px] font-medium cursor-pointer transition-colors">12m</span>
-                      </div>
-                    </div>
-                    
-                    <div className="flex-1 relative mt-4">
-                      {/* Fake Chart Lines */}
-                      <div className="absolute inset-0 flex items-end justify-between px-2">
-                        {[30, 45, 35, 60, 50, 80, 65, 95, 80, 100, 85, 110, 90, 75, 85, 60, 70, 90, 105, 120].map((h, i) => (
-                          <motion.div 
-                            key={i}
-                            initial={{ height: "0%" }}
-                            animate={{ height: `${h}%` }}
-                            transition={{ duration: 1.5, delay: i * 0.05, ease: "easeOut" }}
-                            className="w-full mx-[2px] md:mx-1 bg-gradient-to-t from-brand/80 to-orange-400/80 rounded-t-sm relative group/bar"
-                          >
-                            <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-white text-black text-[10px] font-bold py-0.5 px-1.5 rounded opacity-0 group-hover/bar:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
-                              {h} stays
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                      {/* Grid lines */}
-                      <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20">
-                        <div className="w-full border-b border-dashed border-slate-500"></div>
-                        <div className="w-full border-b border-dashed border-slate-500"></div>
-                        <div className="w-full border-b border-dashed border-slate-500"></div>
-                        <div className="w-full border-b border-dashed border-slate-500"></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Secondary Data (Stays Types) */}
-                  <div className="flex-1 bg-white/5 border border-white/5 rounded-xl p-5 flex flex-col overflow-hidden">
-                    <span className="text-white text-sm font-semibold mb-4">Popular Categories</span>
-                    <div className="flex flex-col gap-4 flex-1 justify-center">
-                      {[
-                        { name: "Luxury Villas", value: "45%", color: "bg-brand" },
-                        { name: "Beachfront Resorts", value: "25%", color: "bg-orange-400" },
-                        { name: "Remote Cabins", value: "18%", color: "bg-blue-400" },
-                        { name: "Castles & Mansions", value: "12%", color: "bg-green-400" }
-                      ].map((category, i) => (
-                        <div key={i} className="flex flex-col gap-2">
-                          <div className="flex justify-between text-xs">
-                            <span className="text-slate-300 font-medium">{category.name}</span>
-                            <span className="text-white font-bold">{category.value}</span>
-                          </div>
-                          <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
-                            <motion.div 
-                              initial={{ width: 0 }}
-                              animate={{ width: category.value }}
-                              transition={{ duration: 1.5, delay: 0.5 + (i * 0.2) }}
-                              className={`h-full ${category.color} rounded-full`}
-                            />
+                    {/* Charts and Data */}
+                    <div className="flex-1 flex flex-col lg:flex-row gap-4">
+                      {/* Chart Area */}
+                      <div className="flex-[2] bg-white/5 border border-white/5 rounded-xl p-5 flex flex-col relative overflow-hidden">
+                        <div className="flex justify-between items-center mb-4">
+                          <span className="text-white text-sm font-semibold">Monthly Bookings Overview</span>
+                          <div className="flex gap-2">
+                            <span className="px-2 py-1 rounded bg-white/10 text-white text-[10px] font-medium cursor-pointer">30d</span>
+                            <span className="px-2 py-1 rounded text-slate-400 hover:text-white text-[10px] font-medium cursor-pointer transition-colors">12m</span>
                           </div>
                         </div>
-                      ))}
+                        
+                        <div className="flex-1 relative mt-4">
+                          {/* Fake Chart Lines */}
+                          <div className="absolute inset-0 flex items-end justify-between px-2">
+                            {[30, 45, 35, 60, 50, 80, 65, 95, 80, 100, 85, 110, 90, 75, 85, 60, 70, 90, 105, 120].map((h, i) => (
+                              <motion.div 
+                                key={i}
+                                initial={{ height: "0%" }}
+                                animate={{ height: `${h}%` }}
+                                transition={{ duration: 1.5, delay: i * 0.05, ease: "easeOut" }}
+                                className="w-full mx-[2px] md:mx-1 bg-gradient-to-t from-brand/80 to-orange-400/80 rounded-t-sm relative group/bar"
+                              >
+                                <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-white text-black text-[10px] font-bold py-0.5 px-1.5 rounded opacity-0 group-hover/bar:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                                  {h} stays
+                                </div>
+                              </motion.div>
+                            ))}
+                          </div>
+                          {/* Grid lines */}
+                          <div className="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20">
+                            <div className="w-full border-b border-dashed border-slate-500"></div>
+                            <div className="w-full border-b border-dashed border-slate-500"></div>
+                            <div className="w-full border-b border-dashed border-slate-500"></div>
+                            <div className="w-full border-b border-dashed border-slate-500"></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Secondary Data (Stays Types) */}
+                      <div className="flex-1 bg-white/5 border border-white/5 rounded-xl p-5 flex flex-col overflow-hidden">
+                        <span className="text-white text-sm font-semibold mb-4">Popular Categories</span>
+                        <div className="flex flex-col gap-4 flex-1 justify-center">
+                          {[
+                            { name: "Luxury Villas", value: "45%", color: "bg-brand" },
+                            { name: "Beachfront Resorts", value: "25%", color: "bg-orange-400" },
+                            { name: "Remote Cabins", value: "18%", color: "bg-blue-400" },
+                            { name: "Castles & Mansions", value: "12%", color: "bg-green-400" }
+                          ].map((category, i) => (
+                            <div key={i} className="flex flex-col gap-2">
+                              <div className="flex justify-between text-xs">
+                                <span className="text-slate-300 font-medium">{category.name}</span>
+                                <span className="text-white font-bold">{category.value}</span>
+                              </div>
+                              <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                                <motion.div 
+                                  initial={{ width: 0 }}
+                                  animate={{ width: category.value }}
+                                  transition={{ duration: 1.5, delay: 0.5 + (i * 0.2) }}
+                                  className={`h-full ${category.color} rounded-full`}
+                                />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {activeMockTab === 'bookings' && (
+                  <div className="flex flex-col h-full">
+                    <div className="flex justify-between items-center mb-6">
+                      <div>
+                        <h3 className="text-white font-bold text-lg">System Reservations Log</h3>
+                        <p className="text-slate-400 text-xs mt-1">Real-time status of all globally managed client stays.</p>
+                      </div>
+                      <span className="px-3 py-1 rounded-full bg-brand/10 border border-brand/20 text-brand text-xs font-semibold">Live Feed</span>
+                    </div>
+
+                    <div className="flex-1 overflow-x-auto">
+                      <table className="w-full text-left text-xs">
+                        <thead>
+                          <tr className="border-b border-white/5 text-slate-500 font-semibold">
+                            <th className="pb-3">PROPERTY / LOCATION</th>
+                            <th className="pb-3">STATUS</th>
+                            <th className="pb-3 text-right">REVENUE</th>
+                            <th className="pb-3 text-right">GUESTS</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-white/5">
+                          {[
+                            { property: 'Amalfi Sanctuary', location: 'Positano, Italy', status: 'Checked In', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20', price: '$24,500', guests: '4 Guests' },
+                            { property: 'Nordic Glass Dome', location: 'Tromsø, Norway', status: 'Confirmed', color: 'text-blue-400 bg-blue-500/10 border-blue-500/20', price: '$8,200', guests: '2 Guests' },
+                            { property: 'Desert Mirror Villa', location: 'Joshua Tree, CA', status: 'Checked Out', color: 'text-slate-400 bg-white/5 border-white/10', price: '$15,000', guests: '6 Guests' },
+                            { property: 'Kyoto Heritage House', location: 'Kyoto, Japan', status: 'Pending', color: 'text-brand bg-brand/10 border-brand/20', price: '$6,400', guests: '2 Guests' },
+                          ].map((item, idx) => (
+                            <tr key={idx} className="group/row hover:bg-white/[0.02] transition-colors">
+                              <td className="py-3">
+                                <div className="font-semibold text-white group-hover/row:text-brand transition-colors">{item.property}</div>
+                                <div className="text-slate-400 text-[10px]">{item.location}</div>
+                              </td>
+                              <td className="py-3">
+                                <span className={`px-2 py-0.5 rounded-full border text-[10px] font-semibold ${item.color}`}>
+                                  {item.status}
+                                </span>
+                              </td>
+                              <td className="py-3 text-right font-bold text-white">{item.price}</td>
+                              <td className="py-3 text-right text-slate-400 font-medium">{item.guests}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     </div>
                   </div>
-                </div>
-              </div>
+                )}
+
+                {activeMockTab === 'settings' && (
+                  <div className="flex flex-col h-full">
+                    <div className="flex justify-between items-center mb-6">
+                      <div>
+                        <h3 className="text-white font-bold text-lg">Zenith System Parameters</h3>
+                        <p className="text-slate-400 text-xs mt-1">Platform configuration settings and security standards.</p>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col gap-4">
+                        <h4 className="text-slate-200 font-bold text-sm">Platform Core Toggles</h4>
+                        <div className="space-y-4">
+                          {[
+                            { name: '100-Point Physical Verification', desc: 'Mandatory on-site check before publishing.', active: true },
+                            { name: 'Smart Key Escrow Integration', desc: 'Automatic digital lock codes on booking confirmation.', active: true },
+                            { name: 'Direct Owner Chat', desc: 'Secure encryption between host and traveler.', active: false },
+                          ].map((toggle, idx) => (
+                            <div key={idx} className="flex items-center justify-between">
+                              <div>
+                                <div className="text-white text-xs font-semibold">{toggle.name}</div>
+                                <div className="text-slate-400 text-[10px]">{toggle.desc}</div>
+                              </div>
+                              <div className={`w-8 h-4 rounded-full p-[2px] cursor-pointer transition-colors ${toggle.active ? 'bg-brand' : 'bg-slate-700'}`}>
+                                <div className={`w-3 h-3 rounded-full bg-white transition-transform ${toggle.active ? 'translate-x-4' : 'translate-x-0'}`} />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col gap-4">
+                        <h4 className="text-slate-200 font-bold text-sm">Security & API Status</h4>
+                        <div className="space-y-4 text-xs">
+                          <div className="flex justify-between py-1 border-b border-white/5">
+                            <span className="text-slate-400 font-medium">Server Uptime</span>
+                            <span className="text-emerald-400 font-bold">99.99% Operational</span>
+                          </div>
+                          <div className="flex justify-between py-1 border-b border-white/5">
+                            <span className="text-slate-400 font-medium">Payment Protocol</span>
+                            <span className="text-white font-bold">Stripe Custom Connect v3</span>
+                          </div>
+                          <div className="flex justify-between py-1 border-b border-white/5">
+                            <span className="text-slate-400 font-medium">Encryption Standard</span>
+                            <span className="text-brand font-bold">AES-256 GCM</span>
+                          </div>
+                          <div className="flex justify-between py-1 border-b border-white/5">
+                            <span className="text-slate-400 font-medium">Escrow Timeout</span>
+                            <span className="text-slate-300 font-bold">48 Hours post check-in</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
               {/* Right Panel - Active Bookings & Concierge */}
               <div className="w-full md:w-80 bg-white/[0.02] border-l border-white/5 p-6 flex flex-col gap-6">
