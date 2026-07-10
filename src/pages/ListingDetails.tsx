@@ -189,17 +189,15 @@ const ListingDetails = () => {
   };
 
   const handleDeleteReview = (reviewId: any) => {
-    if (window.confirm("Are you sure you want to delete your review?")) {
-      const updatedReviews = reviewsList.filter((r: any) => r.id !== reviewId);
-      setReviewsList(updatedReviews);
+    const updatedReviews = reviewsList.filter((r: any) => r.id !== reviewId);
+    setReviewsList(updatedReviews);
 
-      const storedReviews = localStorage.getItem('listing_reviews');
-      const allReviewsMap = storedReviews ? JSON.parse(storedReviews) : {};
-      allReviewsMap[safeListing.id] = updatedReviews;
-      localStorage.setItem('listing_reviews', JSON.stringify(allReviewsMap));
+    const storedReviews = localStorage.getItem('listing_reviews');
+    const allReviewsMap = storedReviews ? JSON.parse(storedReviews) : {};
+    allReviewsMap[safeListing.id] = updatedReviews;
+    localStorage.setItem('listing_reviews', JSON.stringify(allReviewsMap));
 
-      setToastMessage("Review deleted.");
-    }
+    setToastMessage("Review deleted successfully!");
   };
 
   return (
