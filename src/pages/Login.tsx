@@ -36,14 +36,12 @@ export const Login = () => {
       return;
     }
 
-    // Demo Intercept
     if (email === 'admin@example.com' && password === 'admin123') {
       setTimeout(() => {
         login('demo-admin-token', {
           id: 'admin-1',
           name: 'System Admin',
           email: 'admin@example.com',
-          image: 'https://i.pravatar.cc/150?u=admin',
           role: 'admin'
         });
         setLoading(false);
@@ -58,7 +56,6 @@ export const Login = () => {
           id: 'user-1',
           name: 'Demo User',
           email: 'user@example.com',
-          image: 'https://i.pravatar.cc/150?u=user',
           role: 'user'
         });
         setLoading(false);
