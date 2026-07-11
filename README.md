@@ -3,6 +3,9 @@
 [![React](https://img.shields.io/badge/React-19.0.0-blue.svg)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-latest-orange.svg)](https://vitejs.dev/)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen.svg)](https://zenith-elite-luxury-villa-booking.netlify.app/)
+
+🔗 **Live Application URL**: [zenith-elite-luxury-villa-booking.netlify.app](https://zenith-elite-luxury-villa-booking.netlify.app/)
 
 Zenith Client is the premium, state-of-the-art frontend application for the **Zenith Luxury Accommodation & Membership Ecosystem**. Crafted with modern design philosophies, it features glassmorphism, responsive bento layouts, vibrant dark themes, and smooth transition animations to deliver a true luxury booking experience.
 
