@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Trash2, MapPin, Users, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
+import api from '@/config/api';
 
 export const MyReservations = ({ isEmbedded = false }: { isEmbedded?: boolean }) => {
   const { user } = useAuth();
@@ -10,30 +11,35 @@ export const MyReservations = ({ isEmbedded = false }: { isEmbedded?: boolean })
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [resToDelete, setResToDelete] = useState<string | null>(null);
 
+  const fetchReservations = async () => {
+    try {
+      const { data } = await api.get('/reservations/my');
+      setReservations(data);
+    } catch (err) {
+      console.error('Error fetching reservations:', err);
+    }
+  };
+
   useEffect(() => {
-    const fetchReservations = () => {
-      const stored = localStorage.getItem('my_reservations');
-      if (stored) {
-        const allReservations = JSON.parse(stored);
-        // Only show reservations belonging to the current user
-        const userReservations = allReservations.filter((r: any) => r.userId === user?.id);
-        setReservations(userReservations);
-      }
-    };
     fetchReservations();
   }, [user?.id]);
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (!resToDelete) return;
-    const stored = localStorage.getItem('my_reservations');
-    if (stored) {
-      const allReservations = JSON.parse(stored);
-      const updatedAll = allReservations.filter((r: any) => r.id !== resToDelete);
-      localStorage.setItem('my_reservations', JSON.stringify(updatedAll));
-      setReservations(reservations.filter(r => r.id !== resToDelete));
+    try {
+      const { data } = await api.delete(`/reservations/${resToDelete}`);
+      // Update local state: if returned status is Cancelled, update status, otherwise filter it out
+      if (data.status === 'Cancelled') {
+        setReservations(reservations.map(r => r.id === resToDelete ? { ...r, status: 'Cancelled' } : r));
+      } else {
+        setReservations(reservations.filter(r => r.id !== resToDelete));
+      }
+    } catch (err) {
+      console.error('Error cancelling reservation:', err);
+    } finally {
+      setDeleteModalOpen(false);
+      setResToDelete(null);
     }
-    setDeleteModalOpen(false);
-    setResToDelete(null);
   };
 
   const content = (

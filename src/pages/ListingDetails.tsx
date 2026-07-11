@@ -78,15 +78,22 @@ const ListingDetails = () => {
     };
 
     // Load reservations for booked badge check
-    if (user) {
-      const stored = localStorage.getItem('my_reservations');
-      const reservations = stored ? JSON.parse(stored) : [];
-      const matched = reservations.filter((r: any) => String(r.listingId) === String(id) && String(r.userId) === String(user.id));
-      setUserReservations(matched);
-    }
+    const loadReservations = async () => {
+      if (user) {
+        try {
+          const { data } = await api.get('/reservations/my');
+          const matched = data.filter((r: any) => String(r.listing) === String(id));
+          setUserReservations(matched);
+        } catch (err) {
+          console.warn('Backend offline, fallback to empty reservations list');
+          setUserReservations([]);
+        }
+      }
+    };
 
     window.scrollTo(0, 0);
     fetchListing();
+    loadReservations();
   }, [id, user]);
 
   if (loading) {
@@ -615,27 +622,30 @@ const ListingDetails = () => {
                       const nights = diffDays || 1;
                       const totalPrice = pricePerNight * nights;
 
-                      // Save to localStorage
-                      const stored = localStorage.getItem('my_reservations');
-                      const reservations = stored ? JSON.parse(stored) : [];
-                      const newReservation = {
-                        id: Math.random().toString(36).substr(2, 9),
-                        listingId: safeListing?.id,
-                        title: safeListing?.title,
-                        image: safeListing?.images?.[0] || safeListing?.image,
-                        location: safeListing?.location,
-                        price: safeListing?.price,
-                        totalPrice,
-                        checkIn,
-                        checkOut,
-                        guests,
-                        status: 'Pending',
-                        userId: user?.id
+                      // Save to MongoDB
+                      const saveReservation = async () => {
+                        try {
+                          const reservationPayload = {
+                            listingId: safeListing?.id || safeListing?._id || id,
+                            title: safeListing?.title,
+                            image: safeListing?.images?.[0] || safeListing?.image,
+                            location: safeListing?.location,
+                            price: safeListing?.price,
+                            totalPrice,
+                            checkIn,
+                            checkOut,
+                            guests
+                          };
+                          const { data } = await api.post('/reservations', reservationPayload);
+                          setUserReservations([data]);
+                          setBookingModalOpen(true);
+                          setIsRequested(true);
+                        } catch (err: any) {
+                          console.error("Booking error:", err);
+                          alert(err.response?.data?.message || 'Error processing reservation request.');
+                        }
                       };
-                      localStorage.setItem('my_reservations', JSON.stringify([...reservations, newReservation]));
-
-                      setBookingModalOpen(true);
-                      setIsRequested(true);
+                      saveReservation();
                     }}
                     disabled={hasBooked}
                     className={`w-full h-14 font-bold text-lg rounded-xl transition-all ${

@@ -1,5 +1,6 @@
-import { useMemo, type ComponentType } from 'react';
+import { useMemo, useState, useEffect, type ComponentType } from 'react';
 import { motion } from 'framer-motion';
+import api from '@/config/api';
 import {
   AreaChart, Area, BarChart, Bar,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
@@ -67,14 +68,23 @@ const StatCard = ({ icon: Icon, label, value, sub, delay }: StatCardProps) => (
 const UserStats = () => {
   const { user } = useAuth();
 
-  // Pull user's reservations from localStorage
+  const [rawReservations, setRawReservations] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchReservations = async () => {
+      try {
+        const { data } = await api.get('/reservations/my');
+        setRawReservations(data);
+      } catch (err) {
+        console.error('Error fetching reservations for stats:', err);
+      }
+    };
+    fetchReservations();
+  }, [user?.id]);
+
+  // Pull user's reservations from MongoDB raw state
   const reservations = useMemo(() => {
-    const stored = localStorage.getItem('my_reservations');
-    if (!stored) return [];
-    const all = JSON.parse(stored);
-    const userRes = all.filter((r: any) => r.userId === user?.id);
-    
-    return userRes.map((r: any) => {
+    return rawReservations.map((r: any) => {
       const pricePerNight = typeof r.price === 'number'
         ? r.price
         : Number(String(r.price || '0').replace(/[^0-9.]/g, '')) || 0;
@@ -94,7 +104,7 @@ const UserStats = () => {
       }
       return { ...r, totalPrice, pricePerNight, nights };
     });
-  }, [user?.id]);
+  }, [rawReservations]);
 
   // Compute stats
   const totalTrips      = reservations.length;

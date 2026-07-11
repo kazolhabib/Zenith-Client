@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, MapPin, Users, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import api from '@/config/api';
 
 const getReservationTotal = (reservation: any) => {
   const savedTotal = Number(reservation.totalPrice);
@@ -35,41 +36,48 @@ export const AllReservations = ({ isEmbedded = false }: { isEmbedded?: boolean }
     "Scheduled property renovation and upgrades."
   ];
 
+  const fetchReservations = async () => {
+    try {
+      const { data } = await api.get('/reservations');
+      setReservations(data);
+    } catch (err) {
+      console.error('Error fetching reservations:', err);
+    }
+  };
+
   useEffect(() => {
-    const fetchReservations = () => {
-      const stored = localStorage.getItem('my_reservations');
-      if (stored) {
-        setReservations(JSON.parse(stored));
-      }
-    };
     fetchReservations();
   }, []);
 
-  const handleUpdateStatus = (id: string, newStatus: string) => {
-    const updated = reservations.map(r => r.id === id ? { ...r, status: newStatus } : r);
-    setReservations(updated);
-    localStorage.setItem('my_reservations', JSON.stringify(updated));
+  const handleUpdateStatus = async (id: string, newStatus: string) => {
+    try {
+      const { data } = await api.put(`/reservations/${id}`, { status: newStatus });
+      setReservations(reservations.map(r => r.id === id ? data : r));
+    } catch (err) {
+      console.error('Error updating reservation status:', err);
+    }
   };
 
-  const confirmRejection = () => {
+  const confirmRejection = async () => {
     if (!resToReject) return;
     const finalReason = rejectionReason.trim() || "No specific reason provided.";
-    const updated = reservations.map(r => 
-      r.id === resToReject 
-        ? {
-            ...r,
-            status: 'Rejected',
-            rejectionReason: finalReason,
-            refundAmount: getReservationTotal(r),
-            refundedAt: new Date().toISOString(),
-          }
-        : r
-    );
-    setReservations(updated);
-    localStorage.setItem('my_reservations', JSON.stringify(updated));
-    setRejectModalOpen(false);
-    setResToReject(null);
-    setRejectionReason('');
+    try {
+      const reservation = reservations.find(r => r.id === resToReject);
+      const refundAmount = getReservationTotal(reservation);
+      const { data } = await api.put(`/reservations/${resToReject}`, {
+        status: 'Rejected',
+        rejectionReason: finalReason,
+        refundAmount,
+        refundedAt: new Date().toISOString()
+      });
+      setReservations(reservations.map(r => r.id === resToReject ? data : r));
+    } catch (err) {
+      console.error('Error rejecting reservation:', err);
+    } finally {
+      setRejectModalOpen(false);
+      setResToReject(null);
+      setRejectionReason('');
+    }
   };
 
   const content = (

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { MapPin, Star, Calendar, ArrowRight, CheckCircle, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
+import api from '@/config/api';
 
 export interface ListingCardProps {
   item: any;
@@ -15,19 +16,23 @@ export const ListingCard: FC<ListingCardProps> = ({ item, index }) => {
   const [isConfirmed, setIsConfirmed] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      const stored = localStorage.getItem('my_reservations');
-      if (stored) {
-        const reservations = JSON.parse(stored);
-        const hasConfirmed = reservations.some(
-          (r: any) => r.userId === user.id && r.listingId === item.id && r.status === 'Confirmed'
-        );
-        setIsConfirmed(hasConfirmed);
+    const checkConfirmedBooking = async () => {
+      if (user) {
+        try {
+          const { data } = await api.get('/reservations/my');
+          const hasConfirmed = data.some(
+            (r: any) => String(r.listing) === String(item.id || item._id) && r.status === 'Confirmed'
+          );
+          setIsConfirmed(hasConfirmed);
+        } catch (err) {
+          setIsConfirmed(false);
+        }
+      } else {
+        setIsConfirmed(false);
       }
-    } else {
-      setIsConfirmed(false);
-    }
-  }, [user, item.id]);
+    };
+    checkConfirmedBooking();
+  }, [user, item.id, item._id]);
 
   return (
     <motion.div 
