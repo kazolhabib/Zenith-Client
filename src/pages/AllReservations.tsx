@@ -3,6 +3,25 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, MapPin, Users, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+const getReservationTotal = (reservation: any) => {
+  const savedTotal = Number(reservation.totalPrice);
+  if (Number.isFinite(savedTotal) && savedTotal > 0) {
+    return savedTotal;
+  }
+
+  const pricePerNight = typeof reservation.price === 'number'
+    ? reservation.price
+    : Number(String(reservation.price || '0').replace(/[^0-9.]/g, '')) || 0;
+
+  const checkIn = new Date(reservation.checkIn);
+  const checkOut = new Date(reservation.checkOut);
+  const nights = reservation.checkIn && reservation.checkOut
+    ? Math.max(1, Math.ceil(Math.abs(checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)))
+    : 1;
+
+  return pricePerNight * nights;
+};
+
 export const AllReservations = ({ isEmbedded = false }: { isEmbedded?: boolean }) => {
   const [reservations, setReservations] = useState<any[]>([]);
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
@@ -37,7 +56,13 @@ export const AllReservations = ({ isEmbedded = false }: { isEmbedded?: boolean }
     const finalReason = rejectionReason.trim() || "No specific reason provided.";
     const updated = reservations.map(r => 
       r.id === resToReject 
-        ? { ...r, status: 'Rejected', rejectionReason: finalReason } 
+        ? {
+            ...r,
+            status: 'Rejected',
+            rejectionReason: finalReason,
+            refundAmount: getReservationTotal(r),
+            refundedAt: new Date().toISOString(),
+          }
         : r
     );
     setReservations(updated);

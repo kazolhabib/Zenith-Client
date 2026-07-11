@@ -100,7 +100,9 @@ const UserStats = () => {
   const totalTrips      = reservations.length;
   const confirmedTrips  = reservations.filter((r: any) => r.status === 'Confirmed').length;
   const pendingTrips    = reservations.filter((r: any) => r.status === 'Pending').length;
-  const totalSpent      = reservations.reduce((sum: number, r: any) => sum + (r.totalPrice || 0), 0);
+  const totalSpent      = reservations
+    .filter((r: any) => r.status !== 'Rejected')
+    .reduce((sum: number, r: any) => sum + (r.totalPrice || 0), 0);
   const avgRating       = 4.8; // placeholder
   const uniqueLocations = [...new Set(reservations.map((r: any) => r.location))].length;
 
@@ -117,7 +119,7 @@ const UserStats = () => {
     const spent = reservations
       .filter((r: any) => {
         const date = new Date(r.checkIn || r.createdAt || Date.now());
-        return date.getMonth() === d.getMonth() && date.getFullYear() === d.getFullYear();
+        return r.status !== 'Rejected' && date.getMonth() === d.getMonth() && date.getFullYear() === d.getFullYear();
       })
       .reduce((s: number, r: any) => s + (r.totalPrice || 0), 0);
     return { month: label, trips, spent };
@@ -335,14 +337,27 @@ const UserStats = () => {
                   </div>
                 </div>
                 <div className="text-right shrink-0 flex flex-col items-end">
-                  <p className="text-white font-black text-base">${(r.totalPrice || 0).toLocaleString()}</p>
-                  <p className="text-[10px] text-slate-500 font-medium mb-1">
-                    ${r.pricePerNight} × {r.nights} night{r.nights > 1 ? 's' : ''}
-                  </p>
+                  {r.status === 'Rejected' ? (
+                    <>
+                      <p className="text-emerald-400 font-black text-base">
+                        Refunded ${(r.refundAmount || r.totalPrice || 0).toLocaleString()}
+                      </p>
+                      <p className="text-[10px] text-slate-500 font-medium mb-1">Removed from total spent</p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-white font-black text-base">${(r.totalPrice || 0).toLocaleString()}</p>
+                      <p className="text-[10px] text-slate-500 font-medium mb-1">
+                        ${r.pricePerNight} × {r.nights} night{r.nights > 1 ? 's' : ''}
+                      </p>
+                    </>
+                  )}
                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                     r.status === 'Confirmed'
                       ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20'
-                      : 'bg-yellow-500/15 text-yellow-400 border border-yellow-500/20'
+                      : r.status === 'Rejected'
+                        ? 'bg-red-500/15 text-red-400 border border-red-500/20'
+                        : 'bg-yellow-500/15 text-yellow-400 border border-yellow-500/20'
                   }`}>
                     {r.status}
                   </span>
