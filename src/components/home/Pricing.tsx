@@ -1,8 +1,10 @@
-import React from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
+import api from '@/config/api';
 
 const plans = [
   {
@@ -29,6 +31,35 @@ const plans = [
 ];
 
 const Pricing = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+
+  const handleJoinClub = async (planName: string) => {
+    if (!user) {
+      // If not logged in, go to login page
+      navigate('/login', { state: { from: '/#pricing' } });
+      return;
+    }
+
+    setLoadingPlan(planName);
+    try {
+      const planKey = planName.toLowerCase().split(' ')[0]; // 'silver' or 'gold'
+      const { data } = await api.post('/payments/create-checkout-session', { planName: planKey });
+      
+      if (data.sessionUrl) {
+        window.location.href = data.sessionUrl;
+      } else {
+        alert('Failed to initiate checkout session');
+      }
+    } catch (error: any) {
+      console.error('Payment error:', error);
+      alert(error.response?.data?.message || 'Error redirecting to payment checkout');
+    } finally {
+      setLoadingPlan(null);
+    }
+  };
+
   return (
     <section className="py-24 bg-transparent relative overflow-hidden">
       
@@ -100,8 +131,19 @@ const Pricing = () => {
                 ))}
               </ul>
 
-              <Link to={plan.price === 'Custom' ? '/contact' : '/register'} className="w-full">
+              {plan.price === 'Custom' ? (
+                <Link to="/contact" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full h-14 rounded-2xl text-lg font-bold bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:border-white/20"
+                  >
+                    Contact Concierge
+                  </Button>
+                </Link>
+              ) : (
                 <Button 
+                  onClick={() => handleJoinClub(plan.name)}
+                  disabled={loadingPlan !== null}
                   variant={plan.isPopular ? 'default' : 'outline'} 
                   className={`w-full h-14 rounded-2xl text-lg font-bold transition-all duration-300 ${
                     plan.isPopular 
@@ -109,9 +151,13 @@ const Pricing = () => {
                       : 'bg-white/5 border border-white/10 text-white hover:bg-white/10 hover:border-white/20'
                   }`}
                 >
-                  {plan.price === 'Custom' ? 'Contact Concierge' : 'Join the Club'}
+                  {loadingPlan === plan.name ? (
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mx-auto" />
+                  ) : (
+                    'Join the Club'
+                  )}
                 </Button>
-              </Link>
+              )}
             </motion.div>
           ))}
         </div>

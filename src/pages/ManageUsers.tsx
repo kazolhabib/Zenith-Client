@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Users, Trash2, Shield, Mail, Key, Sparkles, AlertTriangle } from 'lucide-react';
+import { Users, Trash2, Mail, Key, Sparkles, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import api from '@/config/api';
 import { useAuth } from '@/context/AuthContext';

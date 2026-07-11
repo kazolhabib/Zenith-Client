@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Star, Check, Building, Quote } from 'lucide-react';
 

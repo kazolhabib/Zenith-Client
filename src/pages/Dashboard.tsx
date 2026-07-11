@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, type ChangeEvent, type FormEvent } from 'react';
 import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Camera, Mail, Save, List, Calendar, LayoutDashboard, Shield, LogOut, Settings, CheckCircle, Users } from 'lucide-react';
+import { User, Camera, Mail, Save, List, Calendar, LayoutDashboard, Shield, LogOut, Settings, CheckCircle, Users, BarChart2, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 import api from '@/config/api';
@@ -9,13 +9,17 @@ import { ManageListings } from './ManageListings';
 import { MyReservations } from './MyReservations';
 import { AllReservations } from './AllReservations';
 import { ManageUsers } from './ManageUsers';
+import { AddListing } from './AddListing';
+import DashboardStats from '@/components/dashboard/DashboardStats';
+import UserStats from '@/components/dashboard/UserStats';
 
 export const Dashboard = () => {
   const location = useLocation();
   const { user, login, logout } = useAuth();
   
   const initialState = (location.state as any)?.activeTab || 'profile';
-  const [activeTab, setActiveTab] = useState<'profile' | 'listings' | 'reservations' | 'all-reservations' | 'users'>(initialState);
+  const [activeTab, setActiveTab] = useState<'profile' | 'analytics' | 'listings' | 'reservations' | 'all-reservations' | 'users' | 'add-listing'>(initialState);
+  const [editListingId, setEditListingId] = useState<string | number | null>(null);
   
   const [name, setName] = useState(user?.name || '');
   const [image, setImage] = useState(user?.image || '');
@@ -23,7 +27,7 @@ export const Dashboard = () => {
   const [successMsg, setSuccessMsg] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
@@ -39,7 +43,15 @@ export const Dashboard = () => {
     }
   }, [user]);
 
-  const handleUpdateProfile = async (e: React.FormEvent) => {
+  // Sync activeTab when location.state changes (from Navbar clicks)
+  useEffect(() => {
+    const stateTab = (location.state as any)?.activeTab;
+    if (stateTab) {
+      setActiveTab(stateTab);
+    }
+  }, [location.state]);
+
+  const handleUpdateProfile = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setSuccessMsg('');
@@ -69,11 +81,13 @@ export const Dashboard = () => {
   };
 
   const navItems = [
-    { id: 'profile', label: 'Settings & Profile', icon: Settings, show: true, desc: 'Manage your account' },
-    { id: 'reservations', label: 'My Trips', icon: Calendar, show: user?.role !== 'admin', desc: 'View your bookings' },
-    { id: 'listings', label: 'Properties', icon: LayoutDashboard, show: user?.role === 'admin', desc: 'Manage listings' },
-    { id: 'all-reservations', label: 'Bookings', icon: List, show: user?.role === 'admin', desc: 'All user reservations' },
-    { id: 'users', label: 'Users', icon: Users, show: user?.role === 'admin', desc: 'All registered users' }
+    { id: 'profile',          label: 'Settings & Profile', icon: Settings,        show: true,                   desc: 'Manage your account'  },
+    { id: 'analytics',        label: user?.role === 'admin' ? 'Analytics' : 'My Activity', icon: BarChart2, show: true, desc: user?.role === 'admin' ? 'Performance overview' : 'Your trip history' },
+    { id: 'reservations',     label: 'My Trips',           icon: Calendar,        show: user?.role !== 'admin', desc: 'View your bookings'    },
+    { id: 'listings',         label: user?.role === 'admin' ? 'Properties' : 'My Properties', icon: LayoutDashboard, show: true, desc: user?.role === 'admin' ? 'Manage listings' : 'Your properties' },
+    { id: 'add-listing',      label: 'Add Property',       icon: Plus,            show: true,                   desc: 'List a new property'  },
+    { id: 'all-reservations', label: 'Bookings',           icon: List,            show: user?.role === 'admin', desc: 'All user reservations' },
+    { id: 'users',            label: 'Users',              icon: Users,           show: user?.role === 'admin', desc: 'All registered users'  },
   ].filter(item => item.show);
 
   return (
@@ -149,7 +163,12 @@ export const Dashboard = () => {
                   return (
                     <button 
                       key={item.id}
-                      onClick={() => setActiveTab(item.id as any)}
+                      onClick={() => {
+                        if (item.id !== 'add-listing') {
+                          setEditListingId(null);
+                        }
+                        setActiveTab(item.id as any);
+                      }}
                       className={`w-full flex items-center gap-4 p-4 rounded-2xl transition-all duration-300 group text-left ${
                         isActive 
                         ? 'bg-gradient-to-r from-brand to-orange-500 text-white font-bold' 
@@ -303,10 +322,29 @@ export const Dashboard = () => {
                 </motion.div>
               )}
 
-              {/* Other tabs wrapped in matching Bento Boxes */}
+              {/* Analytics tab: Admin sees global stats, User sees personal stats */}
+              {activeTab === 'analytics' && (
+                <motion.div key="analytics" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+                  {user?.role === 'admin' ? <DashboardStats /> : <UserStats />}
+                </motion.div>
+              )}
+
               {activeTab === 'listings' && (
                 <motion.div key="listings" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="bg-[#121217]/80 backdrop-blur-3xl border border-white/5 rounded-3xl p-8 shadow-2xl">
                   <ManageListings isEmbedded={true} />
+                </motion.div>
+              )}
+
+              {activeTab === 'add-listing' && (
+                <motion.div key="add-listing" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="bg-[#121217]/80 backdrop-blur-3xl border border-white/5 rounded-3xl p-8 shadow-2xl">
+                  <AddListing 
+                    isEmbedded={true} 
+                    editListingId={editListingId}
+                    onSuccess={() => {
+                      setEditListingId(null);
+                      setActiveTab('listings');
+                    }} 
+                  />
                 </motion.div>
               )}
 

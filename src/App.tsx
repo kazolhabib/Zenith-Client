@@ -14,6 +14,8 @@ import Dashboard from './pages/Dashboard';
 import About from './pages/About';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
+import PaymentSuccess from './pages/PaymentSuccess';
+import PaymentCancel from './pages/PaymentCancel';
 
 // Placeholder Pages
 const Products = () => <div className="pt-20 p-8 text-white"><h1 className="text-3xl font-bold">Products</h1></div>;
@@ -57,6 +59,22 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Dashboard />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/payment/success" 
+                element={
+                  <ProtectedRoute>
+                    <PaymentSuccess />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/payment/cancel" 
+                element={
+                  <ProtectedRoute>
+                    <PaymentCancel />
                   </ProtectedRoute>
                 } 
               />

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { User, Mail, Lock, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react';
@@ -20,7 +20,7 @@ export const Register = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
     
@@ -44,6 +44,7 @@ export const Register = () => {
       return;
     }
 
+    setLoading(true);
     try {
       const response = await api.post('/auth/register', { name, email, password });
       
@@ -51,11 +52,10 @@ export const Register = () => {
         id: response.data.id,
         name: response.data.name,
         email: response.data.email,
-        image: response.data.image,
-        role: 'user'
+        image: response.data.image || '',
+        role: response.data.role || 'user'
       });
       
-      setLoading(false);
       navigate('/dashboard');
     } catch (err: any) {
       setLoading(false);

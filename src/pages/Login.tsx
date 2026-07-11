@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Mail, Lock, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react';
@@ -17,7 +17,7 @@ export const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
     
@@ -37,15 +37,15 @@ export const Login = () => {
       return;
     }
 
+    setLoading(true);
     try {
       const response = await api.post('/auth/login', { email, password });
       
-      setLoading(false);
       login(response.data.token, {
         id: response.data.id,
         name: response.data.name,
         email: response.data.email,
-        image: response.data.image,
+        image: response.data.image || '',
         role: response.data.role || 'user'
       }); 
       

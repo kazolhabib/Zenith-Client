@@ -1,21 +1,44 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { Mountain, Menu, X, Plus, LayoutDashboard, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/context/AuthContext';
 
-const routes = [
+const publicRoutes = [
   { name: 'Explore', path: '/explore' },
-  { name: 'About', path: '/about' },
+  { name: 'About',   path: '/about'   },
   { name: 'Contact', path: '/contact' },
 ];
+
+
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { isAuthenticated, user, logout } = useAuth();
+  
+  const routes = useMemo(() => {
+    if (!isAuthenticated) return publicRoutes;
+    const base = [
+      { name: 'Explore',  path: '/explore'    },
+      { name: 'About',    path: '/about'      },
+      { name: 'Contact',  path: '/contact'    },
+    ];
+    if (user?.role === 'admin') {
+      return [
+        ...base,
+        { name: 'Manage', path: '/dashboard', state: { activeTab: 'listings' } }
+      ];
+    } else {
+      return [
+        ...base,
+        { name: 'My Trips',      path: '/dashboard', state: { activeTab: 'reservations' } },
+        { name: 'My Properties', path: '/dashboard', state: { activeTab: 'listings' } }
+      ];
+    }
+  }, [isAuthenticated, user]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,20 +87,19 @@ const Navbar = () => {
             <div className={`hidden md:flex items-center gap-[0.25rem] p-[0.25rem] rounded-[1.5rem] transition-colors duration-500 ${scrolled ? 'bg-black/20' : 'bg-transparent'}`}>
               {routes.map((route) => (
                 <Link
-                  key={route.path}
+                  key={route.name}
                   to={route.path}
+                  state={'state' in route ? route.state : undefined}
                   className={`group relative overflow-hidden px-[1.25rem] py-[0.5rem] rounded-[1.25rem] text-[0.875rem] font-bold transition-all duration-300 border ${
-                    isActive(route.path)
+                    isActive(route.path) && !('state' in route)
                       ? 'bg-gradient-to-r from-brand to-orange-500 text-white border-none shadow-[0_4px_15px_rgba(246,86,0,0.2)]'
                       : 'bg-transparent border-transparent hover:bg-white/5 hover:text-white hover:-translate-y-[1px] text-slate-300'
                   }`}
                 >
                   <span className="relative z-10">{route.name}</span>
-                  {!isActive(route.path) && (
-                    <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-150%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(150%)]">
-                      <div className="relative h-full w-[1.25rem] bg-brand/30 blur-[2px]" />
-                    </div>
-                  )}
+                  <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-150%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(150%)]">
+                    <div className="relative h-full w-[1.25rem] bg-brand/30 blur-[2px]" />
+                  </div>
                 </Link>
               ))}
             </div>
@@ -155,11 +177,12 @@ const Navbar = () => {
           <div className="absolute top-[4.5rem] left-0 w-full bg-[#121217]/95 backdrop-blur-2xl border border-white/10 rounded-[1.5rem] mt-[0.5rem] overflow-hidden shadow-2xl">
             {routes.map((route) => (
                <Link
-               key={route.path}
+               key={route.name}
                to={route.path}
+               state={'state' in route ? route.state : undefined}
                onClick={() => setIsOpen(false)}
                className={`block px-[1.25rem] py-[0.75rem] text-[0.875rem] font-medium transition-all ${
-                 isActive(route.path)
+                 isActive(route.path) && !('state' in route)
                    ? 'bg-brand/10 text-brand border-l-2 border-brand font-bold'
                    : 'text-slate-300 hover:bg-white/5 hover:text-white'
                }`}

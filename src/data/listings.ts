@@ -1,4 +1,4 @@
-import { Zap, Shield, Car, Coffee, Wifi } from 'lucide-react';
+
 
 export const LISTINGS_DATA = [
   {

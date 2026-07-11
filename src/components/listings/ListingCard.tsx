@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState, useEffect, type FC } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { MapPin, Star, Calendar, ArrowRight, CheckCircle, Heart } from 'lucide-react';
@@ -10,11 +10,11 @@ export interface ListingCardProps {
   index: number;
 }
 
-export const ListingCard: React.FC<ListingCardProps> = ({ item, index }) => {
+export const ListingCard: FC<ListingCardProps> = ({ item, index }) => {
   const { user } = useAuth();
-  const [isConfirmed, setIsConfirmed] = React.useState(false);
+  const [isConfirmed, setIsConfirmed] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (user) {
       const stored = localStorage.getItem('my_reservations');
       if (stored) {
@@ -46,6 +46,12 @@ export const ListingCard: React.FC<ListingCardProps> = ({ item, index }) => {
             <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
             {item.rating} {item.rating >= 4.9 && <span className="ml-1 text-slate-300 font-medium">· Top Rated</span>}
           </div>
+          {item.isManuallyCreated && item.createdAt && (Date.now() - new Date(item.createdAt).getTime() < 3 * 24 * 60 * 60 * 1000) && (
+            <div className="bg-gradient-to-r from-brand to-orange-500 text-white text-[10px] uppercase tracking-widest font-black px-2.5 py-1 rounded-full border border-orange-500/30 shadow-[0_0_15px_rgba(246,86,0,0.3)] w-fit flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
+              New Available
+            </div>
+          )}
           {isConfirmed && (
             <div className="bg-emerald-500/90 backdrop-blur-xl text-white text-[11px] uppercase tracking-wider font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 border border-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.4)] w-fit animate-in fade-in slide-in-from-top-2">
               <CheckCircle className="w-3.5 h-3.5" />

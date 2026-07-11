@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Star, ArrowLeft, Share2, Heart, Shield, Zap, Wifi, Coffee, Car, CheckCircle2, Minus, Plus, ChevronLeft, ChevronRight, X, Edit3, Trash2 } from 'lucide-react';
@@ -603,6 +603,18 @@ const ListingDetails = () => {
                         return;
                       }
                       
+                      // Calculate total price based on nights
+                      const pricePerNight = typeof safeListing?.price === 'number'
+                        ? safeListing.price
+                        : Number(String(safeListing?.price || '0').replace(/[^0-9.]/g, '')) || 0;
+                      
+                      const start = new Date(checkIn);
+                      const end = new Date(checkOut);
+                      const diffTime = Math.abs(end.getTime() - start.getTime());
+                      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                      const nights = diffDays || 1;
+                      const totalPrice = pricePerNight * nights;
+
                       // Save to localStorage
                       const stored = localStorage.getItem('my_reservations');
                       const reservations = stored ? JSON.parse(stored) : [];
@@ -613,6 +625,7 @@ const ListingDetails = () => {
                         image: safeListing?.images?.[0] || safeListing?.image,
                         location: safeListing?.location,
                         price: safeListing?.price,
+                        totalPrice,
                         checkIn,
                         checkOut,
                         guests,
