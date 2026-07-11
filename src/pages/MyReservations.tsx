@@ -10,13 +10,17 @@ export const MyReservations = ({ isEmbedded = false }: { isEmbedded?: boolean })
   const [reservations, setReservations] = useState<any[]>([]);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [resToDelete, setResToDelete] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const fetchReservations = async () => {
     try {
+      setLoading(true);
       const { data } = await api.get('/reservations/my');
       setReservations(data);
     } catch (err) {
       console.error('Error fetching reservations:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -27,13 +31,8 @@ export const MyReservations = ({ isEmbedded = false }: { isEmbedded?: boolean })
   const confirmDelete = async () => {
     if (!resToDelete) return;
     try {
-      const { data } = await api.delete(`/reservations/${resToDelete}`);
-      // Update local state: if returned status is Cancelled, update status, otherwise filter it out
-      if (data.status === 'Cancelled') {
-        setReservations(reservations.map(r => r.id === resToDelete ? { ...r, status: 'Cancelled' } : r));
-      } else {
-        setReservations(reservations.filter(r => r.id !== resToDelete));
-      }
+      await api.delete(`/reservations/${resToDelete}`);
+      setReservations(prev => prev.filter(r => r.id !== resToDelete));
     } catch (err) {
       console.error('Error cancelling reservation:', err);
     } finally {
@@ -303,6 +302,15 @@ export const MyReservations = ({ isEmbedded = false }: { isEmbedded?: boolean })
       </AnimatePresence>
     </>
   );
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 min-h-[300px]">
+        <div className="w-10 h-10 border-4 border-brand border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p className="text-slate-400 text-sm font-medium">Loading your bookings...</p>
+      </div>
+    );
+  }
 
   if (isEmbedded) {
     return <>{content}</>;

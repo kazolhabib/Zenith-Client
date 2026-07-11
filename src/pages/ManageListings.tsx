@@ -18,6 +18,7 @@ export const ManageListings = ({ isEmbedded = false }: { isEmbedded?: boolean })
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editListingId, setEditListingId] = useState<string | number | null>(null);
   const [editLoading, setEditLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [editFormData, setEditFormData] = useState({
     title: '',
     shortDescription: '',
@@ -131,12 +132,15 @@ export const ManageListings = ({ isEmbedded = false }: { isEmbedded?: boolean })
   useEffect(() => {
     const fetchListings = async () => {
       try {
+        setLoading(true);
         const endpoint = user?.role === 'admin' ? '/listings' : '/listings/my';
         const { data } = await api.get(endpoint);
         setListings(data);
       } catch (error) {
         console.warn('API not reachable, falling back to mock data');
         setListings(user?.role === 'admin' ? LISTINGS_DATA : LISTINGS_DATA.slice(0, 3));
+      } finally {
+        setLoading(false);
       }
     };
     if (user) {
@@ -710,6 +714,15 @@ export const ManageListings = ({ isEmbedded = false }: { isEmbedded?: boolean })
         )}
       </>
     );
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 min-h-[300px]">
+        <div className="w-10 h-10 border-4 border-brand border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p className="text-slate-400 text-sm font-medium">Loading properties...</p>
+      </div>
+    );
+  }
 
   if (isEmbedded) {
     return <>{content}</>;

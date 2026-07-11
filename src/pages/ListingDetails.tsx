@@ -25,6 +25,7 @@ const ListingDetails = () => {
   const [guests, setGuests] = useState(1);
   const [bookingModalOpen, setBookingModalOpen] = useState(false);
   const [isRequested, setIsRequested] = useState(false);
+  const [submittingBooking, setSubmittingBooking] = useState(false);
   const [photoGalleryOpen, setPhotoGalleryOpen] = useState(false);
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   const [toastMessage, setToastMessage] = useState('');
@@ -636,6 +637,7 @@ const ListingDetails = () => {
                             checkOut,
                             guests
                           };
+                          setSubmittingBooking(true);
                           const { data } = await api.post('/reservations', reservationPayload);
                           setUserReservations([data]);
                           setBookingModalOpen(true);
@@ -643,18 +645,25 @@ const ListingDetails = () => {
                         } catch (err: any) {
                           console.error("Booking error:", err);
                           alert(err.response?.data?.message || 'Error processing reservation request.');
+                        } finally {
+                          setSubmittingBooking(false);
                         }
                       };
                       saveReservation();
                     }}
-                    disabled={hasBooked}
+                    disabled={hasBooked || submittingBooking}
                     className={`w-full h-14 font-bold text-lg rounded-xl transition-all ${
-                      hasBooked 
+                      hasBooked || submittingBooking
                         ? "bg-green-500/10 text-green-400 border border-green-500/20 shadow-none cursor-not-allowed hover:bg-green-500/10" 
                         : "bg-gradient-to-r from-brand to-orange-500 hover:from-brand hover:to-orange-400 text-white shadow-[0_10px_30px_rgba(246,86,0,0.3)]"
                     }`}
                   >
-                    {hasBooked ? (
+                    {submittingBooking ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <div className="w-5 h-5 border-2 border-green-400 border-t-transparent rounded-full animate-spin"></div>
+                        Booking...
+                      </span>
+                    ) : hasBooked ? (
                       <span className="flex items-center justify-center gap-2">
                         <CheckCircle2 className="w-5 h-5" /> Already Booked
                       </span>

@@ -21,6 +21,7 @@ export const ManageUsers = () => {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
+  const [loading, setLoading] = useState(true);
 
   // Initial Seed Mock Users
   const mockUsers: UserItem[] = [
@@ -33,6 +34,7 @@ export const ManageUsers = () => {
 
   const fetchUsers = async () => {
     try {
+      setLoading(true);
       const { data } = await api.get('/auth/users');
       // Normalize ids
       const normalized = data.map((u: any) => ({
@@ -50,6 +52,8 @@ export const ManageUsers = () => {
         localStorage.setItem('zenith_users', JSON.stringify(mockUsers));
         setUsers(mockUsers);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -93,6 +97,15 @@ export const ManageUsers = () => {
       setUserToDelete(null);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 min-h-[300px]">
+        <div className="w-10 h-10 border-4 border-brand border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p className="text-slate-400 text-sm font-medium">Loading registered users...</p>
+      </div>
+    );
+  }
 
   return (
     <>

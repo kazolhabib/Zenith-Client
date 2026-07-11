@@ -28,6 +28,7 @@ export const AllReservations = ({ isEmbedded = false }: { isEmbedded?: boolean }
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [resToReject, setResToReject] = useState<string | null>(null);
   const [rejectionReason, setRejectionReason] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const templateReasons = [
     "Property undergoing maintenance on requested dates.",
@@ -38,10 +39,13 @@ export const AllReservations = ({ isEmbedded = false }: { isEmbedded?: boolean }
 
   const fetchReservations = async () => {
     try {
+      setLoading(true);
       const { data } = await api.get('/reservations');
       setReservations(data);
     } catch (err) {
       console.error('Error fetching reservations:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -435,6 +439,15 @@ export const AllReservations = ({ isEmbedded = false }: { isEmbedded?: boolean }
       </AnimatePresence>
     </>
   );
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 min-h-[300px]">
+        <div className="w-10 h-10 border-4 border-brand border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p className="text-slate-400 text-sm font-medium">Loading all reservations...</p>
+      </div>
+    );
+  }
 
   if (isEmbedded) {
     return <>{content}</>;
